@@ -1,0 +1,45 @@
+body {
+    background-color: #AFAFAF;
+    font-size: 12px;
+    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    color: #000000;  
+    margin: 0px 10% 0px 10%;
+}
+
+h1 {
+    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    border-bottom: 1px solid #AFAFAF; 
+    font-size:  16px;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+    color: #D20005;
+}
+
+a:link, a:visited {
+  color: #045491;
+  font-weight : bold;
+  text-decoration: none;
+}
+
+a:link:hover, a:visited:hover  {
+  color: #045491;
+  font-weight : bold;
+  text-decoration : underline;
+}
+
+.ui-fieldset .ui-fieldset-legend {
+  background:#ffffff;
+  border-bottom:#ffffff;
+  border-left:#ffffff;
+  border-top:#ffffff;
+  border-right:#ffffff;
+  color:#02305C;
+  font-weight:inherit;
+  font-style:inherit;
+  padding:2px;
+}
+
+.ui-wizard-step-title {
+  font-size:12px !important;
+}

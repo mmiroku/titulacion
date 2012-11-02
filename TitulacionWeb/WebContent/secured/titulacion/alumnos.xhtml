@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="../templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="content">
+<h:form id="formCenter">
+	    <p:tabView>
+	       <p:tab id="alumnos" title="Alumnos">
+	           <p:dataTable id="tblAlumnos" var="alumno" value="#{pAlumno.alumnos}" emptyMessage="No existen alumnos registrados.">
+	               <p:column headerText="Boleta">
+	                   <h:outputText value="#{alumno.boleta}"/>
+	               </p:column>
+	               <p:column headerText="A. Paterno">
+                       <h:outputText value="#{alumno.aPaterno}"/>
+                   </p:column>
+                   <p:column headerText="A. Materno">
+                       <h:outputText value="#{alumno.aMaterno}"/>
+                   </p:column>
+                   <p:column headerText="Nombre(s)">
+                       <h:outputText value="#{alumno.nombre}"/>
+                   </p:column>
+                   <p:column headerText="Carrera">
+                       <h:outputText value="#{alumno.carrera.nombre}"/>
+                   </p:column>
+	           </p:dataTable>
+	       </p:tab>
+	       <p:tab id="pasantes" title="Pasantes">
+           </p:tab>
+           <p:tab id="sinodales" title="Sinodales">
+           </p:tab>
+	    </p:tabView>
+	    </h:form>
+	</ui:define>
+	<ui:define name="right">
+	<h:form id="formRight">
+	   <h:panelGrid style="padding: 10px;">
+	    <p:fieldset legend="Acciones">
+	       <h:panelGrid>
+			    <p:commandButton value="Nuevo Alumno" onclick="dlg.show();"/>
+			    <p:commandButton value="Generar Acta"/>
+	       </h:panelGrid>
+	    </p:fieldset>
+	    <br/>
+	    <p:fieldset legend="Filtrar">
+	       <h:panelGrid>
+	       <h:outputText value="Boleta"/>
+	       <p:inputText/>
+	       <h:outputText value="Nombre"/>
+           <p:inputText/>
+           <h:outputText value="Carrera"/>
+           <p:selectOneMenu>
+               <f:selectItem itemLabel="I. Transporte"/>
+               <f:selectItem itemLabel="Administración"/>
+               <f:selectItem itemLabel="I. Informática"/>
+               <f:selectItem itemLabel="C. Informática"/>
+               <f:selectItem itemLabel="I. Industrial"/>
+           </p:selectOneMenu>
+           <h:outputText value="Semestre"/>
+           <p:selectOneMenu>
+               <f:selectItem itemLabel="1er Semestre"/>
+               <f:selectItem itemLabel="2do Semestre"/>
+               <f:selectItem itemLabel="3er Semestre"/>
+               <f:selectItem itemLabel="4to Semestre"/>
+               <f:selectItem itemLabel="5to Semestre"/>
+               <f:selectItem itemLabel="6to Semestre"/>
+               <f:selectItem itemLabel="7mo Semestre"/>
+               <f:selectItem itemLabel="8vo Semestre"/>
+           </p:selectOneMenu>
+           <br/>
+		   <p:commandButton value="Buscar" style="float: right;"/>
+           </h:panelGrid>
+	    </p:fieldset>
+	    </h:panelGrid>
+    <p:dialog header="Nuevo Alumno" widgetVar="dlg" resizable="false" draggable="false" width="450">
+            <p:messages id="msgNuevo"/>
+            <p:wizard widgetVar="wiz" flowListener="#{cAlumno.onFlowProcess}">
+                <p:tab id="datosPersonales" title="Datos Personales">
+                    <h:panelGrid columns="2">
+                        <h:outputText value="Apellido Paterno *"/>
+                        <p:inputText value="#{pAlumno.alumno.aPaterno}" required="true"/>
+                        <h:outputText value="Apellido Materno *"/>
+                        <p:inputText value="#{pAlumno.alumno.aMaterno}" required="true"/>
+                        <h:outputText value="Nombre(s) *"/>
+                        <p:inputText value="#{pAlumno.alumno.nombre}" required="true"/>
+                        <h:outputText value="Sexo"/>
+                        <p:selectOneMenu value="#{pAlumno.alumno.sexo}" converter="SexoConverter">
+                            <f:selectItems value="#{pCatalogo.sexos}" var="sexo" itemLabel="#{sexo.descripcion}" itemValue="#{sexo}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Fecha Nacimiento *"/>
+                        <p:calendar value="#{pAlumno.alumno.fechaNacimiento}" showOn="button" size="7" pattern="dd/MM/yyyy" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true"/> 
+                        <h:outputText value="Edad"/>
+                        <p:inputText />
+                        <h:outputText value="R.F.C. *"/>
+                        <p:inputText value="#{pAlumno.alumno.rfc}" required="true"/>
+                        <h:outputText value="CURP *"/>
+                        <p:inputText value="#{pAlumno.alumno.curp}" required="true"/>
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab id="informacionEscolar" title="Información Escolar">
+                    <h:panelGrid columns="2">
+                        <h:outputText value="No. de Boleta *"/>
+                        <p:inputText value="#{pAlumno.alumno.boleta}" required="true"/>
+                        <h:outputText value="Licenciatura"/>
+                        <p:selectOneMenu value="#{pAlumno.alumno.carrera}" converter="CarreraConverter">
+                            <f:selectItems value="#{pCatalogo.carreras}" var="carrera" itemLabel="#{carrera.nombre}" itemValue="#{carrera}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Promedio"/>
+                        <p:inputText />
+                        <h:outputText value="Año de Inicio de la Lic. *"/>
+                        <p:inputText value="#{pAlumno.alumno.inicioCarrera}" required="true"/>
+                        <h:outputText value="Año de Termino de la Lic."/>
+                        <p:inputText value="#{pAlumno.alumno.finCarrera}"/>
+                        <h:outputText value="Generación"/>
+                        <p:inputText />
+                        <h:outputText value="Tipo de Egresado"/>
+                        <p:selectOneMenu>
+                            <f:selectItem itemLabel="Interno"/>
+                            <f:selectItem itemLabel="Externo"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Número de Acta"/>
+                        <p:inputText />
+                        <h:outputText value="Número de Libro"/>
+                        <p:inputText />
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab id="direccionContacto" title="Dirección y Contacto">
+                <p:fieldset legend="Dirección">
+                    <h:panelGrid columns="2">
+                        <h:outputText value="Calle *"/>
+                        <p:inputText value="#{pAlumno.alumno.direccion.calle}" required="true"/>
+                        <h:outputText value="No. Exterior - Interior *"/>
+                        <p:inputText value="#{pAlumno.alumno.direccion.numeroExterior}" required="true"/>
+                        <h:outputText value="Código Postal *"/>
+                        <p:inputText value="#{pAlumno.alumno.direccion.codigoPostal}" required="true"/>
+                        <h:outputText value="Colonia *"/>
+                            <p:inputText value="#{pAlumno.alumno.direccion.colonia}" required="true"/>
+                        <h:outputText value="Delegación/Municipio *"/>
+                        <p:inputText value="#{pAlumno.alumno.direccion.delegacion}" required="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="4">
+                        <h:outputText value="Ciudad"/>
+                        <p:inputText size="12"/>
+                        <h:outputText value="Estado *"/>
+                        <p:inputText value="#{pAlumno.alumno.direccion.estado}" size="12" required="true"/>
+                    </h:panelGrid>
+                    </p:fieldset>
+                    <p:fieldset legend="Contacto">
+                        <h:panelGrid columns="4">
+                        <h:outputText value="Número de Acta"/>
+                        <p:inputText size="12"/>
+                        <h:outputText value="Tel. Particular"/>
+                        <p:inputText value="#{pAlumno.alumno.numeroTelefono}" size="12"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                        <h:outputText value="Tel. Celular"/>
+                        <p:inputText value="#{pAlumno.alumno.numeroCelular}"/>
+                        </h:panelGrid>
+                    </p:fieldset>
+                    <p:commandButton style="float: right;" value="Guardar" action="#{cAlumno.guardarAlumno()}" oncomplete="dlg.hide();" />
+                </p:tab>
+            </p:wizard>
+        </p:dialog>
+</h:form>
+	</ui:define>
+</ui:composition>

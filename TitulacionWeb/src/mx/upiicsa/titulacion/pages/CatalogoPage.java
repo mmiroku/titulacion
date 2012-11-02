@@ -1,0 +1,38 @@
+package mx.upiicsa.titulacion.pages;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
+
+import mx.upiicsa.titulacion.model.Carrera;
+import mx.upiicsa.titulacion.model.Sexo;
+
+@Named("pCatalogo")
+@SessionScoped
+public class CatalogoPage implements Serializable {
+
+	private static final long serialVersionUID = -1227563020949071674L;
+
+	private List<Sexo> sexos;
+	
+	private List<Carrera> carreras;
+
+	public List<Sexo> getSexos() {
+		return sexos;
+	}
+
+	public void setSexos(List<Sexo> sexos) {
+		this.sexos = sexos;
+	}
+
+	public List<Carrera> getCarreras() {
+		return carreras;
+	}
+
+	public void setCarreras(List<Carrera> carreras) {
+		this.carreras = carreras;
+	}
+
+}

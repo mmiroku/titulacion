@@ -1,0 +1,105 @@
+* {
+	margin: 0;
+}
+
+html, body {
+	height: 100%;
+}
+
+#wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -25px;
+}
+
+#top {
+    position: relative;
+    background-color: white;
+    color: black;
+    padding: 0px;
+    margin: 0px 0px 0px 0px;
+}
+
+#layout {
+	min-height: 550px;
+	margin: 6px 0px;
+}
+
+#bottom, #push {
+	height: 25px;
+}
+
+#bottom {
+    position: relative;
+    background-color: #088A29;
+    padding: 0px;
+    margin: 0px 0px 0px 0px;
+    color: white;
+    text-align: center;
+    font-size: xx-small;
+    height: 25px;
+}
+
+#right {
+    float: right;
+    background-color: #ece3a5;
+    padding: 0px;
+    width: 150px;
+}
+
+.center_content {
+    position: relative;
+    background-color: #dddddd;
+    padding: 0px;
+}
+
+.left_content {
+    background-color: #dddddd;
+    padding: 0px;
+    margin-left: 0px;
+}
+
+.right_content {
+    background-color: #dddddd;
+    padding: 0px;
+    margin: 0px 0px 0px 0px;
+}
+
+#top a:link, #top a:visited {
+  color: white;
+  font-weight : bold;
+  text-decoration: none;
+}
+
+#top a:link:hover, #top a:visited:hover  {
+  color: black;
+  font-weight : bold;
+  text-decoration : underline;
+}
+
+.ipn {
+    text-align: right;
+    color: black;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.upiicsa {
+    text-align: right;
+    color: #088A29;    
+    font-size: 14px;
+}
+
+.tecnica{
+    text-align: right;
+    color: #4c6b87;    
+    font-size: 11px;
+}
+
+.secretaria{
+    text-align: right;
+    color: #088A29;    
+    font-size: 14px;
+    font-weight: bold
+}

@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <h:outputStylesheet library="css" name="default.css"/>
+    <h:outputStylesheet library="css" name="cssLayout.css"/>
+    <title>Facelets Template</title>
+</h:head>
+
+<h:body>
+    #{cAlumno.init}
+    <div id="wrapper">
+        <div id="top">
+            <ui:insert name="top">
+                <table width="100%">
+                    <tr>
+                        <td width="10%">
+                        	<h:graphicImage alt="IPN" style="float: right;" url="/resources/images/ipn.jpg"/>
+                            <!-- img alt="IPN" align="left" src="/TitulacionWeb/resources/images/ipn.jpg"></img -->
+                        </td>
+                        <td width="80%">
+                            <table width="100%">
+                                <tr>
+                                    <td class="ipn" width="25%" valign="bottom">
+                                        Instituto Politécnico Nacional
+                                    </td>
+                                    <td class="secretaria" width="75%" valign="bottom">
+                                        Secretaria Académica
+                                    </td>                                    
+                                </tr>
+                                <tr>                                    
+                                    <td valign="middle">
+                                        <hr align="center" width="100%"></hr>
+                                    </td>
+                                    <td class="secretaria" valign="middle">
+                                        Dirección de Educación Superior
+                                    </td>
+                                </tr>
+                                <tr>                                    
+                                    <td valign="top" class="tecnica">
+                                        "La Técnica al Servicio de la Patria"
+                                    </td>
+                                    <td class="upiicsa" valign="top">
+                                        Unidad Profesional Interdisciplinaria de Ingeniería y Ciencias Sociales y Administrativas
+                                    </td>
+                                </tr>
+                            </table>                                                        
+                        </td>
+                        <td width="10%">
+                        	<h:graphicImage alt="UPIICSA" url="/resources/images/upiicsa_logo.png" width="66px" height="84px"/>
+                            <!-- img alt="IPN" align="right" src="/TitulacionWeb/resources/images/upiicsa_logo.png"></img -->
+                        </td>                        
+                    </tr>  
+                </table>
+            </ui:insert>            
+        </div>
+        <div>
+        	<p:layout id="layout">
+	            <p:layoutUnit id="content" position="center">
+	                <ui:insert name="content">Content</ui:insert>
+	            </p:layoutUnit>
+	            <p:layoutUnit id="right" header="Menu" position="east" collapsible="true" size="220">
+	                <ui:insert name="right">Right</ui:insert>
+	            </p:layoutUnit>
+            </p:layout>
+        </div>
+        <div id="push"></div>
+    </div>
+    <div id="bottom">
+        <ui:insert name="footer">                
+            Av. Té #950 esquina Resina, Col. Granjas México, C.P. 08400, Del. Iztacalco,  Distrito Federal,  México.
+            Teléfono: 56242000  EXT. 70076                                        
+        </ui:insert>
+    </div>
+</h:body>
+
+</html>
