@@ -12,6 +12,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
+import mx.upiicsa.titulacion.model.Academia;
 import mx.upiicsa.titulacion.model.Carrera;
 import mx.upiicsa.titulacion.model.Sexo;
 
@@ -47,5 +48,18 @@ public class CatalogoService implements Serializable {
 			throw new TitulacionException("No existen registros en el catálogo Carrera.");
 		}
 		return carreraList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Academia> findAllAcademia() throws TitulacionException {
+		TypedQuery<Academia> query = entityManager.createNamedQuery(
+				"Academia.findAll", Academia.class);
+		List<Academia> academiaList;
+		try {
+			academiaList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el catálogo Academia.");
+		}
+		return academiaList;
 	}
 }

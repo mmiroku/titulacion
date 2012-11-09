@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="../templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="content">
+	#{cMaestro.init}
+<h:form id="formCenter">	    	           
+	           <p:dataTable id="tblMaestros" var="maestro" value="#{pMaestro.maestros}" emptyMessage="No existen maestros registrados.">	               
+	               <p:column headerText="A. Paterno">
+                       <h:outputText value="#{maestro.aPaterno}"/>
+                   </p:column>
+                   <p:column headerText="A. Materno">
+                       <h:outputText value="#{maestro.aMaterno}"/>
+                   </p:column>
+                   <p:column headerText="Nombre(s)">
+                       <h:outputText value="#{maestro.nombre}"/>
+                   </p:column>
+                   <p:column headerText="Titulo">
+                       <h:outputText value="#{maestro.titulo}"/>
+                   </p:column>
+                   <p:column headerText="Año Ingreso">
+                       <h:outputText value="#{maestro.anioIngreso}">
+                       		<f:convertDateTime pattern="dd-MM-yyyy" />
+                       </h:outputText>
+                   </p:column>
+                   <p:column headerText="Academia">
+                       <h:outputText value="#{maestro.academia.nombre}"/>
+                   </p:column>
+                   <p:column headerText="Abreviatura">
+                       <h:outputText value="#{maestro.abreviatura}" />
+                   </p:column>                   
+	           </p:dataTable>
+	    </h:form>
+	</ui:define>
+	<ui:define name="right">
+	<h:form id="formRight">
+	
+	   <h:panelGrid style="padding: 10px;">
+	    <p:fieldset legend="Acciones">
+	       <h:panelGrid>
+			    <p:commandButton value="Nuevo Maestro" onclick="dlg.show();"/>			    
+	       </h:panelGrid>
+	    </p:fieldset>
+	    <br/>
+	    <p:fieldset legend="Filtrar">
+	       <h:panelGrid>
+	       <h:outputText value="Cedula"/>
+	       <p:inputText/>
+	       <h:outputText value="Nombre"/>
+           <p:inputText/>
+           <h:outputText value="Titulo"/>
+           <p:inputText/>
+           <h:outputText value="Academia"/>
+           <p:selectOneMenu>
+               <f:selectItem itemLabel="Transporte"/>
+               <f:selectItem itemLabel="Administración"/>
+               <f:selectItem itemLabel="Informática"/>
+               <f:selectItem itemLabel="Informática"/>
+               <f:selectItem itemLabel="Industrial"/>
+           </p:selectOneMenu>           
+           <br/>
+		   <p:commandButton value="Buscar" style="float: right;"/>
+           </h:panelGrid>
+	    </p:fieldset>
+	    </h:panelGrid>
+	    <p:dialog header="Nuevo Maestro" widgetVar="dlg" resizable="false" draggable="false" width="450">
+            <p:messages id="msgNuevo"/>            	
+                    <h:panelGrid columns="2">                    	
+                    	<h:outputText value="Apellido Paterno *"/>
+                        <p:inputText value="#{pMaestro.maestro.idMaestro}" required="true"/>
+                        <h:outputText value="Apellido Paterno *"/>
+                        <p:inputText value="#{pMaestro.maestro.aPaterno}" required="true"/>
+                        <h:outputText value="Apellido Materno *"/>
+                        <p:inputText value="#{pMaestro.maestro.aMaterno}" required="true"/>
+                        <h:outputText value="Nombre(s) *"/>
+                        <p:inputText value="#{pMaestro.maestro.nombre}" required="true"/>                                      
+                        <h:outputText value="Titulo"/>
+                        <p:inputText value="#{pMaestro.maestro.titulo}" required="true"/>                                                
+                        <h:outputText value="Anio Ingreso *"/>
+                        <p:calendar value="#{pMaestro.maestro.anioIngreso}" showOn="button" size="7" pattern="dd/MM/yyyy" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true"/>
+                        <h:outputText value="Academia"/>                        
+                        <p:selectOneMenu value="#{pMaestro.maestro.academia}" converter="AcademiaConverter">
+                            <f:selectItems value="#{pCatalogo.academias}" var="academia" itemLabel="#{academia.nombre}" itemValue="#{academia}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Abreviatura"/>
+                        <p:inputText value="#{pMaestro.maestro.abreviatura}" required="true"/>
+                    </h:panelGrid>  
+                    <p:commandButton style="float: right;" value="Guardar" action="#{cMaestro.guardarMaestro()}" oncomplete="dlg.hide();" />
+	    </p:dialog>  	     
+</h:form>
+	</ui:define>
+</ui:composition>
