@@ -6,4 +6,14 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
     version="2.1">
 
+    <navigation-rule>
+        <navigation-case>
+            <from-outcome>usuarioInit</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>titulacionMain</from-outcome>
+            <to-view-id>/secured/titulacion/alumnos.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

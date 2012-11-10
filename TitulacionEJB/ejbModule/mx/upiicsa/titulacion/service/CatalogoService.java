@@ -1,6 +1,5 @@
 package mx.upiicsa.titulacion.service;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -17,9 +16,7 @@ import mx.upiicsa.titulacion.model.Carrera;
 import mx.upiicsa.titulacion.model.Sexo;
 
 @Stateless(mappedName = "ejb/CatalogoService")
-public class CatalogoService implements Serializable {
-
-	private static final long serialVersionUID = 1927696093799970047L;
+public class CatalogoService {
 
 	@Inject
 	private EntityManager entityManager;
@@ -32,7 +29,7 @@ public class CatalogoService implements Serializable {
 		try {
 			sexoList = query.getResultList();
 		} catch(NoResultException e) {
-			throw new TitulacionException("No existen registros en el catálogo Sexo.");
+			throw new TitulacionException("No existen registros en el catï¿½logo Sexo.");
 		}
 		return sexoList;
 	}
@@ -45,7 +42,7 @@ public class CatalogoService implements Serializable {
 		try {
 			carreraList = query.getResultList();
 		} catch(NoResultException e) {
-			throw new TitulacionException("No existen registros en el catálogo Carrera.");
+			throw new TitulacionException("No existen registros en el catï¿½logo Carrera.");
 		}
 		return carreraList;
 	}
@@ -58,7 +55,7 @@ public class CatalogoService implements Serializable {
 		try {
 			academiaList = query.getResultList();
 		} catch(NoResultException e) {
-			throw new TitulacionException("No existen registros en el catálogo Academia.");
+			throw new TitulacionException("No existen registros en el catï¿½logo Academia.");
 		}
 		return academiaList;
 	}

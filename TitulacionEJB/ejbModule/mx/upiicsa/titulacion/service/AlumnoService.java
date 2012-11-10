@@ -1,6 +1,5 @@
 package mx.upiicsa.titulacion.service;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +15,7 @@ import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.Alumno;
 
 @Stateless(mappedName = "ejb/AlumnoService")
-public class AlumnoService implements Serializable {
-
-	private static final long serialVersionUID = -8510737783635751315L;
+public class AlumnoService {
 	
 	@Inject
 	private EntityManager entityManager;

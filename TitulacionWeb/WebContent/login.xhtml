@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/secured/templates/index.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="content">	
+		<h:form id="formCenter">		
+		<table width="100%" >
+			<tr>
+				<td style="background-color: #088A29;">
+					<br/>
+				</td>
+			</tr>
+			<tr>
+				<td align="center">
+					<h:graphicImage alt="FONDO" url="/resources/images/Oficina3.jpg" /> 					
+				</td>
+			</tr>
+			<tr>
+				<td align="center">
+					<h:graphicImage alt="FONDO" url="/resources/images/Oficina1.png" /> 					
+				</td>
+			</tr>			
+			<!--<tr>
+				<td align="center" style="font-size: 14px; font-weight: bold">
+					BIENVENIDO A LA OFICINA DE TITULACION
+					<br/>
+					<br/>
+				</td>
+			</tr>-->			
+			<tr>
+				<td width="100%" align="center" colspan="2">
+					<div style="width: 300px">
+    					<p:panel header="ACCESO">
+    					    <p:messages id="msgsUsuario" errorClass="error"/>
+        					<h:panelGrid columns="2" id="panel">
+        						<h:outputLabel for="usuario" value="Usuario:" />
+        						<p:inputText id="usuario" value="#{pLogin.login}" label="Usuario" required="true"/>
+            					<h:outputLabel for="contrasena" value="Contraseña:" />
+            					<p:password id="contrasena" value="#{pLogin.password}" label="Contraseña" required="true"/>
+            					<h:panelGroup></h:panelGroup>
+            					<p:commandButton id="entrar" update="panel" value="Iniciar Sesión" action="#{cLogin.loginAction()}" ajax="false"/>
+        					</h:panelGrid>
+    					</p:panel>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td align="center">
+					<h:graphicImage alt="FONDO" url="/resources/images/Oficina2.jpg" /> 
+					<br/>
+					<br/>
+				</td>
+			</tr>	
+		</table>						           	    	      
+	    </h:form>
+	</ui:define>
+</ui:composition>
