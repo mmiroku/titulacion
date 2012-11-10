@@ -14,7 +14,8 @@ import javax.persistence.Temporal;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "Alumno.findAll", query = "select a from Alumno a") })
+	@NamedQuery(name = "Alumno.findAll", query = "select a from Alumno a"),
+	@NamedQuery(name = "Alumno.findByFilter", query = "select a from Alumno a where ((:boleta is null or :boleta = '') or a.boleta = :boleta) and ((:nombre is null or :nombre = '') or a.nombre = :nombre) and ((:idCarrera is null or :idCarrera = 0) or a.carrera.idCarrera = :idCarrera) and ((:curp is null or :curp = '') or a.curp = :curp)") })
 @Table(name="TblAlumno")
 public class Alumno implements Serializable {
 

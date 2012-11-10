@@ -6,13 +6,15 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils">
 
-	<ui:define name="content">
-<h:form id="formCenter">
-	    <p:tabView>
-	       <p:tab id="alumnos" title="Alumnos">
-	           <p:dataTable id="tblAlumnos" var="alumno" value="#{pAlumno.alumnos}" emptyMessage="No existen alumnos registrados.">
+	<ui:define name="tabAlumnos">
+	    
+        #{cAlumno.init}
+	    <p:growl id="msgsAlumnos"/>
+	        <p:outputPanel id="tblAlumnos">
+	           <p:dataTable var="alumno" value="#{pAlumno.alumnos}" emptyMessage="No existen alumnos registrados.">
 	               <p:column headerText="Boleta">
 	                   <h:outputText value="#{alumno.boleta}"/>
 	               </p:column>
@@ -28,144 +30,66 @@
                    <p:column headerText="Carrera">
                        <h:outputText value="#{alumno.carrera.nombre}"/>
                    </p:column>
+                   <p:column style="vertical-align:middle; width:7%;">  
+                       <f:facet name="header">
+                           <h:outputText />
+                       </f:facet>
+                       <p:commandButton id="btnEditAlumno" icon="ui-icon-pencil" onclick="wizEdit.loadStep(wizEdit.cfg.steps[0], true); dlgEdit.show();" process="@this" action="#{cAlumno.seleccionarAlumno(alumno)}" />
+                       <p:tooltip for="btnEditAlumno" value="Editar" showEffect="fade" hideEffect="fade" />
+                   </p:column>
+                   <p:column style="vertical-align:middle; width:7%;">  
+                       <f:facet name="header">
+                           <h:outputText />
+                       </f:facet>
+                       <p:commandButton id="btnDelAlumno" icon="ui-icon-trash" onclick="dlgDel.show();" process="@this" action="#{pAlumno.setAlumno(alumno)}" />
+                       <p:tooltip for="btnDelAlumno" value="Eliminar" showEffect="fade" hideEffect="fade" />
+                   </p:column>
 	           </p:dataTable>
-	       </p:tab>
-	       <p:tab id="pasantes" title="Pasantes">
-           </p:tab>
-           <p:tab id="sinodales" title="Sinodales">
-           </p:tab>
-	    </p:tabView>
-	    </h:form>
+	           </p:outputPanel>
+	       
+	    
+	    <utils:wizardAlumno id="idNew" wizard="wizNew" widgetVar="dlgNew" panel="pnlNew" header="Nuevo Alumno" isEdit="false" action="#{cAlumno.guardarAlumno()}"/>
+        
+        <utils:wizardAlumno id="idEdit" wizard="wizEdit" widgetVar="dlgEdit" panel="pnlEdit" header="Editar Alumno" isEdit="true" action="#{cAlumno.actualizarAlumno()}"/>
+        
+        <p:confirmDialog message="¿Está seguro que desea eliminar el alumno #{pAlumno.alumno.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDel" appendToBody="true">
+            <p:commandButton value="Sí" action="#{cAlumno.eliminarAlumno}" oncomplete="dlgDel.hide();" />
+            <p:commandButton value="No" onclick="dlgDel.hide();"/>
+        </p:confirmDialog>
+        
+        
 	</ui:define>
 	<ui:define name="right">
 	<h:form id="formRight">
 	   <h:panelGrid style="padding: 10px;">
 	    <p:fieldset legend="Acciones">
 	       <h:panelGrid>
-			    <p:commandButton value="Nuevo Alumno" onclick="dlg.show();"/>
+			    <p:commandButton value="Nuevo Alumno" action="#{cAlumno.limpiarAlumno()}" onclick="wizNew.loadStep(wizNew.cfg.steps[0], true); dlgNew.show();"/>
 			    <p:commandButton value="Generar Acta"/>
 	       </h:panelGrid>
 	    </p:fieldset>
 	    <br/>
 	    <p:fieldset legend="Filtrar">
+	       <p:outputPanel id="pnlFiltro">
 	       <h:panelGrid>
 	       <h:outputText value="Boleta"/>
-	       <p:inputText/>
+	       <p:inputText value="#{pAlumno.filtro.boleta}"/>
 	       <h:outputText value="Nombre"/>
-           <p:inputText/>
+           <p:inputText value="#{pAlumno.filtro.nombre}"/>
            <h:outputText value="Carrera"/>
-           <p:selectOneMenu>
-               <f:selectItem itemLabel="I. Transporte"/>
-               <f:selectItem itemLabel="Administración"/>
-               <f:selectItem itemLabel="I. Informática"/>
-               <f:selectItem itemLabel="C. Informática"/>
-               <f:selectItem itemLabel="I. Industrial"/>
+           <p:selectOneMenu value="#{pAlumno.filtro.carrera}" converter="CarreraConverter">
+              <f:selectItem itemLabel=""/>
+              <f:selectItems value="#{pCatalogo.carreras}" var="carrera" itemLabel="#{carrera.nombre}" itemValue="#{carrera}"/>
            </p:selectOneMenu>
-           <h:outputText value="Semestre"/>
-           <p:selectOneMenu>
-               <f:selectItem itemLabel="1er Semestre"/>
-               <f:selectItem itemLabel="2do Semestre"/>
-               <f:selectItem itemLabel="3er Semestre"/>
-               <f:selectItem itemLabel="4to Semestre"/>
-               <f:selectItem itemLabel="5to Semestre"/>
-               <f:selectItem itemLabel="6to Semestre"/>
-               <f:selectItem itemLabel="7mo Semestre"/>
-               <f:selectItem itemLabel="8vo Semestre"/>
-           </p:selectOneMenu>
+           <h:outputText value="CURP"/>
+           <p:inputText value="#{pAlumno.filtro.curp}"/>
            <br/>
-		   <p:commandButton value="Buscar" style="float: right;"/>
+		   <p:commandButton value="Buscar" action="#{cAlumno.filtrarAlumnos()}" style="float: right;"/>
            </h:panelGrid>
+           </p:outputPanel>
 	    </p:fieldset>
 	    </h:panelGrid>
-    <p:dialog header="Nuevo Alumno" widgetVar="dlg" resizable="false" draggable="false" width="450">
-            <p:messages id="msgNuevo"/>
-            <p:wizard widgetVar="wiz" flowListener="#{cAlumno.onFlowProcess}">
-                <p:tab id="datosPersonales" title="Datos Personales">
-                    <h:panelGrid columns="2">
-                        <h:outputText value="Apellido Paterno *"/>
-                        <p:inputText value="#{pAlumno.alumno.aPaterno}" required="true"/>
-                        <h:outputText value="Apellido Materno *"/>
-                        <p:inputText value="#{pAlumno.alumno.aMaterno}" required="true"/>
-                        <h:outputText value="Nombre(s) *"/>
-                        <p:inputText value="#{pAlumno.alumno.nombre}" required="true"/>
-                        <h:outputText value="Sexo"/>
-                        <p:selectOneMenu value="#{pAlumno.alumno.sexo}" converter="SexoConverter">
-                            <f:selectItems value="#{pCatalogo.sexos}" var="sexo" itemLabel="#{sexo.descripcion}" itemValue="#{sexo}"/>
-                        </p:selectOneMenu>
-                        <h:outputText value="Fecha Nacimiento *"/>
-                        <p:calendar value="#{pAlumno.alumno.fechaNacimiento}" showOn="button" size="7" pattern="dd/MM/yyyy" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true"/> 
-                        <h:outputText value="Edad"/>
-                        <p:inputText />
-                        <h:outputText value="R.F.C. *"/>
-                        <p:inputText value="#{pAlumno.alumno.rfc}" required="true"/>
-                        <h:outputText value="CURP *"/>
-                        <p:inputText value="#{pAlumno.alumno.curp}" required="true"/>
-                    </h:panelGrid>
-                </p:tab>
-                <p:tab id="informacionEscolar" title="Información Escolar">
-                    <h:panelGrid columns="2">
-                        <h:outputText value="No. de Boleta *"/>
-                        <p:inputText value="#{pAlumno.alumno.boleta}" required="true"/>
-                        <h:outputText value="Licenciatura"/>
-                        <p:selectOneMenu value="#{pAlumno.alumno.carrera}" converter="CarreraConverter">
-                            <f:selectItems value="#{pCatalogo.carreras}" var="carrera" itemLabel="#{carrera.nombre}" itemValue="#{carrera}"/>
-                        </p:selectOneMenu>
-                        <h:outputText value="Promedio"/>
-                        <p:inputText />
-                        <h:outputText value="Año de Inicio de la Lic. *"/>
-                        <p:inputText value="#{pAlumno.alumno.inicioCarrera}" required="true"/>
-                        <h:outputText value="Año de Termino de la Lic."/>
-                        <p:inputText value="#{pAlumno.alumno.finCarrera}"/>
-                        <h:outputText value="Generación"/>
-                        <p:inputText />
-                        <h:outputText value="Tipo de Egresado"/>
-                        <p:selectOneMenu>
-                            <f:selectItem itemLabel="Interno"/>
-                            <f:selectItem itemLabel="Externo"/>
-                        </p:selectOneMenu>
-                        <h:outputText value="Número de Acta"/>
-                        <p:inputText />
-                        <h:outputText value="Número de Libro"/>
-                        <p:inputText />
-                    </h:panelGrid>
-                </p:tab>
-                <p:tab id="direccionContacto" title="Dirección y Contacto">
-                <p:fieldset legend="Dirección">
-                    <h:panelGrid columns="2">
-                        <h:outputText value="Calle *"/>
-                        <p:inputText value="#{pAlumno.alumno.direccion.calle}" required="true"/>
-                        <h:outputText value="No. Exterior - Interior *"/>
-                        <p:inputText value="#{pAlumno.alumno.direccion.numeroExterior}" required="true"/>
-                        <h:outputText value="Código Postal *"/>
-                        <p:inputText value="#{pAlumno.alumno.direccion.codigoPostal}" required="true"/>
-                        <h:outputText value="Colonia *"/>
-                            <p:inputText value="#{pAlumno.alumno.direccion.colonia}" required="true"/>
-                        <h:outputText value="Delegación/Municipio *"/>
-                        <p:inputText value="#{pAlumno.alumno.direccion.delegacion}" required="true"/>
-                        </h:panelGrid>
-                        <h:panelGrid columns="4">
-                        <h:outputText value="Ciudad"/>
-                        <p:inputText size="12"/>
-                        <h:outputText value="Estado *"/>
-                        <p:inputText value="#{pAlumno.alumno.direccion.estado}" size="12" required="true"/>
-                    </h:panelGrid>
-                    </p:fieldset>
-                    <p:fieldset legend="Contacto">
-                        <h:panelGrid columns="4">
-                        <h:outputText value="Número de Acta"/>
-                        <p:inputText size="12"/>
-                        <h:outputText value="Tel. Particular"/>
-                        <p:inputText value="#{pAlumno.alumno.numeroTelefono}" size="12"/>
-                        </h:panelGrid>
-                        <h:panelGrid columns="2">
-                        <h:outputText value="Tel. Celular"/>
-                        <p:inputText value="#{pAlumno.alumno.numeroCelular}"/>
-                        </h:panelGrid>
-                    </p:fieldset>
-                    <p:commandButton style="float: right;" value="Guardar" action="#{cAlumno.guardarAlumno()}" oncomplete="dlg.hide();" />
-                </p:tab>
-            </p:wizard>
-        </p:dialog>
+
 </h:form>
 	</ui:define>
 </ui:composition>

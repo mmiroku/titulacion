@@ -29,10 +29,49 @@ public class AlumnoService implements Serializable {
 		entityManager.persist(alumno);
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void update(Alumno alumno) {
+		entityManager.merge(alumno.getDireccion());
+		entityManager.merge(alumno);
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void delete(String boleta) throws TitulacionException {
+		Alumno alumno = entityManager.find(Alumno.class, boleta);
+		System.out.println("encontre alumno: " + alumno);
+		if (alumno == null) {
+			System.out.println("uchas fue error");
+			throw new TitulacionException("El Alumno no existe.");
+		}
+		entityManager.remove(alumno);
+		System.out.println("ps si lo elimine");
+	}
+	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public List<Alumno> findAllAlumno() throws TitulacionException {
 		TypedQuery<Alumno> query = entityManager.createNamedQuery(
 				"Alumno.findAll", Alumno.class);
+		List<Alumno> alumnoList = new ArrayList<Alumno>();
+		try {
+			alumnoList = query.getResultList();
+		} catch(NoResultException e) {
+			
+		}
+		return alumnoList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Alumno> findByFilter(Alumno filtro) throws TitulacionException {
+		TypedQuery<Alumno> query = entityManager.createNamedQuery(
+				"Alumno.findByFilter", Alumno.class);
+		query.setParameter("boleta", filtro.getBoleta());
+		query.setParameter("nombre", filtro.getNombre());
+		if (filtro.getCarrera() != null) {
+			query.setParameter("idCarrera", filtro.getCarrera().getIdCarrera());
+		} else {
+			query.setParameter("idCarrera", 0);
+		}
+		query.setParameter("curp", filtro.getCurp());
 		List<Alumno> alumnoList = new ArrayList<Alumno>();
 		try {
 			alumnoList = query.getResultList();

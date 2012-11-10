@@ -11,6 +11,7 @@ import javax.inject.Named;
 
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.Alumno;
+import mx.upiicsa.titulacion.model.Direccion;
 import mx.upiicsa.titulacion.pages.AlumnoPage;
 import mx.upiicsa.titulacion.pages.CatalogoPage;
 import mx.upiicsa.titulacion.service.AlumnoService;
@@ -54,25 +55,83 @@ public class AlumnoCtrl implements Serializable {
 		return null;
 	}
 	
-	public String guardarAlumno() {
-		alumnoService.save(alumnoPage.getAlumno());
+	public String filtrarAlumnos() {
 		try {
-			alumnoPage.setAlumnos(alumnoService.findAllAlumno());
-			alumnoPage.setAlumno(new Alumno());
+			alumnoPage.setAlumnos(alumnoService.findByFilter(alumnoPage.getFiltro()));
+			alumnoPage.setFiltro(new Alumno());
 			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tblAlumnos");
+			requestContext.update("formCenter:tabTitulacion:tblAlumnos");
+			requestContext.update("formRight:pnlFiltro");
+		} catch (TitulacionException e) {
+			
+		}
+		return null;
+	}
+	
+	public String guardarAlumno() {
+		RequestContext requestContext = RequestContext.getCurrentInstance();
+		if (FacesContext.getCurrentInstance().getMessageList().isEmpty()) {
+			requestContext.addCallbackParam("isValid", true);
+			alumnoService.save(alumnoPage.getAlumno());
+			try {
+				alumnoPage.setAlumnos(alumnoService.findAllAlumno());
+				requestContext.update("formCenter:tabTitulacion:tblAlumnos");
+				
+			} catch (TitulacionException e) {
+
+			}
+		} else {
+			requestContext.addCallbackParam("isValid", false);
+			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("msgsAlumnos");
+		}
+		return null;
+	}
+
+	public String actualizarAlumno() {
+		RequestContext requestContext = RequestContext.getCurrentInstance();
+		if (FacesContext.getCurrentInstance().getMessageList().isEmpty()) {
+			requestContext.addCallbackParam("isValid", true);
+			alumnoService.update(alumnoPage.getAlumno());
+			try {
+				alumnoPage.setAlumnos(alumnoService.findAllAlumno());
+				requestContext.update("formCenter:tabTitulacion:tblAlumnos");
+			} catch (TitulacionException e) {
+
+			}
+		} else {
+			requestContext.addCallbackParam("isValid", false);
+			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("msgsAlumnos");
+		}
+		return null;
+	}
+
+	public String eliminarAlumno() {
+		try {
+			System.out.println("si llegue");
+			alumnoService.delete(alumnoPage.getAlumno().getBoleta());
+			alumnoPage.setAlumnos(alumnoService.findAllAlumno());
+			RequestContext requestContext = RequestContext.getCurrentInstance();
+			requestContext.update("formCenter:tabTitulacion:tblAlumnos");
 		} catch (TitulacionException e) {
 			
 		}
 		return null;
 	}
 
-	public AlumnoPage getAlumnoPage() {
-		return alumnoPage;
+	public String seleccionarAlumno(Alumno alumno) {
+		alumnoPage.setAlumno(alumno);
+		RequestContext requestContext = RequestContext.getCurrentInstance();
+		requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+		return null;
 	}
 
-	public void setAlumnoPage(AlumnoPage alumnoPage) {
-		this.alumnoPage = alumnoPage;
+	public String limpiarAlumno() {
+		alumnoPage.setAlumno(new Alumno());
+		alumnoPage.getAlumno().setDireccion(new Direccion());
+		RequestContext requestContext = RequestContext.getCurrentInstance();
+		requestContext.update("formCenter:tabTitulacion:idNew:pnlNew");
+		return null;
 	}
-
 }
