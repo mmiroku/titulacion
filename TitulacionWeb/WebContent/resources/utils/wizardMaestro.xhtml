@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<!-- INTERFACE -->
+	<cc:interface shortDescription="Asigna una puntuación de 1 a 5 a una propiedad">
+	    <cc:attribute name="id" required="true" type="java.lang.String"/>
+		<cc:attribute name="widgetVar" required="true" type="java.lang.String"/>
+		<cc:attribute name="wizard" required="true" type="java.lang.String"/>
+		<cc:attribute name="panel" required="true" type="java.lang.String"/>
+		<cc:attribute name="header" required="true" type="java.lang.String"/>
+		<cc:attribute name="isEdit" required="true" type="java.lang.Boolean"/>
+		<cc:attribute name="action" required="true" method-signature="void action(java.lang.String)"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+	<p:dialog id="#{cc.attrs.id}" header="#{cc.attrs.header}" widgetVar="#{cc.attrs.widgetVar}" resizable="false" draggable="false" minimizable="true" width="450">
+            <p:ajax event="close" listener="#{cMaestro.limpiarMaestro()}" />
+            <p:outputPanel id="#{cc.attrs.panel}">
+            <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cMaestro.onFlowProcess}" >
+                <p:tab id="datosPersonales" title="Datos Personales">
+                    <h:panelGrid columns="2">                        
+                        <h:outputText value="Apellido Paterno *"/>
+                        <p:inputText value="#{pMaestro.maestro.aPaterno}" required="true"/>
+                        <h:outputText value="Apellido Materno *"/>
+                        <p:inputText value="#{pMaestro.maestro.aMaterno}" required="true"/>
+                        <h:outputText value="Nombre(s) *"/>
+                        <p:inputText value="#{pMaestro.maestro.nombre}" required="true"/>                                                              
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab id="informacionEscolar" title="Información Escolar">
+                    <h:panelGrid columns="2">
+                    	<h:outputText value="Titulo"/>
+                        <p:inputText value="#{pMaestro.maestro.titulo}" required="true"/>                                                
+                        <h:outputText value="Anio Ingreso *"/>
+                        <p:calendar value="#{pMaestro.maestro.anioIngreso}" showOn="button" size="7" pattern="dd/MM/yyyy" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true"/>
+                        <h:outputText value="Academia"/>                        
+                        <p:selectOneMenu value="#{pMaestro.maestro.academia}" converter="AcademiaConverter">
+                            <f:selectItems value="#{pCatalogo.academias}" var="academia" itemLabel="#{academia.nombre}" itemValue="#{academia}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Abreviatura"/>
+                        <p:inputText value="#{pMaestro.maestro.abreviatura}" required="true"/>
+                    </h:panelGrid>
+                    <p:commandButton style="float: right;" value="Guardar" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="handleComplete(xhr, status, args);"/>                       
+                </p:tab>                
+            </p:wizard>
+            </p:outputPanel>
+        </p:dialog>
+        <script type="text/javascript">
+            function handleComplete(xhr, status, args) {
+                if(args.isValid) {
+                	#{cc.attrs.widgetVar}.hide();
+                }
+            }
+        </script>
+	</cc:implementation>
+</html>

@@ -15,6 +15,9 @@ public class MaestroPage implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Maestro maestro = new Maestro();
+	
+	private Maestro filtro = new Maestro(); 
+	
 	private List<Maestro> maestros = new ArrayList<Maestro>();
 	
 	public void setMaestro(Maestro maestro) {
@@ -33,4 +36,12 @@ public class MaestroPage implements Serializable{
 		return maestros;
 	}
 	
+	public void setFiltro(Maestro filtro) {
+		this.filtro = filtro;
+	}
+	
+	public Maestro getFiltro() {
+		return filtro;
+	}
+		
 }

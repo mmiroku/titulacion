@@ -6,12 +6,15 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils">
 
-	<ui:define name="content">
+	<ui:define name="tabSinodales">
+	
 	#{cMaestro.init}
-<h:form id="formCenter">	    	           
-	           <p:dataTable id="tblMaestros" var="maestro" value="#{pMaestro.maestros}" emptyMessage="No existen maestros registrados.">	               
+	<p:growl id="msgsMaestros"/>
+	        <p:outputPanel id="tblMaestros">	    	           
+	           <p:dataTable var="maestro" value="#{pMaestro.maestros}" emptyMessage="No existen maestros registrados.">	               
 	               <p:column headerText="A. Paterno">
                        <h:outputText value="#{maestro.aPaterno}"/>
                    </p:column>
@@ -34,65 +37,61 @@
                    </p:column>
                    <p:column headerText="Abreviatura">
                        <h:outputText value="#{maestro.abreviatura}" />
-                   </p:column>                   
-	           </p:dataTable>
-	    </h:form>
+                   </p:column>
+                   <p:column style="vertical-align:middle; width:7%;">  
+                       <f:facet name="header">
+                           <h:outputText />
+                       </f:facet>
+                       <p:commandButton id="btnEditMaestro" icon="ui-icon-pencil" onclick="wizEdit.loadStep(wizEdit.cfg.steps[0], true); dlgEdit.show();" process="@this" action="#{cMaestro.seleccionarMaestro(maestro)}" />
+                       <p:tooltip for="btnEditMaestro" value="Editar" showEffect="fade" hideEffect="fade" />
+                   </p:column>
+                   <p:column style="vertical-align:middle; width:7%;">  
+                       <f:facet name="header">
+                           <h:outputText />
+                       </f:facet>
+                       <p:commandButton id="btnDelMaestro" icon="ui-icon-trash" onclick="dlgDel.show();" process="@this" action="#{pMaestro.setMaestro(maestro)}" />
+                       <p:tooltip for="btnDelMaestro" value="Eliminar" showEffect="fade" hideEffect="fade" />
+                   </p:column>                                      
+	           </p:dataTable>	    
+	      </p:outputPanel>
+	     	     	      	      	    
+		  <utils:wizardMaestro id="idNew" wizard="wizNew" widgetVar="dlgNew" panel="pnlNew" header="Nuevo Maestro" isEdit="false" action="#{cMaestro.guardarMaestro()}"/>
+		  <utils:wizardMaestro id="idEdit" wizard="wizEdit" widgetVar="dlgEdit" panel="pnlEdit" header="Editar Maestro" isEdit="true" action="#{cMaestro.actualizarMaestro()}"/>
+		  	     	     	      	      	    
+	      <p:confirmDialog message="¿Está seguro que desea eliminar al maestro #{pMaestro.maestro.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDel" appendToBody="true">
+            <p:commandButton value="Sí" action="#{cMaestro.eliminarMaestro}" oncomplete="dlgDel.hide();" />
+            <p:commandButton value="No" onclick="dlgDel.hide();"/>
+          </p:confirmDialog>
 	</ui:define>
 	<ui:define name="right">
-	<h:form id="formRight">
-	
+	<h:form id="formRight">	
 	   <h:panelGrid style="padding: 10px;">
 	    <p:fieldset legend="Acciones">
 	       <h:panelGrid>
-			    <p:commandButton value="Nuevo Maestro" onclick="dlg.show();"/>			    
+			    <p:commandButton value="Nuevo Maestro" action="#{cMaestro.limpiarMaestro()}" onclick="wizNew.loadStep(wizNew.cfg.steps[0], true); dlgNew.show();"/>			    
 	       </h:panelGrid>
 	    </p:fieldset>
 	    <br/>
 	    <p:fieldset legend="Filtrar">
+	    	<p:outputPanel id="pnlFiltro">
 	       <h:panelGrid>
-	       <h:outputText value="Cedula"/>
-	       <p:inputText/>
 	       <h:outputText value="Nombre"/>
-           <p:inputText/>
+	       <p:inputText value="#{pMaestro.filtro.nombre}"/>
+	       <h:outputText value="Abreviatura"/>
+           <p:inputText value="#{pMaestro.filtro.abreviatura}"/>
            <h:outputText value="Titulo"/>
-           <p:inputText/>
+           <p:inputText value="#{pMaestro.filtro.titulo}"/>
            <h:outputText value="Academia"/>
-           <p:selectOneMenu>
-               <f:selectItem itemLabel="Transporte"/>
-               <f:selectItem itemLabel="Administración"/>
-               <f:selectItem itemLabel="Informática"/>
-               <f:selectItem itemLabel="Informática"/>
-               <f:selectItem itemLabel="Industrial"/>
+           <p:selectOneMenu value="#{pMaestro.filtro.academia}" converter="AcademiaConverter">
+           		<f:selectItem itemLabel=""/>
+				<f:selectItems value="#{pCatalogo.academias}" var="academia" itemLabel="#{academia.nombre}" itemValue="#{academia}"/>
            </p:selectOneMenu>           
            <br/>
-		   <p:commandButton value="Buscar" style="float: right;"/>
+		     <p:commandButton value="Buscar" action="#{cMaestro.filtrarMaestros()}" style="float: right;"/>
            </h:panelGrid>
+           </p:outputPanel>
 	    </p:fieldset>
-	    </h:panelGrid>
-	    <p:dialog header="Nuevo Maestro" widgetVar="dlg" resizable="false" draggable="false" width="450">
-            <p:messages id="msgNuevo"/>            	
-                    <h:panelGrid columns="2">                    	
-                    	<h:outputText value="Apellido Paterno *"/>
-                        <p:inputText value="#{pMaestro.maestro.idMaestro}" required="true"/>
-                        <h:outputText value="Apellido Paterno *"/>
-                        <p:inputText value="#{pMaestro.maestro.aPaterno}" required="true"/>
-                        <h:outputText value="Apellido Materno *"/>
-                        <p:inputText value="#{pMaestro.maestro.aMaterno}" required="true"/>
-                        <h:outputText value="Nombre(s) *"/>
-                        <p:inputText value="#{pMaestro.maestro.nombre}" required="true"/>                                      
-                        <h:outputText value="Titulo"/>
-                        <p:inputText value="#{pMaestro.maestro.titulo}" required="true"/>                                                
-                        <h:outputText value="Anio Ingreso *"/>
-                        <p:calendar value="#{pMaestro.maestro.anioIngreso}" showOn="button" size="7" pattern="dd/MM/yyyy" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true"/>
-                        <h:outputText value="Academia"/>                        
-                        <p:selectOneMenu value="#{pMaestro.maestro.academia}" converter="AcademiaConverter">
-                            <f:selectItems value="#{pCatalogo.academias}" var="academia" itemLabel="#{academia.nombre}" itemValue="#{academia}"/>
-                        </p:selectOneMenu>
-                        <h:outputText value="Abreviatura"/>
-                        <p:inputText value="#{pMaestro.maestro.abreviatura}" required="true"/>
-                    </h:panelGrid>  
-                    <p:commandButton style="float: right;" value="Guardar" action="#{cMaestro.guardarMaestro()}" oncomplete="dlg.hide();" />
-	    </p:dialog>  	     
+	    </h:panelGrid>	      	     
 </h:form>
 	</ui:define>
 </ui:composition>

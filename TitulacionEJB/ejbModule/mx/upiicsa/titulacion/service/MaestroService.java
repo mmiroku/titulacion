@@ -40,4 +40,42 @@ private static final long serialVersionUID = -8510737783635751315L;
 		}
 		return maestroList;
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void update(Maestro maestro) {		
+		entityManager.merge(maestro);
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void delete(int IdMaestro) throws TitulacionException {
+		Maestro maestro = entityManager.find(Maestro.class, IdMaestro);
+		System.out.println("encontre alumno: " + maestro);
+		if (maestro == null) {
+			System.out.println("uchas fue error");
+			throw new TitulacionException("El Alumno no existe.");
+		}
+		entityManager.remove(maestro);
+		System.out.println("ps si lo elimine");
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Maestro> findByFilter(Maestro filtro) throws TitulacionException {
+		TypedQuery<Maestro> query = entityManager.createNamedQuery(
+				"Maestro.findByFilter", Maestro.class);
+		query.setParameter("nombre", filtro.getNombre());
+		query.setParameter("abreviatura", filtro.getAbreviatura());
+		if (filtro.getAcademia() != null) {
+			query.setParameter("idAcademia", filtro.getAcademia().getIdAcademia());
+		} else {
+			query.setParameter("idAcademia", 0);
+		}
+		query.setParameter("titulo", filtro.getTitulo());
+		List<Maestro> maestroList = new ArrayList<Maestro>();
+		try {
+			maestroList = query.getResultList();
+		} catch(NoResultException e) {
+			
+		}
+		return maestroList;
+	}
 }

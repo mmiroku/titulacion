@@ -18,6 +18,7 @@ import mx.upiicsa.titulacion.service.CatalogoService;
 import mx.upiicsa.titulacion.util.Messages;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.FlowEvent;
 
 
 @Named("cMaestro")
@@ -36,7 +37,10 @@ private static final long serialVersionUID = -8612967679860683584L;
 	@EJB
 	private CatalogoService catalogoService;
 		
-	
+	public String onFlowProcess(FlowEvent event) {
+		
+		return event.getNewStep();
+	}	
 
 	public String getInit() {
 		try {
@@ -50,20 +54,7 @@ private static final long serialVersionUID = -8612967679860683584L;
 		}
 		return null;
 	}
-	
-	public String guardarMaestro() {		
-		maestroService.save(maestroPage.getMaestro());		
-		try {
-			maestroPage.setMaestros(maestroService.findAllMaestro());
-			maestroPage.setMaestro(new Maestro());
-			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tblMaestros");
-		} catch (TitulacionException e) {
-			
-		}
-		return null;
-	}
-
+		
 	public MaestroPage getMaestroPage() {
 		return maestroPage;
 	}
@@ -71,5 +62,83 @@ private static final long serialVersionUID = -8612967679860683584L;
 	public void setMaestroPage(MaestroPage maestroPage) {
 		this.maestroPage = maestroPage;
 	}
+		
+	public String guardarMaestro() {
+		RequestContext requestContext = RequestContext.getCurrentInstance();
+		if (FacesContext.getCurrentInstance().getMessageList().isEmpty()) {
+			requestContext.addCallbackParam("isValid", true);
+			maestroService.save(maestroPage.getMaestro());
+			try {
+				maestroPage.setMaestros(maestroService.findAllMaestro());
+				requestContext.update("formCenter:tabTitulacion:tblMaestros");
+				
+			} catch (TitulacionException e) {
+
+			}
+		} else {
+			requestContext.addCallbackParam("isValid", false);
+			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("msgsAlumnos");
+		}
+		return null;
+	}
 	
+	public String actualizarMaestro() {
+		RequestContext requestContext = RequestContext.getCurrentInstance();
+		if (FacesContext.getCurrentInstance().getMessageList().isEmpty()) {
+			requestContext.addCallbackParam("isValid", true);
+			maestroService.update(maestroPage.getMaestro());
+			try {
+				maestroPage.setMaestros(maestroService.findAllMaestro());
+				requestContext.update("formCenter:tabTitulacion:tblMaestros");
+			} catch (TitulacionException e) {
+
+			}
+		} else {
+			requestContext.addCallbackParam("isValid", false);
+			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("msgsMaestros");
+		}
+		return null;
+	}
+	
+	public String eliminarMaestro() {
+		try {
+			System.out.println("si llegue");			
+			maestroService.delete(maestroPage.getMaestro().getIdMaestro());
+			maestroPage.setMaestros(maestroService.findAllMaestro());
+			RequestContext requestContext = RequestContext.getCurrentInstance();
+			requestContext.update("formCenter:tabTitulacion:tblMaestros");
+		} catch (TitulacionException e) {
+			
+		}
+		return null;
+	}
+	
+	public String seleccionarMaestro(Maestro maestro) {
+		maestroPage.setMaestro(maestro);
+		RequestContext requestContext = RequestContext.getCurrentInstance();
+		requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+		return null;
+	}
+
+	public String limpiarMaestro() {
+		maestroPage.setMaestro(new Maestro());		
+		RequestContext requestContext = RequestContext.getCurrentInstance();
+		requestContext.update("formCenter:tabTitulacion:idNew:pnlNew");
+		return null;
+	}
+	
+	public String filtrarMaestros() {
+		try {
+			maestroPage.setMaestros(maestroService.findByFilter(maestroPage.getFiltro()));
+			maestroPage.setFiltro(new Maestro());
+			RequestContext requestContext = RequestContext.getCurrentInstance();
+			requestContext.update("formCenter:tabTitulacion:tblMaestros");
+			requestContext.update("formRight:pnlFiltro");
+		} catch (TitulacionException e) {
+			
+		}
+		return null;
+	}
 }
