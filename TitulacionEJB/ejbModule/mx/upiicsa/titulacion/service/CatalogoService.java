@@ -14,6 +14,7 @@ import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.Academia;
 import mx.upiicsa.titulacion.model.Carrera;
 import mx.upiicsa.titulacion.model.Sexo;
+import mx.upiicsa.titulacion.model.Linea;
 
 @Stateless(mappedName = "ejb/CatalogoService")
 public class CatalogoService {
@@ -58,5 +59,18 @@ public class CatalogoService {
 			throw new TitulacionException("No existen registros en el cat�logo Academia.");
 		}
 		return academiaList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Linea> findAllLinea() throws TitulacionException {
+		TypedQuery<Linea> query = entityManager.createNamedQuery(
+				"Linea.findAll", Linea.class);
+		List<Linea> lineaList;
+		try {
+			lineaList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el cat�logo Linea.");
+		}
+		return lineaList;
 	}
 }

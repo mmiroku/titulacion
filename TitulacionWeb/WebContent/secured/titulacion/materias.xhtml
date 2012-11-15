@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="../templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils">
+
+	<ui:define name="tabMaterias">
+	    
+        #{cMateria.init}
+	    <p:growl id="msgsMaterias"/>
+	        <p:outputPanel id="tblMaterias">
+	           <p:dataTable var="materia" value="#{pMateria.materias}" emptyMessage="No existen materia registradas.">
+	               <p:column headerText="Clave">
+	                   <h:outputText value="#{materia.idMateria}"/>
+	               </p:column>
+	               <p:column headerText="Materia">
+                       <h:outputText value="#{materia.nombre}"/>
+                   </p:column>
+                   <p:column headerText="Semestre">
+                       <h:outputText value="#{materia.semestre}"/>
+                   </p:column>
+                   <p:column headerText="Descripción">
+                       <h:outputText value="#{materia.descripcion}"/>
+                   </p:column>
+                   <p:column headerText="Linea">
+                       <h:outputText value="#{materia.linea.descripcion}"/>
+                   </p:column>
+                   <p:column headerText="Academia">
+                       <h:outputText value="#{materia.academia.nombre}"/>
+                   </p:column>
+                   <p:column style="vertical-align:middle; width:7%;">  
+                       <f:facet name="header">
+                           <h:outputText />
+                       </f:facet>
+                       <p:commandButton id="btnEditMateria" icon="ui-icon-pencil" onclick="wizEdit.loadStep(wizEdit.cfg.steps[0], true); dlgEdit.show();" process="@this" action="#{cMateria.seleccionarMateria(materia)}" />
+                       <p:tooltip for="btnEditMateria" value="Editar" showEffect="fade" hideEffect="fade" />
+                   </p:column>                   
+                   <p:column style="vertical-align:middle; width:7%;">  
+                       <f:facet name="header">
+                           <h:outputText />
+                       </f:facet>
+                       <p:commandButton id="btnDelMateria" icon="ui-icon-trash" onclick="dlgDel.show();" process="@this" action="#{pMateria.setMateria(materia)}" />
+                       <p:tooltip for="btnDelMateria" value="Eliminar" showEffect="fade" hideEffect="fade" />
+                   </p:column>                                      	          
+	           </p:dataTable>
+	           </p:outputPanel>
+	           
+	           <utils:wizardMateria id="idNew" wizard="wizNew" widgetVar="dlgNew" panel="pnlNew" header="Nueva Materia" isEdit="false" action="#{cMateria.guardarMateria()}"/>
+	           <utils:wizardMateria id="idEdit" wizard="wizEdit" widgetVar="dlgEdit" panel="pnlEdit" header="Editar Materia" isEdit="true" action="#{cMateria.actualizarMateria()}"/>
+	           
+	           <p:confirmDialog message="¿Está seguro que desea eliminar la materia #{pMateria.materia.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDel" appendToBody="true">
+            		<p:commandButton value="Sí" action="#{cMateria.eliminarMateria}" oncomplete="dlgDel.hide();" />
+            		<p:commandButton value="No" onclick="dlgDel.hide();"/>
+          		</p:confirmDialog>
+          			      	          
+	</ui:define>
+	<ui:define name="right">
+	<h:form id="formRight">	
+	   <h:panelGrid style="padding: 10px;">
+	    <p:fieldset legend="Acciones">
+	       <h:panelGrid>
+			    <p:commandButton value="Nueva Materia" action="#{cMateria.limpiarMateria()}" onclick="wizNew.loadStep(wizNew.cfg.steps[0], true); dlgNew.show();"/>			    
+	       </h:panelGrid>
+	    </p:fieldset>
+	    <br/>
+	    <p:fieldset legend="Filtrar">
+	    	<p:outputPanel id="pnlFiltro">
+	       <h:panelGrid>
+	       <h:outputText value="Materia"/>
+	       <p:inputText value="#{pMateria.filtro.nombre}"/>
+	       <h:outputText value="Semestre"/>
+           <p:inputText value="#{pMateria.filtro.semestre}"/>
+           <h:outputText value="Linea"/>
+           <p:selectOneMenu value="#{pMateria.filtro.linea}" converter="LineaConverter">
+                    <f:selectItem itemLabel=""/>
+                    <f:selectItems value="#{pCatalogo.lineas}" var="linea" itemLabel="#{linea.descripcion}" itemValue="#{linea}"/>
+           </p:selectOneMenu>
+           <h:outputText value="Academia"/>
+           		<p:selectOneMenu value="#{pMateria.filtro.academia}" converter="AcademiaConverter">
+           			<f:selectItem itemLabel=""/>
+					<f:selectItems value="#{pCatalogo.academias}" var="academia" itemLabel="#{academia.nombre}" itemValue="#{academia}"/>
+           		</p:selectOneMenu>           
+           <br/>
+		     <p:commandButton value="Buscar" action="#{cMateria.filtrarMaterias()}" style="float: right;"/>
+           </h:panelGrid>
+           </p:outputPanel>
+	    </p:fieldset>
+	    </h:panelGrid>	      	     
+</h:form>
+	</ui:define>
+</ui:composition>

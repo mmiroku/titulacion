@@ -8,6 +8,7 @@ import javax.inject.Named;
 
 import mx.upiicsa.titulacion.model.Academia;
 import mx.upiicsa.titulacion.model.Carrera;
+import mx.upiicsa.titulacion.model.Linea;
 import mx.upiicsa.titulacion.model.Sexo;
 
 @Named("pCatalogo")
@@ -21,6 +22,8 @@ public class CatalogoPage implements Serializable {
 	private List<Carrera> carreras;
 	
 	private List<Academia> academias;
+	
+	private List<Linea> lineas;
 
 	public List<Sexo> getSexos() {
 		return sexos;
@@ -44,6 +47,14 @@ public class CatalogoPage implements Serializable {
 	
 	public void setAcademias(List<Academia> academias) {
 		this.academias = academias;
+	}
+	
+	public void setLineas(List<Linea> lineas) {
+		this.lineas = lineas;
+	}
+	
+	public List<Linea> getLineas() {
+		return lineas;
 	}
 
 }

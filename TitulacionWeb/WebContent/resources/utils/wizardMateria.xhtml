@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<!-- INTERFACE -->
+	<cc:interface shortDescription="Asigna una puntuación de 1 a 5 a una propiedad">
+	    <cc:attribute name="id" required="true" type="java.lang.String"/>
+		<cc:attribute name="widgetVar" required="true" type="java.lang.String"/>
+		<cc:attribute name="wizard" required="true" type="java.lang.String"/>
+		<cc:attribute name="panel" required="true" type="java.lang.String"/>
+		<cc:attribute name="header" required="true" type="java.lang.String"/>
+		<cc:attribute name="isEdit" required="true" type="java.lang.Boolean"/>
+		<cc:attribute name="action" required="true" method-signature="void action(java.lang.String)"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+	<p:dialog id="#{cc.attrs.id}" header="#{cc.attrs.header}" widgetVar="#{cc.attrs.widgetVar}" resizable="false" draggable="false" minimizable="true" width="450">
+            <p:ajax event="close" listener="#{cMateria.limpiarMateria()}" />
+            <p:outputPanel id="#{cc.attrs.panel}">
+            <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cMateria.onFlowProcess}" >
+                <p:tab id="datosPersonales" title="Datos Generales">
+                    <h:panelGrid columns="2">
+                        <h:outputText value="Clave: "/>
+                    	<p:inputText value="#{pMateria.materia.idMateria}" required="true" disabled="#{cc.attrs.isEdit}" maxlength="4"/>
+                    	<h:outputText value="Materia: "/>
+                    	<p:inputText value="#{pMateria.materia.nombre}" required="true"/>
+                    	<h:outputText value="Semestre: "/>
+                    	<p:inputText value="#{pMateria.materia.semestre}" required="true"/>
+                    	<h:outputText value="Descripcion: "/>
+                    	<p:inputText value="#{pMateria.materia.descripcion}" />
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab id="informacionEscolar" title="Información Escolar">
+                    <h:panelGrid columns="2">
+                    	<h:outputText value="Línea: "/>
+                        <p:selectOneMenu value="#{pMateria.materia.linea}" converter="LineaConverter">
+                            <f:selectItems value="#{pCatalogo.lineas}" var="linea" itemLabel="#{linea.descripcion}" itemValue="#{linea}"/>
+                    	</p:selectOneMenu>	                                                                                            
+                        <h:outputText value="Academia"/>                                                                       
+                        <p:selectOneMenu value="#{pMateria.materia.academia}" converter="AcademiaConverter">
+                        	<f:selectItems value="#{pCatalogo.academias}" var="academia" itemLabel="#{academia.nombre}" itemValue="#{academia}"/>
+                        </p:selectOneMenu>                                                    
+                    </h:panelGrid>             
+                    <p:commandButton style="float: right;" value="Guardar" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="handleComplete(xhr, status, args);"/>                              
+                </p:tab>                                
+            </p:wizard>
+            </p:outputPanel>
+        </p:dialog>
+        <script type="text/javascript">
+            function handleComplete(xhr, status, args) {
+                if(args.isValid) {
+                	#{cc.attrs.widgetVar}.hide();
+                }
+            }
+        </script>
+	</cc:implementation>
+</html>
