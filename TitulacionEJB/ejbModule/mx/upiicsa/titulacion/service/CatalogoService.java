@@ -13,6 +13,8 @@ import javax.persistence.TypedQuery;
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.Academia;
 import mx.upiicsa.titulacion.model.Carrera;
+import mx.upiicsa.titulacion.model.CatSeminario;
+import mx.upiicsa.titulacion.model.Cedula;
 import mx.upiicsa.titulacion.model.Sexo;
 import mx.upiicsa.titulacion.model.Linea;
 
@@ -72,5 +74,31 @@ public class CatalogoService {
 			throw new TitulacionException("No existen registros en el cat�logo Linea.");
 		}
 		return lineaList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<CatSeminario> findAllCatSeminario() throws TitulacionException {
+		TypedQuery<CatSeminario> query = entityManager.createNamedQuery(
+				"CatSeminario.findAll", CatSeminario.class);
+		List<CatSeminario> catSeminarioList;
+		try {
+			catSeminarioList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el catalogo seminarios.");
+		}
+		return catSeminarioList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Cedula> findAllCedula() throws TitulacionException {
+		TypedQuery<Cedula> query = entityManager.createNamedQuery(
+				"Cedula.findAll", Cedula.class);
+		List<Cedula> cedulaList;
+		try {
+			cedulaList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el catalogo de cedulas.");
+		}
+		return cedulaList;
 	}
 }

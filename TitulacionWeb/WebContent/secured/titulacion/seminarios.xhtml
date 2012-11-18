@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="../templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils">
+
+	<ui:define name="tabSeminarios">
+	    
+        #{cSeminario.init} 
+	    <p:growl id="msgsSeminarios"/>
+	        <p:outputPanel id="tblSeminarios">
+	           <p:dataTable var="seminario" value="#{pSeminario.seminarios}" emptyMessage="No existen seminarios registrados.">
+	               <p:column headerText="Seminario">
+	                   <h:outputText value="#{seminario.catSeminario.nombre}"/>
+	               </p:column>
+	               <p:column headerText="Periodo">
+                       <h:outputText value="#{seminario.periodo}"/>
+                   </p:column>
+                   <p:column headerText="Horario">
+                       <h:outputText value="#{seminario.diasHorario}"/>
+                   </p:column>
+                   <p:column headerText="Vigencia">
+                       <h:outputText value="#{seminario.vigencia}"/>
+                   </p:column>
+                   <p:column headerText="Sede">
+                       <h:outputText value="#{seminario.sede}"/>
+                   </p:column>
+                   <p:column headerText="Titular">
+                       <h:outputText value="#{seminario.cedula.maestro.nombre}"/>
+                   </p:column>
+                   <p:column style="vertical-align:middle; width:7%;">  
+                       <f:facet name="header">
+                           <h:outputText />
+                       </f:facet>
+                       <p:commandButton id="btnEditSeminario" icon="ui-icon-pencil" onclick="wizEdit.loadStep(wizEdit.cfg.steps[0], true); dlgEdit.show();" process="@this" action="#{cSeminario.seleccionarSeminario(seminario)}" />
+                       <p:tooltip for="btnEditSeminario" value="Editar" showEffect="fade" hideEffect="fade" />
+                   </p:column>
+                   <p:column style="vertical-align:middle; width:7%;">  
+                       <f:facet name="header">
+                           <h:outputText />
+                       </f:facet>
+                       <p:commandButton id="btnDelSeminario" icon="ui-icon-trash" onclick="dlgDel.show();" process="@this" action="#{pSeminario.setSeminario(seminario)}" />
+                       <p:tooltip for="btnDelSeminario" value="Eliminar" showEffect="fade" hideEffect="fade" />
+                   </p:column>                   
+	           </p:dataTable>
+	           </p:outputPanel>
+	           
+	           <utils:wizardSeminario id="idNew" wizard="wizNew" widgetVar="dlgNew" panel="pnlNew" header="Nuevo Seminario" isEdit="false" action="#{cSeminario.guardarSeminario()}"/>
+	           <utils:wizardSeminario id="idEdit" wizard="wizEdit" widgetVar="dlgEdit" panel="pnlEdit" header="Editar Seminario" isEdit="true" action="#{cSeminario.actualizarSeminario()}"/>
+	           
+	           <p:confirmDialog message="¿Está seguro que desea eliminar el seminario #{pSeminario.seminario.catSeminario.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDel" appendToBody="true">
+            		<p:commandButton value="Sí" action="#{cSeminario.eliminarSeminario}" oncomplete="dlgDel.hide();" />
+            		<p:commandButton value="No" onclick="dlgDel.hide();"/>
+          		</p:confirmDialog>	       	    	                
+	</ui:define>
+	<ui:define name="right">
+	<h:form id="formRight">
+	   <h:panelGrid style="padding: 10px;">
+	    <p:fieldset legend="Acciones">
+	       <h:panelGrid>
+			    <p:commandButton value="Nuevo Seminario" action="#{cSeminario.limpiarSeminario()}" onclick="wizNew.loadStep(wizNew.cfg.steps[0], true); dlgNew.show();"/>			    
+	       </h:panelGrid>
+	    </p:fieldset>
+	    <br/>
+	    <p:fieldset legend="Filtrar">
+	       <p:outputPanel id="pnlFiltro">
+	       <h:panelGrid>
+	       <h:outputText value="Seminario :"/>
+	       <p:selectOneMenu value="#{pSeminario.filtro.catSeminario}" converter="CatSeminarioConverter">
+	       		<f:selectItem itemLabel=""/>
+           		<f:selectItems value="#{pCatalogo.catSeminarios}" var="catSeminario" itemLabel="#{catSeminario.nombre}" itemValue="#{catSeminario}"/>
+           </p:selectOneMenu>
+	       <h:outputText value="Titular :"/>
+           <p:selectOneMenu value="#{pSeminario.filtro.cedula}" converter="CedulaConverter">
+           		<f:selectItem itemLabel=""/>
+           		<f:selectItems value="#{pCatalogo.cedulas}" var="cedula" itemLabel="#{cedula.numeroCedula} - #{cedula.maestro.nombre}" itemValue="#{cedula}"/>
+           </p:selectOneMenu>           
+           <h:outputText value="Periodo :"/>
+           <p:inputText value="#{pSeminario.filtro.periodo}"/>
+           <h:outputText value="Sede :"/>
+           <p:inputText value="#{pSeminario.filtro.sede}"/>
+           <br/>
+		   <p:commandButton value="Buscar" action="#{cSeminario.filtrarSeminarios()}" style="float: right;"/>
+           </h:panelGrid>
+           </p:outputPanel>
+	    </p:fieldset>
+	    </h:panelGrid>
+</h:form>
+	</ui:define>
+</ui:composition>
