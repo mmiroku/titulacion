@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<!-- INTERFACE -->
+	<cc:interface shortDescription="Asigna una puntuación de 1 a 5 a una propiedad">
+	    <cc:attribute name="id" required="true" type="java.lang.String"/>
+		<cc:attribute name="widgetVar" required="true" type="java.lang.String"/>
+		<cc:attribute name="wizard" required="true" type="java.lang.String"/>
+		<cc:attribute name="panel" required="true" type="java.lang.String"/>
+		<cc:attribute name="header" required="true" type="java.lang.String"/>
+		<cc:attribute name="isEdit" required="true" type="java.lang.Boolean"/>
+		<cc:attribute name="action" required="true" method-signature="void action(java.lang.String)"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+	<p:dialog id="#{cc.attrs.id}" header="#{cc.attrs.header}" widgetVar="#{cc.attrs.widgetVar}" resizable="false" draggable="false" minimizable="true" width="450">
+            <p:ajax event="close" listener="#{cUsuario.limpiarUsuario()}" />
+            <p:outputPanel id="#{cc.attrs.panel}">
+            <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cUsuario.onFlowProcess}" >
+                <p:tab id="datosGenerales" title="Datos Generales">
+                    <h:panelGrid columns="2">
+                    	<h:outputText value="Usuario :"/>                        
+                        <p:inputText value="#{pUsuario.usuario.nombre}" required="true"/>
+                        <h:outputText value="Contraseña :"/>
+                        <p:password value="#{pUsuario.usuario.contrasena}" label="Contraseña" required="true" feedback="true"/>                                                                                               
+                    </h:panelGrid>                    
+                </p:tab>                                           
+                <p:tab id="datosPerfiles" title="Perfil">
+                	<h:panelGrid columns="2">
+                		<h:outputText value="Usuario :"/>
+                		<p:selectOneMenu value="#{pUsuario.usuario.perfil}" converter="PerfilConverter">
+                            <f:selectItems value="#{pCatalogo.perfiles}" var="perfil" itemLabel="#{perfil.perfil}" itemValue="#{perfil}"/>
+                        </p:selectOneMenu>
+                	</h:panelGrid>
+                	<p:commandButton style="float: right;" value="Guardar" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="handleComplete(xhr, status, args);"/>
+                </p:tab>                                            
+            </p:wizard>
+            </p:outputPanel>
+        </p:dialog>
+        <script type="text/javascript">
+            function handleComplete(xhr, status, args) {
+                if(args.isValid) {
+                	#{cc.attrs.widgetVar}.hide();
+                }
+            }
+        </script>
+	</cc:implementation>
+</html>

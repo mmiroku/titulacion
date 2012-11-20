@@ -17,6 +17,8 @@ import mx.upiicsa.titulacion.model.CatSeminario;
 import mx.upiicsa.titulacion.model.Cedula;
 import mx.upiicsa.titulacion.model.Sexo;
 import mx.upiicsa.titulacion.model.Linea;
+import mx.upiicsa.titulacion.model.Usuario;
+import mx.upiicsa.titulacion.model.Perfil;
 
 @Stateless(mappedName = "ejb/CatalogoService")
 public class CatalogoService {
@@ -100,5 +102,31 @@ public class CatalogoService {
 			throw new TitulacionException("No existen registros en el catalogo de cedulas.");
 		}
 		return cedulaList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Usuario> findAllUsuario() throws TitulacionException {
+		TypedQuery<Usuario> query = entityManager.createNamedQuery(
+				"Usuario.findAll", Usuario.class);
+		List<Usuario> usuarioList;
+		try {
+			usuarioList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el catalogo de usuarios.");
+		}
+		return usuarioList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Perfil> findAllPerfil() throws TitulacionException {
+		TypedQuery<Perfil> query = entityManager.createNamedQuery(
+				"Perfil.findAll", Perfil.class);
+		List<Perfil> perfilList;
+		try {
+			perfilList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el catalogo de perfiles.");
+		}
+		return perfilList;
 	}
 }

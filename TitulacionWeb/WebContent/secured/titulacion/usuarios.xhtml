@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="../templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils">
+
+	<ui:define name="tabUsuarios">
+	    
+        #{cUsuario.init}
+	    <p:growl id="msgsUsuarios"/>
+	        <p:outputPanel id="tblUsuarios">
+	           <p:dataTable var="usuario" value="#{pUsuario.usuarios}" emptyMessage="No existen usuarios registrados.">
+	               <p:column headerText="Usuario">
+	                   <h:outputText value="#{usuario.nombre}"/>
+	               </p:column>
+	               <p:column headerText="Perfil">
+	                   <h:outputText value="#{usuario.perfil.perfil}"/>
+	               </p:column>
+	               <p:column style="vertical-align:middle; width:7%;">  
+                       <f:facet name="header">
+                           <h:outputText />
+                       </f:facet>
+                       <p:commandButton id="btnEditUsuario" icon="ui-icon-pencil" onclick="wizEdit.loadStep(wizEdit.cfg.steps[0], true); dlgEdit.show();" process="@this" action="#{cUsuario.seleccionarUsuario(usuario)}" />
+                       <p:tooltip for="btnEditUsuario" value="Editar" showEffect="fade" hideEffect="fade" />
+                   </p:column>
+	               <p:column style="vertical-align:middle; width:7%;">  
+                       <f:facet name="header">
+                           <h:outputText />
+                       </f:facet>
+                       <p:commandButton id="btnDelUsuario" icon="ui-icon-trash" onclick="dlgDel.show();" process="@this" action="#{pUsuario.setUsuario(usuario)}" />
+                       <p:tooltip for="btnDelUsuario" value="Eliminar" showEffect="fade" hideEffect="fade" />
+                   </p:column>	                                                     	         
+	           </p:dataTable>	           	           
+	           </p:outputPanel>
+	           
+	           <utils:wizardUsuario id="idNew" wizard="wizNew" widgetVar="dlgNew" panel="pnlNew" header="Nuevo Usuario" isEdit="false" action="#{cUsuario.guardarUsuario()}"/>
+	           <utils:wizardUsuario id="idEdit" wizard="wizEdit" widgetVar="dlgEdit" panel="pnlEdit" header="Editar Usuario" isEdit="true" action="#{cUsuario.actualizarUsuario()}"/>
+	           
+	           <p:confirmDialog message="¿Está seguro que desea eliminar el Usuario #{pUsuario.usuario.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDel" appendToBody="true">
+            		<p:commandButton value="Sí" action="#{cUsuario.eliminarUsuario}" oncomplete="dlgDel.hide();" />
+            		<p:commandButton value="No" onclick="dlgDel.hide();"/>
+          		</p:confirmDialog>	           	                    			      	         
+	</ui:define>
+	<ui:define name="right">
+	<h:form id="formRight">	
+	   <h:panelGrid style="padding: 10px;">
+	    <p:fieldset legend="Acciones">
+	       <h:panelGrid>
+			    <p:commandButton value="Nuevo Usuario" action="#{cUsuario.limpiarUsuario()}" onclick="wizNew.loadStep(wizNew.cfg.steps[0], true); dlgNew.show();"/>			    
+	       </h:panelGrid>
+	    </p:fieldset>
+	    <br/>
+	    <p:fieldset legend="Filtrar">
+	    	<p:outputPanel id="pnlFiltro">
+	       <h:panelGrid>
+	       <h:outputText value="Usuario :"/>
+	       <p:inputText value="#{pUsuario.filtro.nombre}"/>
+	       <h:outputText value="Perfil :"/>
+	       <p:selectOneMenu value="#{pUsuario.filtro.perfil}" converter="PerfilConverter">
+           		<f:selectItem itemLabel=""/>
+           		<f:selectItems value="#{pCatalogo.perfiles}" var="perfil" itemLabel="#{perfil.perfil}" itemValue="#{perfil}"/>
+           </p:selectOneMenu>                     
+           <br/>
+           <p:commandButton value="Buscar" action="#{cUsuario.filtrarUsuario()}" style="float: right;"/>		   
+           </h:panelGrid>
+           </p:outputPanel>
+	    </p:fieldset>
+	    </h:panelGrid>	      	     
+</h:form>
+	</ui:define>
+</ui:composition>
