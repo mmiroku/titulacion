@@ -13,12 +13,14 @@ import javax.persistence.TypedQuery;
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.Academia;
 import mx.upiicsa.titulacion.model.Carrera;
+import mx.upiicsa.titulacion.model.CatLinea;
 import mx.upiicsa.titulacion.model.CatSeminario;
 import mx.upiicsa.titulacion.model.Cedula;
 import mx.upiicsa.titulacion.model.Sexo;
 import mx.upiicsa.titulacion.model.Linea;
 import mx.upiicsa.titulacion.model.Usuario;
 import mx.upiicsa.titulacion.model.Perfil;
+
 
 @Stateless(mappedName = "ejb/CatalogoService")
 public class CatalogoService {
@@ -128,5 +130,18 @@ public class CatalogoService {
 			throw new TitulacionException("No existen registros en el catalogo de perfiles.");
 		}
 		return perfilList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<CatLinea> findAllCatLinea() throws TitulacionException {
+		TypedQuery<CatLinea> query = entityManager.createNamedQuery(
+				"CatLinea.findAll", CatLinea.class);
+		List<CatLinea> catLineaList;
+		try {
+			catLineaList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el catalogo de Lineas.");
+		}
+		return catLineaList;
 	}
 }

@@ -8,6 +8,7 @@ import javax.inject.Named;
 
 import mx.upiicsa.titulacion.model.Academia;
 import mx.upiicsa.titulacion.model.Carrera;
+import mx.upiicsa.titulacion.model.CatLinea;
 import mx.upiicsa.titulacion.model.CatSeminario;
 import mx.upiicsa.titulacion.model.Cedula;
 import mx.upiicsa.titulacion.model.Linea;
@@ -33,6 +34,8 @@ public class CatalogoPage implements Serializable {
 	private List<Cedula> cedulas;
 	
 	private List<Perfil> perfiles;
+	
+	private List<CatLinea> catLineas;
 
 	public List<Sexo> getSexos() {
 		return sexos;
@@ -88,5 +91,13 @@ public class CatalogoPage implements Serializable {
 	
 	public List<Perfil> getPerfiles() {
 		return perfiles;
+	}
+	
+	public void setCatLineas(List<CatLinea> catLineas) {
+		this.catLineas = catLineas;
+	}
+	
+	public List<CatLinea> getCatLineas() {
+		return catLineas;
 	}
 }

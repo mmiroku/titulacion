@@ -13,7 +13,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>titulacionMain</from-outcome>
-            <to-view-id>/secured/titulacion/alumnos.xhtml</to-view-id>
+            <to-view-id>/secured/titulacion/catLineas.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 </faces-config>
