@@ -12,6 +12,7 @@ import mx.upiicsa.titulacion.model.CatLinea;
 import mx.upiicsa.titulacion.model.CatSeminario;
 import mx.upiicsa.titulacion.model.Cedula;
 import mx.upiicsa.titulacion.model.Linea;
+import mx.upiicsa.titulacion.model.Maestro;
 import mx.upiicsa.titulacion.model.Perfil;
 import mx.upiicsa.titulacion.model.Sexo;
 
@@ -36,6 +37,8 @@ public class CatalogoPage implements Serializable {
 	private List<Perfil> perfiles;
 	
 	private List<CatLinea> catLineas;
+	
+	private List<Maestro> maestros;
 
 	public List<Sexo> getSexos() {
 		return sexos;
@@ -100,4 +103,13 @@ public class CatalogoPage implements Serializable {
 	public List<CatLinea> getCatLineas() {
 		return catLineas;
 	}
+	
+	public void setMaestros(List<Maestro> maestros) {
+		this.maestros = maestros;
+	}
+	
+	public List<Maestro> getMaestros() {
+		return maestros;
+	}
+	
 }

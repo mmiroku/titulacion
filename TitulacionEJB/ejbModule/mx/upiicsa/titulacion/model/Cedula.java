@@ -10,7 +10,8 @@ import javax.persistence.*;
  */
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "Cedula.findAll", query = "select c from Cedula c") })
+	@NamedQuery(name = "Cedula.findAll", query = "select c from Cedula c"),
+	@NamedQuery(name = "Cedula.findByFilter", query = "select c from Cedula c where ((:cedula is null or :cedula = '' ) or c.numeroCedula = :cedula) and ((:titulo is null or :titulo = '') or c.titulo = :titulo )")})
 	@Table(name="TblCedula")
 public class Cedula implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -16,6 +16,7 @@ import mx.upiicsa.titulacion.model.Carrera;
 import mx.upiicsa.titulacion.model.CatLinea;
 import mx.upiicsa.titulacion.model.CatSeminario;
 import mx.upiicsa.titulacion.model.Cedula;
+import mx.upiicsa.titulacion.model.Maestro;
 import mx.upiicsa.titulacion.model.Sexo;
 import mx.upiicsa.titulacion.model.Linea;
 import mx.upiicsa.titulacion.model.Usuario;
@@ -143,5 +144,18 @@ public class CatalogoService {
 			throw new TitulacionException("No existen registros en el catalogo de Lineas.");
 		}
 		return catLineaList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Maestro> findAllMaestro() throws TitulacionException {
+		TypedQuery<Maestro> query = entityManager.createNamedQuery(
+				"Maestro.findAll", Maestro.class);
+		List<Maestro> maestroList;
+		try {
+			maestroList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el catalogo de Maestros.");
+		}
+		return maestroList;
 	}
 }
