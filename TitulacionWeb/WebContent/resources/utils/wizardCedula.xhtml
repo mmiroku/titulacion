@@ -27,18 +27,19 @@
             <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cCedula.onFlowProcess}" nextLabel="#{msg.B0000002}" backLabel="#{msg.B0000003}">
                 <p:tab id="datosGenerales" title="Datos Generales">
                     <h:panelGrid columns="2">
-                    	<h:outputText value="#{msg.L0000043}"/>                        
-                        <p:inputText value="#{pCedula.cedula.numeroCedula}" required="true" disabled="#{cc.attrs.isEdit}" maxlength="15"/>                        
-                        <h:outputText value="#{msg.L0000042}"/>
-                		<p:selectOneMenu value="#{pCedula.cedula.maestro}" converter="MaestroConverter">
+                    	<p:outputLabel for="txtCedula" value="#{msg.L0000043}"/>                        
+                        <p:inputText id="txtCedula" value="#{pCedula.cedula.numeroCedula}" required="true" disabled="#{cc.attrs.isEdit}" maxlength="15"/>                        
+                        <p:outputLabel for="somMaestro" value="#{msg.L0000042}"/>
+                		<p:selectOneMenu id="somMaestro" value="#{pCedula.cedula.maestro}" converter="MaestroConverter" required="true">
+                			<f:selectItem itemLabel=""/>
                             <f:selectItems value="#{pCatalogo.maestros}" var="maestro" itemLabel="#{maestro.aPaterno} #{maestro.aMaterno} #{maestro.nombre}" itemValue="#{maestro}"/>                            
                         </p:selectOneMenu>                                                                                               
                     </h:panelGrid>                    
                 </p:tab>                                           
                 <p:tab id="datosTitulo" title="Titulo">
                 	<h:panelGrid columns="2">
-                		<h:outputText value="#{msg.L0000021}"/>                        
-                        <p:inputText value="#{pCedula.cedula.titulo}" required="true"/>
+                		<p:outputLabel for="txtTitulo" value="#{msg.L0000021}"/>                        
+                        <p:inputText id="txtTitulo" value="#{pCedula.cedula.titulo}" required="true"/>
                 	</h:panelGrid>
                 	<p:commandButton style="float: right;" value="#{msg.B0000010}" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="#{cc.attrs.wizard}HandleComplete(xhr, status, args);"/>
                 </p:tab>                                            

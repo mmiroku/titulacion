@@ -27,14 +27,15 @@
             <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cCatLinea.onFlowProcess}" nextLabel="#{msg.B0000002}" backLabel="#{msg.B0000003}">
                 <p:tab id="datosGenerales" title="Datos Generales">
                     <h:panelGrid columns="2">
-                    	<h:outputText value="#{msg.L0000029}"/>                        
-                        <p:inputText value="#{pCatLinea.catLinea.descripcion}" required="true"/>                                                                                                                       
+                    	<p:outputLabel for="txtdescripcion" value="#{msg.L0000029}"/>                        
+                        <p:inputText id="txtdescripcion" value="#{pCatLinea.catLinea.descripcion}" required="true"/>                                                                                                                       
                     </h:panelGrid>                    
                 </p:tab>                                           
                 <p:tab id="datosCarrera" title="Carrera">
                 	<h:panelGrid columns="2">
-                		<h:outputText value="#{msg.L0000011}"/>
-                		<p:selectOneMenu value="#{pCatLinea.catLinea.carrera}" converter="CarreraConverter">
+                		<p:outputLabel for="somcarrera" value="#{msg.L0000011}"/>
+                		<p:selectOneMenu id="somcarrera" value="#{pCatLinea.catLinea.carrera}" converter="CarreraConverter" required="true">
+                			<f:selectItem itemLabel=""/>
                             <f:selectItems value="#{pCatalogo.carreras}" var="carrera" itemLabel="#{carrera.nombre}" itemValue="#{carrera}"/>
                         </p:selectOneMenu>
                 	</h:panelGrid>

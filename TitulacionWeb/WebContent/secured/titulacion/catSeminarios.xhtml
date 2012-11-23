@@ -14,7 +14,7 @@
 
 	<p:growl id="msgsCatSeminarios"/>
 	        <p:outputPanel id="tblCatSeminarios">	    	           
-	           <p:dataTable var="catSeminario" value="#{pCatSeminario.catSeminarios}" emptyMessage="#{msg.M0000013}">	               
+	           <p:dataTable var="catSeminario" value="#{pCatSeminario.catSeminarios}" emptyMessage="#{msg.M0000013}" paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10" >	               
 	               <p:column headerText="#{msg.L0000041}">
                        <h:outputText value="#{catSeminario.idCatalogoSeminario}"/>
                    </p:column>
@@ -32,16 +32,16 @@
 	      </p:outputPanel>
     </h:form>
 	     	     	      	      	    
-	<p:confirmDialog message="#{msg.M0000014} #{pCatSeminario.catSeminario.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDelCatSeminario" appendToBody="true">
-	    <p:commandButton value="#{msg.B0000019}" action="#{cCatSeminario.eliminarCatSeminario}" oncomplete="dlgDelCatSeminario.hide();" />
-	    <p:commandButton value="#{msg.B0000020}" onclick="dlgDelCatSeminario.hide();"/>
+	<p:confirmDialog message="#{msg.M0000014} #{pCatSeminario.catSeminario.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDel" appendToBody="true">
+	    <p:commandButton value="#{msg.B0000019}" action="#{cCatSeminario.eliminarCatSeminario}" oncomplete="dlgDel.hide();" />
+	    <p:commandButton value="#{msg.B0000020}" onclick="dlgDel.hide();"/>
 	</p:confirmDialog>
 
 	<p:dialog header="Seminario" widgetVar="dlgNewCatSeminario">
 	    <p:outputPanel id="pnlNewCatSeminario" style="text-align:center;" layout="block">  
 	        <h:panelGrid columns="2" cellpadding="5">
-	            <h:outputText value="#{msg.L0000033}"/>
-	            <p:inputText value="#{pCatSeminario.catSeminario.nombre}" required="true"/>
+	            <p:outputLabel for="txtNombre" value="#{msg.L0000033}" />
+	            <p:inputText id="txtNombre" value="#{pCatSeminario.catSeminario.nombre}" required="true"/>	            
 	        </h:panelGrid>
 	        <p:commandButton value="#{msg.B0000010}" action="#{cCatSeminario.guardarCatSeminario()}" oncomplete="dlgNewCatSeminario.hide();"/>
 	    </p:outputPanel>
