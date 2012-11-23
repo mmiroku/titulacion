@@ -1,6 +1,9 @@
 package mx.upiicsa.titulacion.ctrls;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -17,8 +20,10 @@ import mx.upiicsa.titulacion.pages.CatalogoPage;
 import mx.upiicsa.titulacion.service.AlumnoService;
 import mx.upiicsa.titulacion.service.CatalogoService;
 import mx.upiicsa.titulacion.util.Messages;
+import mx.upiicsa.titulacion.web.menu.MenuSesion;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.DateSelectEvent;
 import org.primefaces.event.FlowEvent;
 
 @Named("cAlumno")
@@ -31,6 +36,8 @@ public class AlumnoCtrl implements Serializable {
 	private AlumnoPage alumnoPage;
 	@Inject
 	private CatalogoPage catalogoPage;
+	@Inject
+	private MenuSesion menuSesion;
 	@EJB
 	private AlumnoService alumnoService;
 	@EJB
@@ -41,18 +48,19 @@ public class AlumnoCtrl implements Serializable {
 		return event.getNewStep();
 	}
 
-	public String getInit() {
+	public String init() {
 		try {
 			catalogoPage.setCarreras(catalogoService.findAllCarrera());
 			catalogoPage.setSexos(catalogoService.findAllSexo());
 			alumnoPage.setAlumnos(alumnoService.findAllAlumno());
+			menuSesion.setVistaActual("alumnos");
 		} catch (TitulacionException e) {
 			FacesMessage message = Messages.getMessage(
 					e.getMessage(), null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		return null;
+		return "alumnos";
 	}
 	
 	public String filtrarAlumnos() {
@@ -60,8 +68,8 @@ public class AlumnoCtrl implements Serializable {
 			alumnoPage.setAlumnos(alumnoService.findByFilter(alumnoPage.getFiltro()));
 			alumnoPage.setFiltro(new Alumno());
 			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tabTitulacion:tblAlumnos");
-			requestContext.update("formRight:pnlFiltro");
+			requestContext.update("formAlumno:tblAlumnos");
+			requestContext.update("formMenuAlumno:pnlFiltro");
 		} catch (TitulacionException e) {
 			
 		}
@@ -75,14 +83,14 @@ public class AlumnoCtrl implements Serializable {
 			alumnoService.save(alumnoPage.getAlumno());
 			try {
 				alumnoPage.setAlumnos(alumnoService.findAllAlumno());
-				requestContext.update("formCenter:tabTitulacion:tblAlumnos");
+				requestContext.update("formAlumno:tblAlumnos");
 				
 			} catch (TitulacionException e) {
 
 			}
 		} else {
 			requestContext.addCallbackParam("isValid", false);
-			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("idNewAlumno:formNewAlumno:pnlNewAlumno");
 			requestContext.update("msgsAlumnos");
 		}
 		return null;
@@ -95,13 +103,13 @@ public class AlumnoCtrl implements Serializable {
 			alumnoService.update(alumnoPage.getAlumno());
 			try {
 				alumnoPage.setAlumnos(alumnoService.findAllAlumno());
-				requestContext.update("formCenter:tabTitulacion:tblAlumnos");
+				requestContext.update("formAlumno:tblAlumnos");
 			} catch (TitulacionException e) {
 
 			}
 		} else {
 			requestContext.addCallbackParam("isValid", false);
-			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("idEditAlumno:formEditAlumno:pnlEditAlumno");
 			requestContext.update("msgsAlumnos");
 		}
 		return null;
@@ -113,7 +121,7 @@ public class AlumnoCtrl implements Serializable {
 			alumnoService.delete(alumnoPage.getAlumno().getBoleta());
 			alumnoPage.setAlumnos(alumnoService.findAllAlumno());
 			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tabTitulacion:tblAlumnos");
+			requestContext.update("formAlumno:tblAlumnos");
 		} catch (TitulacionException e) {
 			
 		}
@@ -123,7 +131,7 @@ public class AlumnoCtrl implements Serializable {
 	public String seleccionarAlumno(Alumno alumno) {
 		alumnoPage.setAlumno(alumno);
 		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+		requestContext.update("idEditAlumno:formEditAlumno:pnlEditAlumno");
 		return null;
 	}
 
@@ -131,7 +139,45 @@ public class AlumnoCtrl implements Serializable {
 		alumnoPage.setAlumno(new Alumno());
 		alumnoPage.getAlumno().setDireccion(new Direccion());
 		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("formCenter:tabTitulacion:idNew:pnlNew");
+		requestContext.update("idNewAlumno:formNewAlumno:pnlNewAlumno");
 		return null;
+	}
+
+	/**
+	 * M&eacute;todo para obtener la Edad del Alumno en base a la fecha de
+	 * nacimiento capturada.
+	 * 
+	 * @param event
+	 */
+	public void calcularEdad(DateSelectEvent event) {
+		int edad = obtenerEdad(event.getDate());
+		alumnoPage.getAlumno().setEdad(edad);
+	}
+
+	/**
+	 * Realiza el calculo de la edad a partir de la fecha de nacimiento.
+	 * 
+	 * @param fechaNac
+	 * @return
+	 */
+	private int obtenerEdad(Date fechaNac) {
+		Date fechaHoy = new Date();
+		int edad = 0;
+		int factor = 0;
+		Calendar birth = new GregorianCalendar();
+		Calendar today = new GregorianCalendar();
+		birth.setTime(fechaNac);
+		today.setTime(fechaHoy);
+		if (today.get(Calendar.MONTH) <= birth.get(Calendar.MONTH)) {
+			if (today.get(Calendar.MONTH) == birth.get(Calendar.MONTH)) {
+				if (today.get(Calendar.DATE) < birth.get(Calendar.DATE)) {
+					factor = -1;
+				}
+			} else {
+				factor = -1;
+			}
+		}
+		edad = (today.get(Calendar.YEAR) - birth.get(Calendar.YEAR)) + factor;
+		return edad;
 	}
 }

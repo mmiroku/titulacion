@@ -11,6 +11,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 @Entity
 @NamedQueries({
@@ -63,11 +64,13 @@ public class Alumno implements Serializable {
 	private Carrera carrera;
 	
 	@Column(name="InicioCarrera")
-	private int inicioCarrera;
+	private Integer inicioCarrera;
 	
 	@Column(name="FinCarrera")
-	private int finCarrera;
+	private Integer finCarrera;
 
+	@Transient
+	private Integer edad;
 	
 	public Alumno() {
 		this.setDireccion(new Direccion());
@@ -177,20 +180,28 @@ public class Alumno implements Serializable {
 		this.carrera = carrera;
 	}
 
-	public int getInicioCarrera() {
+	public Integer getInicioCarrera() {
 		return inicioCarrera;
 	}
 
-	public void setInicioCarrera(int inicioCarrera) {
+	public void setInicioCarrera(Integer inicioCarrera) {
 		this.inicioCarrera = inicioCarrera;
 	}
 
-	public int getFinCarrera() {
+	public Integer getFinCarrera() {
 		return finCarrera;
 	}
 
-	public void setFinCarrera(int finCarrera) {
+	public void setFinCarrera(Integer finCarrera) {
 		this.finCarrera = finCarrera;
+	}
+
+	public Integer getEdad() {
+		return edad;
+	}
+
+	public void setEdad(Integer edad) {
+		this.edad = edad;
 	}
 
 }

@@ -9,87 +9,85 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:utils="http://java.sun.com/jsf/composite/utils">
 
-	<ui:define name="tabAlumnos">
-	    
-        #{cAlumno.init}
+<ui:define name="content">
+    <h:form id="formAlumno">
+        
 	    <p:growl id="msgsAlumnos"/>
-	        <p:outputPanel id="tblAlumnos">
-	           <p:dataTable var="alumno" value="#{pAlumno.alumnos}" emptyMessage="No existen alumnos registrados.">
-	               <p:column headerText="Boleta">
-	                   <h:outputText value="#{alumno.boleta}"/>
-	               </p:column>
-	               <p:column headerText="A. Paterno">
-                       <h:outputText value="#{alumno.aPaterno}"/>
-                   </p:column>
-                   <p:column headerText="A. Materno">
-                       <h:outputText value="#{alumno.aMaterno}"/>
-                   </p:column>
-                   <p:column headerText="Nombre(s)">
-                       <h:outputText value="#{alumno.nombre}"/>
-                   </p:column>
-                   <p:column headerText="Carrera">
-                       <h:outputText value="#{alumno.carrera.nombre}"/>
-                   </p:column>
-                   <p:column style="vertical-align:middle; width:7%;">  
-                       <f:facet name="header">
-                           <h:outputText />
-                       </f:facet>
-                       <p:commandButton id="btnEditAlumno" icon="ui-icon-pencil" onclick="wizEdit.loadStep(wizEdit.cfg.steps[0], true); dlgEdit.show();" process="@this" action="#{cAlumno.seleccionarAlumno(alumno)}" />
-                       <p:tooltip for="btnEditAlumno" value="Editar" showEffect="fade" hideEffect="fade" />
-                   </p:column>
-                   <p:column style="vertical-align:middle; width:7%;">  
-                       <f:facet name="header">
-                           <h:outputText />
-                       </f:facet>
-                       <p:commandButton id="btnDelAlumno" icon="ui-icon-trash" onclick="dlgDel.show();" process="@this" action="#{pAlumno.setAlumno(alumno)}" />
-                       <p:tooltip for="btnDelAlumno" value="Eliminar" showEffect="fade" hideEffect="fade" />
-                   </p:column>
-	           </p:dataTable>
-	           </p:outputPanel>
-	       
-	    
-	    <utils:wizardAlumno id="idNew" wizard="wizNew" widgetVar="dlgNew" panel="pnlNew" header="Nuevo Alumno" isEdit="false" action="#{cAlumno.guardarAlumno()}"/>
-        
-        <utils:wizardAlumno id="idEdit" wizard="wizEdit" widgetVar="dlgEdit" panel="pnlEdit" header="Editar Alumno" isEdit="true" action="#{cAlumno.actualizarAlumno()}"/>
-        
-        <p:confirmDialog message="¿Está seguro que desea eliminar el alumno #{pAlumno.alumno.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDel" appendToBody="true">
-            <p:commandButton value="Sí" action="#{cAlumno.eliminarAlumno}" oncomplete="dlgDel.hide();" />
-            <p:commandButton value="No" onclick="dlgDel.hide();"/>
-        </p:confirmDialog>
-        
-        
-	</ui:define>
-	<ui:define name="right">
-	<h:form id="formRight">
-	   <h:panelGrid style="padding: 10px;">
-	    <p:fieldset legend="Acciones">
-	       <h:panelGrid>
-			    <p:commandButton value="Nuevo Alumno" action="#{cAlumno.limpiarAlumno()}" onclick="wizNew.loadStep(wizNew.cfg.steps[0], true); dlgNew.show();"/>
-			    <p:commandButton value="Generar Acta"/>
-	       </h:panelGrid>
-	    </p:fieldset>
-	    <br/>
-	    <p:fieldset legend="Filtrar">
-	       <p:outputPanel id="pnlFiltro">
-	       <h:panelGrid>
-	       <h:outputText value="Boleta"/>
-	       <p:inputText value="#{pAlumno.filtro.boleta}"/>
-	       <h:outputText value="Nombre"/>
-           <p:inputText value="#{pAlumno.filtro.nombre}"/>
-           <h:outputText value="Carrera"/>
-           <p:selectOneMenu value="#{pAlumno.filtro.carrera}" converter="CarreraConverter">
-              <f:selectItem itemLabel=""/>
-              <f:selectItems value="#{pCatalogo.carreras}" var="carrera" itemLabel="#{carrera.nombre}" itemValue="#{carrera}"/>
-           </p:selectOneMenu>
-           <h:outputText value="CURP"/>
-           <p:inputText value="#{pAlumno.filtro.curp}"/>
-           <br/>
-		   <p:commandButton value="Buscar" action="#{cAlumno.filtrarAlumnos()}" style="float: right;"/>
-           </h:panelGrid>
-           </p:outputPanel>
-	    </p:fieldset>
-	    </h:panelGrid>
+        <p:outputPanel id="tblAlumnos">
+           <p:dataTable var="alumno" value="#{pAlumno.alumnos}" emptyMessage="#{msg.M0000001}">
+               <p:column headerText="#{msg.L0000010}">
+                   <h:outputText value="#{alumno.boleta}"/>
+               </p:column>
+               <p:column headerText="#{msg.L0000002}">
+                   <h:outputText value="#{alumno.aPaterno}"/>
+               </p:column>
+               <p:column headerText="#{msg.L0000003}">
+                   <h:outputText value="#{alumno.aMaterno}"/>
+               </p:column>
+               <p:column headerText="#{msg.L0000004}">
+                   <h:outputText value="#{alumno.nombre}"/>
+               </p:column>
+               <p:column headerText="#{msg.L0000011}">
+                   <h:outputText value="#{alumno.carrera.nombre}"/>
+               </p:column>
+               <p:column style="vertical-align:middle; width:7%;">  
+                   <f:facet name="header">
+                       <h:outputText />
+                   </f:facet>
+                   <p:commandButton id="btnEditAlumno" icon="ui-icon-pencil" onclick="wizEditAlumno.loadStep(wizEditAlumno.cfg.steps[0], true); dlgEditAlumno.show();" process="@this" action="#{cAlumno.seleccionarAlumno(alumno)}" />
+                   <p:tooltip for="btnEditAlumno" value="#{msg.B0000017}" showEffect="fade" hideEffect="fade" />
+               </p:column>
+               <p:column style="vertical-align:middle; width:7%;">  
+                   <f:facet name="header">
+                       <h:outputText />
+                   </f:facet>
+                   <p:commandButton id="btnDelAlumno" icon="ui-icon-trash" onclick="dlgDelAlumno.show();" process="@this" action="#{pAlumno.setAlumno(alumno)}" />
+                   <p:tooltip for="btnDelAlumno" value="#{msg.B0000018}" showEffect="fade" hideEffect="fade" />
+               </p:column>
+           </p:dataTable>
+        </p:outputPanel>
+    </h:form>
 
-</h:form>
-	</ui:define>
+    <utils:wizardAlumno id="idNewAlumno" form="formNewAlumno" wizard="wizNewAlumno" widgetVar="dlgNewAlumno" panel="pnlNewAlumno" header="#{msg.T0000007}" isEdit="false" action="#{cAlumno.guardarAlumno()}"/>
+
+    <utils:wizardAlumno id="idEditAlumno" form="formEditAlumno" wizard="wizEditAlumno" widgetVar="dlgEditAlumno" panel="pnlEditAlumno" header="#{msg.T0000008}" isEdit="true" action="#{cAlumno.actualizarAlumno()}"/>
+
+    <p:confirmDialog message="#{msg.M0000004} #{pAlumno.alumno.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDelAlumno" appendToBody="true">
+        <p:commandButton value="#{msg.B0000019}" action="#{cAlumno.eliminarAlumno}" oncomplete="dlgDelAlumno.hide();" />
+        <p:commandButton value="#{msg.B0000020}" onclick="dlgDelAlumno.hide();"/>
+    </p:confirmDialog>
+</ui:define>
+<ui:define name="right">
+    <h:form id="formMenuAlumno">
+        <utils:logout/>
+        <h:panelGrid style="padding: 10px;">
+            <p:fieldset legend="Acciones">
+                <h:panelGrid>
+                    <p:commandButton value="#{msg.B0000013}" action="#{cAlumno.limpiarAlumno()}" onclick="wizNewAlumno.loadStep(wizNewAlumno.cfg.steps[0], true); dlgNewAlumno.show();"/>
+                    <p:commandButton value="#{msg.B0000014}"/>
+            </h:panelGrid>
+            </p:fieldset>
+            <br/>
+            <p:fieldset legend="#{msg.T0000003}">
+                <p:outputPanel id="pnlFiltro">
+                    <h:panelGrid>
+                        <h:outputText value="#{msg.L0000010}"/>
+                        <p:inputText value="#{pAlumno.filtro.boleta}"/>
+                        <h:outputText value="#{msg.L0000004}"/>
+                        <p:inputText value="#{pAlumno.filtro.nombre}"/>
+                        <h:outputText value="#{msg.L0000011}"/>
+                        <p:selectOneMenu value="#{pAlumno.filtro.carrera}" converter="CarreraConverter">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems value="#{pCatalogo.carreras}" var="carrera" itemLabel="#{carrera.nombre}" itemValue="#{carrera}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="#{msg.L0000009}"/>
+                        <p:inputText value="#{pAlumno.filtro.curp}"/>
+                        <br/>
+                        <p:commandButton value="#{msg.B0000012}" action="#{cAlumno.filtrarAlumnos()}" style="float: right;"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:fieldset>
+        </h:panelGrid>
+    </h:form>
+</ui:define>
 </ui:composition>

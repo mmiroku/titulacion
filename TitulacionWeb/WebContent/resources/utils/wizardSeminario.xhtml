@@ -9,6 +9,7 @@
 	<!-- INTERFACE -->
 	<cc:interface shortDescription="Asigna una puntuación de 1 a 5 a una propiedad">
 	    <cc:attribute name="id" required="true" type="java.lang.String"/>
+	    <cc:attribute name="form" required="true" type="java.lang.String"/>
 		<cc:attribute name="widgetVar" required="true" type="java.lang.String"/>
 		<cc:attribute name="wizard" required="true" type="java.lang.String"/>
 		<cc:attribute name="panel" required="true" type="java.lang.String"/>
@@ -20,39 +21,41 @@
 	<!-- IMPLEMENTATION -->
 	<cc:implementation>
 	<p:dialog id="#{cc.attrs.id}" header="#{cc.attrs.header}" widgetVar="#{cc.attrs.widgetVar}" resizable="false" draggable="false" minimizable="true" width="450">
-            <p:ajax event="close" listener="#{cSeminario.limpiarSeminario()}" />
+        <p:ajax event="close" listener="#{cSeminario.limpiarSeminario()}" />
+        <h:form id="#{cc.attrs.form}">
             <p:outputPanel id="#{cc.attrs.panel}">
-            <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cSeminario.onFlowProcess}" >
+            <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cSeminario.onFlowProcess}" nextLabel="#{msg.B0000002}" backLabel="#{msg.B0000003}">
                 <p:tab id="datosGenerales" title="Datos Generales">
                     <h:panelGrid columns="2">
-                    	<h:outputText value="Seminario :"/>                        
-                        <p:selectOneMenu value="#{pSeminario.seminario.catSeminario}" converter="CatSeminarioConverter">
+                    	<p:outputLabel for="cmbSeminario" value="#{msg.L0000033}"/>                        
+                        <p:selectOneMenu id="cmbSeminario" value="#{pSeminario.seminario.catSeminario}" converter="CatSeminarioConverter">
                             <f:selectItems value="#{pCatalogo.catSeminarios}" var="catSeminario" itemLabel="#{catSeminario.nombre}" itemValue="#{catSeminario}"/>
                         </p:selectOneMenu>
-                        <h:outputText value="Periodo :"/>
-                        <p:inputText value="#{pSeminario.seminario.periodo}" required="true"/>
-                        <h:outputText value="Horario :"/>
-                        <p:inputText value="#{pSeminario.seminario.diasHorario}" required="true"/>
-                        <h:outputText value="Vigencia :"/>
-                        <p:inputText value="#{pSeminario.seminario.vigencia}" required="true"/>
-                        <h:outputText value="Sede :"/>
-                        <p:inputText value="#{pSeminario.seminario.sede}" required="true"/>                        
+                        <p:outputLabel for="txtPeriodo" value="#{msg.L0000034}"/>
+                        <p:inputText id="txtPeriodo" value="#{pSeminario.seminario.periodo}" required="true"/>
+                        <p:outputLabel for="txtHorario" value="#{msg.L0000035}"/>
+                        <p:inputText id="txtHorario" value="#{pSeminario.seminario.diasHorario}" required="true"/>
+                        <p:outputLabel for="txtVigencia" value="#{msg.L0000036}"/>
+                        <p:inputText id="txtVigencia" value="#{pSeminario.seminario.vigencia}" required="true"/>
+                        <p:outputLabel for="txtSede" value="#{msg.L0000037}"/>
+                        <p:inputText id="txtSede" value="#{pSeminario.seminario.sede}" required="true"/>                        
                     </h:panelGrid>
                 </p:tab>
                 <p:tab id="expositores" title="Expositores">
                     <h:panelGrid columns="2">                        
-                        <h:outputText value="Titular :"/>                        
-                        <p:selectOneMenu value="#{pSeminario.seminario.cedula}" converter="CedulaConverter">
+                        <p:outputLabel for="cmbCedula" value="#{msg.L0000038}"/>                        
+                        <p:selectOneMenu id="cmbCedula" value="#{pSeminario.seminario.cedula}" converter="CedulaConverter">
                             <f:selectItems value="#{pCatalogo.cedulas}" var="cedula" itemLabel="#{cedula.numeroCedula} - #{cedula.maestro.nombre}" itemValue="#{cedula}"/>
                         </p:selectOneMenu>                        
                     </h:panelGrid>
-                    <p:commandButton style="float: right;" value="Guardar" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="handleComplete(xhr, status, args);"/>
+                    <p:commandButton style="float: right;" value="#{msg.B0000010}" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="#{cc.attrs.wizard}HandleComplete(xhr, status, args);"/>
                 </p:tab>                                                    
             </p:wizard>
             </p:outputPanel>
+            </h:form>
         </p:dialog>
         <script type="text/javascript">
-            function handleComplete(xhr, status, args) {
+            function #{cc.attrs.wizard}HandleComplete(xhr, status, args) {
                 if(args.isValid) {
                 	#{cc.attrs.widgetVar}.hide();
                 }

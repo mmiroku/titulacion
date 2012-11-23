@@ -16,6 +16,7 @@ import mx.upiicsa.titulacion.pages.CatalogoPage;
 import mx.upiicsa.titulacion.service.CatLineaService;
 import mx.upiicsa.titulacion.service.CatalogoService;
 import mx.upiicsa.titulacion.util.Messages;
+import mx.upiicsa.titulacion.web.menu.MenuSesion;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
@@ -31,6 +32,8 @@ public class CatLineaCtrl implements Serializable {
 	private CatLineaPage catLineaPage;
 	@Inject
 	private CatalogoPage catalogoPage;
+	@Inject
+	private MenuSesion menuSesion;
 	@EJB
 	private CatLineaService catLineaService;
 	@EJB
@@ -41,27 +44,19 @@ public class CatLineaCtrl implements Serializable {
 		return event.getNewStep();
 	}
 
-	public String getInit() {
+	public String init() {
 		try {			
 			catalogoPage.setCarreras(catalogoService.findAllCarrera());
-			catLineaPage.setCatLineas(catLineaService.findAllCatLinea());					
+			catLineaPage.setCatLineas(catLineaService.findAllCatLinea());
+			menuSesion.setVistaActual("catLineas");
 		} catch (TitulacionException e) {
 			FacesMessage message = Messages.getMessage(
 					e.getMessage(), null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		return null;
+		return "catLineas";
 	}
-	
-	
-	public CatLineaPage getCatLineaPage() {
-		return catLineaPage;
-	}
-	
-	public void setCatLineaPage(CatLineaPage catLineaPage) {
-		this.catLineaPage = catLineaPage;
-	}	
 		
 	public String guardarCatLinea() {
 		RequestContext requestContext = RequestContext.getCurrentInstance();
@@ -70,14 +65,14 @@ public class CatLineaCtrl implements Serializable {
 			catLineaService.save(catLineaPage.getCatLinea());
 			try {
 				catLineaPage.setCatLineas(catLineaService.findAllCatLinea());
-				requestContext.update("formCenter:tabTitulacion:tblCatLineas");
+				requestContext.update("formCatLinea:tblCatLineas");
 				
 			} catch (TitulacionException e) {
 
 			}
 		} else {
 			requestContext.addCallbackParam("isValid", false);
-			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("idNewCatLinea:formNewCatLinea:pnlNewCatLinea");
 			requestContext.update("msgsMaterias");
 		}
 		return null;
@@ -90,13 +85,13 @@ public class CatLineaCtrl implements Serializable {
 			catLineaService.update(catLineaPage.getCatLinea());
 			try {
 				catLineaPage.setCatLineas(catLineaService.findAllCatLinea());
-				requestContext.update("formCenter:tabTitulacion:tblCatLineas");
+				requestContext.update("formCatLinea:tblCatLineas");
 			} catch (TitulacionException e) {
 
 			}
 		} else {
 			requestContext.addCallbackParam("isValid", false);
-			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("idEditCatLinea:formEditCatLinea:pnlEditCatLinea");
 			requestContext.update("msgsMaterias");
 		}
 		return null;
@@ -108,7 +103,7 @@ public class CatLineaCtrl implements Serializable {
 			catLineaService.delete(catLineaPage.getCatLinea().getIdLinea());
 			catLineaPage.setCatLineas(catLineaService.findAllCatLinea());
 			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tabTitulacion:tblCatLineas");
+			requestContext.update("formCatLinea:tblCatLineas");
 		} catch (TitulacionException e) {
 			
 		}
@@ -118,14 +113,14 @@ public class CatLineaCtrl implements Serializable {
 	public String seleccionarCatLinea(CatLinea catLinea) {
 		catLineaPage.setCatLinea(catLinea);
 		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+		requestContext.update("idEditCatLinea:formEditCatLinea:pnlEditCatLinea");
 		return null;
 	}
 
 	public String limpiarCatLinea() {
 		catLineaPage.setCatLinea(new CatLinea());		
 		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("formCenter:tabTitulacion:idNew:pnlNew");
+		requestContext.update("idNewCatLinea:formNewCatLinea:pnlNewCatLinea");
 		return null;
 	}	
 	
@@ -134,8 +129,8 @@ public class CatLineaCtrl implements Serializable {
 			catLineaPage.setCatLineas(catLineaService.findByFilter(catLineaPage.getFiltro()));
 			catLineaPage.setFiltro(new CatLinea());
 			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tabTitulacion:tblCatLineas");
-			requestContext.update("formRight:pnlFiltro");
+			requestContext.update("formCatLinea:tblCatLineas");
+			requestContext.update("formMenuCatLinea:pnlFiltro");
 		} catch (TitulacionException e) {
 			
 		}

@@ -11,11 +11,12 @@ import javax.inject.Named;
 
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.Materia;
-import mx.upiicsa.titulacion.pages.MateriaPage;
 import mx.upiicsa.titulacion.pages.CatalogoPage;
+import mx.upiicsa.titulacion.pages.MateriaPage;
 import mx.upiicsa.titulacion.service.MateriaService;
 import mx.upiicsa.titulacion.service.CatalogoService;
 import mx.upiicsa.titulacion.util.Messages;
+import mx.upiicsa.titulacion.web.menu.MenuSesion;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
@@ -31,6 +32,8 @@ public class MateriaCtrl implements Serializable {
 	private MateriaPage materiaPage;
 	@Inject
 	private CatalogoPage catalogoPage;
+	@Inject
+	private MenuSesion menuSesion;
 	@EJB
 	private MateriaService materiaService;
 	@EJB
@@ -41,26 +44,19 @@ public class MateriaCtrl implements Serializable {
 		return event.getNewStep();
 	}	
 
-	public String getInit() {
+	public String init() {
 		try {
 			catalogoPage.setLineas(catalogoService.findAllLinea());
 			catalogoPage.setAcademias(catalogoService.findAllAcademia());
-			materiaPage.setMaterias(materiaService.findAllMateria());			
+			materiaPage.setMaterias(materiaService.findAllMateria());
+			menuSesion.setVistaActual("materias");
 		} catch (TitulacionException e) {
 			FacesMessage message = Messages.getMessage(
 					e.getMessage(), null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		return null;
-	}
-		
-	public MateriaPage getMateriaPage() {
-		return materiaPage;
-	}
-	
-	public void setMateriaPage(MateriaPage materiaPage) {
-		this.materiaPage = materiaPage;
+		return "materias";
 	}
 		
 	public String guardarMateria() {
@@ -70,14 +66,14 @@ public class MateriaCtrl implements Serializable {
 			materiaService.save(materiaPage.getMateria());
 			try {
 				materiaPage.setMaterias(materiaService.findAllMateria());
-				requestContext.update("formCenter:tabTitulacion:tblMaterias");
+				requestContext.update("formMateria:tblMaterias");
 				
 			} catch (TitulacionException e) {
 
 			}
 		} else {
 			requestContext.addCallbackParam("isValid", false);
-			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("idNewMateria:formNewMateria:pnlNewMateria");
 			requestContext.update("msgsMaterias");
 		}
 		return null;
@@ -90,13 +86,13 @@ public class MateriaCtrl implements Serializable {
 			materiaService.update(materiaPage.getMateria());
 			try {
 				materiaPage.setMaterias(materiaService.findAllMateria());
-				requestContext.update("formCenter:tabTitulacion:tblMaterias");
+				requestContext.update("formMateria:tblMaterias");
 			} catch (TitulacionException e) {
 
 			}
 		} else {
 			requestContext.addCallbackParam("isValid", false);
-			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("idEditMateria:formEditMateria:pnlEditMateria");
 			requestContext.update("msgsMaterias");
 		}
 		return null;
@@ -108,7 +104,7 @@ public class MateriaCtrl implements Serializable {
 			materiaService.delete(materiaPage.getMateria().getIdMateria());
 			materiaPage.setMaterias(materiaService.findAllMateria());
 			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tabTitulacion:tblMaterias");
+			requestContext.update("formMateria:tblMaterias");
 		} catch (TitulacionException e) {
 			
 		}
@@ -118,14 +114,14 @@ public class MateriaCtrl implements Serializable {
 	public String seleccionarMateria(Materia materia) {
 		materiaPage.setMateria(materia);
 		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+		requestContext.update("idEditMateria:formEditMateria:pnlEditMateria");
 		return null;
 	}
 
 	public String limpiarMateria() {
 		materiaPage.setMateria(new Materia());		
 		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("formCenter:tabTitulacion:idNew:pnlNew");
+		requestContext.update("idNewMateria:formNewMateria:pnlNewMateria");
 		return null;
 	}
 	
@@ -134,8 +130,8 @@ public class MateriaCtrl implements Serializable {
 			materiaPage.setMaterias(materiaService.findByFilter(materiaPage.getFiltro()));
 			materiaPage.setFiltro(new Materia());
 			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tabTitulacion:tblMaterias");
-			requestContext.update("formRight:pnlFiltro");
+			requestContext.update("formMateria:tblMaterias");
+			requestContext.update("formMenuMateria:pnlFiltro");
 		} catch (TitulacionException e) {
 			
 		}

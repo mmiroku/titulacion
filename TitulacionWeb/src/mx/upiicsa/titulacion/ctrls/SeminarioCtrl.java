@@ -16,6 +16,7 @@ import mx.upiicsa.titulacion.pages.CatalogoPage;
 import mx.upiicsa.titulacion.service.SeminarioService;
 import mx.upiicsa.titulacion.service.CatalogoService;
 import mx.upiicsa.titulacion.util.Messages;
+import mx.upiicsa.titulacion.web.menu.MenuSesion;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
@@ -32,6 +33,8 @@ private static final long serialVersionUID = -8612967679860683584L;
 	private SeminarioPage seminarioPage;
 	@Inject
 	private CatalogoPage catalogoPage;
+	@Inject
+	private MenuSesion menuSesion;
 	@EJB
 	private SeminarioService seminarioService;
 	@EJB
@@ -42,26 +45,19 @@ private static final long serialVersionUID = -8612967679860683584L;
 		return event.getNewStep();
 	}	
 
-	public String getInit() {
+	public String init() {
 		try {
 			catalogoPage.setCatSeminarios(catalogoService.findAllCatSeminario());
 			catalogoPage.setCedulas(catalogoService.findAllCedula());
-			seminarioPage.setSeminarios(seminarioService.findAllSeminario());			
+			seminarioPage.setSeminarios(seminarioService.findAllSeminario());
+			menuSesion.setVistaActual("seminarios");
 		} catch (TitulacionException e) {
 			FacesMessage message = Messages.getMessage(
 					e.getMessage(), null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		return null;
-	}
-		
-	public void setSeminarioPage(SeminarioPage seminarioPage) {
-		this.seminarioPage = seminarioPage;
-	}
-	
-	public SeminarioPage getSeminarioPage() {
-		return seminarioPage;
+		return "seminarios";
 	}
 	
 	public String eliminarSeminario() {
@@ -70,7 +66,7 @@ private static final long serialVersionUID = -8612967679860683584L;
 			seminarioService.delete(seminarioPage.getSeminario().getIdSeminario());
 			seminarioPage.setSeminarios(seminarioService.findAllSeminario());
 			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tabTitulacion:tblSeminarios");
+			requestContext.update("formSeminario:tblSeminarios");
 		} catch (TitulacionException e) {
 			
 		}
@@ -80,14 +76,14 @@ private static final long serialVersionUID = -8612967679860683584L;
 	public String limpiarSeminario() {
 		seminarioPage.setSeminario(new Seminario());		
 		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("formCenter:tabTitulacion:idNew:pnlNew");
+		requestContext.update("idNewSeminario:formNewSeminario:pnlNewSeminario");
 		return null;
 	}
 	
 	public String seleccionarSeminario(Seminario seminario) {
 		seminarioPage.setSeminario(seminario);
 		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+		requestContext.update("idEditSeminario:formEditSeminario:pnlEditSeminario");
 		return null;
 	}
 	
@@ -98,13 +94,13 @@ private static final long serialVersionUID = -8612967679860683584L;
 			seminarioService.update(seminarioPage.getSeminario());
 			try {
 				seminarioPage.setSeminarios(seminarioService.findAllSeminario());
-				requestContext.update("formCenter:tabTitulacion:tblSeminarios");
+				requestContext.update("formSeminario:tblSeminarios");
 			} catch (TitulacionException e) {
 
 			}
 		} else {
 			requestContext.addCallbackParam("isValid", false);
-			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("idEditSeminario:formEditSeminario:pnlEditSeminario");
 			requestContext.update("msgsSeminarios");
 		}
 		return null;
@@ -117,15 +113,15 @@ private static final long serialVersionUID = -8612967679860683584L;
 			seminarioService.save(seminarioPage.getSeminario());
 			try {
 				seminarioPage.setSeminarios(seminarioService.findAllSeminario());
-				requestContext.update("formCenter:tabTitulacion:tblSeminarios");
+				requestContext.update("formSeminario:tblSeminarios");
 				
 			} catch (TitulacionException e) {
 
 			}
 		} else {
 			requestContext.addCallbackParam("isValid", false);
-			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
-			requestContext.update("msgsMaterias");
+			requestContext.update("idNewSeminario:formNewSeminario:pnlNewSeminario");
+			requestContext.update("msgsSeminarios");
 		}
 		return null;
 	}
@@ -135,8 +131,8 @@ private static final long serialVersionUID = -8612967679860683584L;
 			seminarioPage.setSeminarios(seminarioService.findByFilter(seminarioPage.getFiltro()));
 			seminarioPage.setFiltro(new Seminario());
 			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tabTitulacion:tblSeminarios");
-			requestContext.update("formRight:pnlFiltro");
+			requestContext.update("formSeminario:tblSeminarios");
+			requestContext.update("formMenuSeminario:pnlFiltro");
 		} catch (TitulacionException e) {
 			
 		}

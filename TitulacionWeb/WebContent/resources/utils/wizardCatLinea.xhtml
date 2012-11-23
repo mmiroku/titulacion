@@ -9,6 +9,7 @@
 	<!-- INTERFACE -->
 	<cc:interface shortDescription="Asigna una puntuación de 1 a 5 a una propiedad">
 	    <cc:attribute name="id" required="true" type="java.lang.String"/>
+	    <cc:attribute name="form" required="true" type="java.lang.String"/>
 		<cc:attribute name="widgetVar" required="true" type="java.lang.String"/>
 		<cc:attribute name="wizard" required="true" type="java.lang.String"/>
 		<cc:attribute name="panel" required="true" type="java.lang.String"/>
@@ -20,33 +21,35 @@
 	<!-- IMPLEMENTATION -->
 	<cc:implementation>
 	<p:dialog id="#{cc.attrs.id}" header="#{cc.attrs.header}" widgetVar="#{cc.attrs.widgetVar}" resizable="false" draggable="false" minimizable="true" width="450">
-            <p:ajax event="close" listener="#{cCatLinea.limpiarCatLinea()}" />
+        <p:ajax event="close" listener="#{cCatLinea.limpiarCatLinea()}" />
+        <h:form id="#{cc.attrs.form}">
             <p:outputPanel id="#{cc.attrs.panel}">
-            <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cCatLinea.onFlowProcess}" >
+            <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cCatLinea.onFlowProcess}" nextLabel="#{msg.B0000002}" backLabel="#{msg.B0000003}">
                 <p:tab id="datosGenerales" title="Datos Generales">
                     <h:panelGrid columns="2">
-                    	<h:outputText value="Linea :"/>                        
+                    	<h:outputText value="#{msg.L0000029}"/>                        
                         <p:inputText value="#{pCatLinea.catLinea.descripcion}" required="true"/>                                                                                                                       
                     </h:panelGrid>                    
                 </p:tab>                                           
                 <p:tab id="datosCarrera" title="Carrera">
                 	<h:panelGrid columns="2">
-                		<h:outputText value="Carrera :"/>
+                		<h:outputText value="#{msg.L0000011}"/>
                 		<p:selectOneMenu value="#{pCatLinea.catLinea.carrera}" converter="CarreraConverter">
                             <f:selectItems value="#{pCatalogo.carreras}" var="carrera" itemLabel="#{carrera.nombre}" itemValue="#{carrera}"/>
                         </p:selectOneMenu>
                 	</h:panelGrid>
-                	<p:commandButton style="float: right;" value="Guardar" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="handleComplete(xhr, status, args);"/>
+                	<p:commandButton style="float: right;" value="#{msg.B0000010}" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="#{cc.attrs.wizard}HandleComplete(xhr, status, args);"/>
                 </p:tab>                                            
             </p:wizard>
             </p:outputPanel>
-        </p:dialog>
-        <script type="text/javascript">
-            function handleComplete(xhr, status, args) {
-                if(args.isValid) {
-                	#{cc.attrs.widgetVar}.hide();
-                }
+        </h:form>
+    </p:dialog>
+    <script type="text/javascript">
+        function #{cc.attrs.wizard}HandleComplete(xhr, status, args) {
+            if(args.isValid) {
+            	#{cc.attrs.widgetVar}.hide();
             }
-        </script>
+        }
+    </script>
 	</cc:implementation>
 </html>

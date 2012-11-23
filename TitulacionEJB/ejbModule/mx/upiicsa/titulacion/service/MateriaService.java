@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
+import mx.upiicsa.titulacion.common.enums.Semestre;
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.Materia;
 
@@ -63,7 +64,7 @@ private static final long serialVersionUID = -8510737783635751315L;
 		TypedQuery<Materia> query = entityManager.createNamedQuery(
 				"Materia.findByFilter", Materia.class);
 		query.setParameter("materia", filtro.getNombre());
-		query.setParameter("semestre", filtro.getSemestre());
+		query.setParameter("semestre", (Semestre) filtro.getSemestre());
 		if (filtro.getLinea() != null) {
 			query.setParameter("idLinea",filtro.getLinea().getLinea());
 			} else {

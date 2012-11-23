@@ -16,6 +16,7 @@ import mx.upiicsa.titulacion.pages.CatalogoPage;
 import mx.upiicsa.titulacion.service.CedulaService;
 import mx.upiicsa.titulacion.service.CatalogoService;
 import mx.upiicsa.titulacion.util.Messages;
+import mx.upiicsa.titulacion.web.menu.MenuSesion;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
@@ -31,6 +32,8 @@ public class CedulaCtrl implements Serializable {
 	private CedulaPage cedulaPage;
 	@Inject
 	private CatalogoPage catalogoPage;
+	@Inject
+	private MenuSesion menuSesion;
 	@EJB
 	private CedulaService cedulaService;
 	@EJB
@@ -41,26 +44,19 @@ public class CedulaCtrl implements Serializable {
 		return event.getNewStep();
 	}
 
-	public String getInit() {
+	public String init() {
 		try {			
 			catalogoPage.setMaestros(catalogoService.findAllMaestro());
-			cedulaPage.setCedulas(cedulaService.findAllCedula());					
+			cedulaPage.setCedulas(cedulaService.findAllCedula());
+			menuSesion.setVistaActual("cedulas");
 		} catch (TitulacionException e) {
 			FacesMessage message = Messages.getMessage(
 					e.getMessage(), null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		return null;
+		return "cedulas";
 	}
-	
-	public CedulaPage getCedulaPage() {
-		return cedulaPage;
-	}	
-	
-	public void setCedulaPage(CedulaPage cedulaPage) {
-		this.cedulaPage = cedulaPage;
-	}	
 		
 	public String guardarCedula() {
 		RequestContext requestContext = RequestContext.getCurrentInstance();
@@ -69,14 +65,14 @@ public class CedulaCtrl implements Serializable {
 			cedulaService.save(cedulaPage.getCedula());
 			try {
 				cedulaPage.setCedulas(cedulaService.findAllCedula());
-				requestContext.update("formCenter:tabTitulacion:tblCedulas");
+				requestContext.update("formCedula:tblCedulas");
 				
 			} catch (TitulacionException e) {
 
 			}
 		} else {
 			requestContext.addCallbackParam("isValid", false);
-			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("idNewCedula:formNewCedula:pnlNewCedula");
 			requestContext.update("msgsMaterias");
 		}
 		return null;
@@ -89,13 +85,13 @@ public class CedulaCtrl implements Serializable {
 			cedulaService.update(cedulaPage.getCedula());
 			try {
 				cedulaPage.setCedulas(cedulaService.findAllCedula());
-				requestContext.update("formCenter:tabTitulacion:tblCedulas");
+				requestContext.update("formCedula:tblCedulas");
 			} catch (TitulacionException e) {
 
 			}
 		} else {
 			requestContext.addCallbackParam("isValid", false);
-			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("idEditCedula:formEditCedula:pnlEditCedula");
 			requestContext.update("msgsMaterias");
 		}
 		return null;
@@ -107,7 +103,7 @@ public class CedulaCtrl implements Serializable {
 			cedulaService.delete(cedulaPage.getCedula().getNumeroCedula());
 			cedulaPage.setCedulas(cedulaService.findAllCedula());
 			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tabTitulacion:tblCedulas");
+			requestContext.update("formCedula:tblCedulas");
 		} catch (TitulacionException e) {
 			
 		}
@@ -117,14 +113,14 @@ public class CedulaCtrl implements Serializable {
 	public String seleccionarCedula(Cedula cedula) {
 		cedulaPage.setCedula(cedula);
 		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+		requestContext.update("idEditCedula:formEditCedula:pnlEditCedula");
 		return null;
 	}
 
 	public String limpiarCedula() {
 		cedulaPage.setCedula(new Cedula());		
 		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("formCenter:tabTitulacion:idNew:pnlNew");
+		requestContext.update("idNewCedula:formNewCedula:pnlNewCedula");
 		return null;
 	}	
 	

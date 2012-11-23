@@ -14,6 +14,7 @@ import mx.upiicsa.titulacion.model.CatSeminario;
 import mx.upiicsa.titulacion.pages.CatSeminarioPage;
 import mx.upiicsa.titulacion.service.CatSeminarioService;
 import mx.upiicsa.titulacion.util.Messages;
+import mx.upiicsa.titulacion.web.menu.MenuSesion;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
@@ -27,6 +28,8 @@ public class CatSeminarioCtrl implements Serializable {
 	
 	@Inject
 	private CatSeminarioPage catSeminarioPage;
+	@Inject
+	private MenuSesion menuSesion;
 	@EJB
 	private CatSeminarioService catSeminarioService;
 			
@@ -35,25 +38,18 @@ public class CatSeminarioCtrl implements Serializable {
 		return event.getNewStep();
 	}
 
-	public String getInit() {
+	public String init() {
 		try {			
-			catSeminarioPage.setCatSeminarios(catSeminarioService.findAllCatSeminario());					
+			catSeminarioPage.setCatSeminarios(catSeminarioService.findAllCatSeminario());
+			menuSesion.setVistaActual("catSeminarios");
 		} catch (TitulacionException e) {
 			FacesMessage message = Messages.getMessage(
 					e.getMessage(), null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		return null;
+		return "catSeminarios";
 	}
-	
-	public CatSeminarioPage getCatSeminarioPage() {
-		return catSeminarioPage;
-	}	
-	
-	public void setCatSeminarioPage(CatSeminarioPage catSeminarioPage) {
-		this.catSeminarioPage = catSeminarioPage;
-	}	
 		
 	public String guardarCatSeminario() {
 		RequestContext requestContext = RequestContext.getCurrentInstance();
@@ -62,13 +58,13 @@ public class CatSeminarioCtrl implements Serializable {
 			catSeminarioService.save(catSeminarioPage.getCatSeminario());
 			try {				
 				catSeminarioPage.setCatSeminarios(catSeminarioService.findAllCatSeminario());
-				requestContext.update("formCenter:tabTitulacion:tblCatSeminarios");															
+				requestContext.update("formCatSeminario:tblCatSeminarios");															
 			} catch (TitulacionException e) {
 
 			}
 		} else {
 			requestContext.addCallbackParam("isValid", false);
-			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("idNewCatSeminario:formNewCatSeminario:pnlNewCatSeminario");
 			requestContext.update("msgsMaterias");
 		}
 		return null;
@@ -81,13 +77,13 @@ public class CatSeminarioCtrl implements Serializable {
 			catSeminarioService.update(catSeminarioPage.getCatSeminario());
 			try {
 				catSeminarioPage.setCatSeminarios(catSeminarioService.findAllCatSeminario());
-				requestContext.update("formCenter:tabTitulacion:tblCatSeminarios");
+				requestContext.update("formCatSeminario:tblCatSeminarios");
 			} catch (TitulacionException e) {
 
 			}
 		} else {
 			requestContext.addCallbackParam("isValid", false);
-			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+			requestContext.update("idEditCatSeminario:formEditCatSeminario:pnlEditCatSeminario");
 			requestContext.update("msgsMaterias");
 		}
 		return null;
@@ -99,7 +95,7 @@ public class CatSeminarioCtrl implements Serializable {
 			catSeminarioService.delete(catSeminarioPage.getCatSeminario().getIdCatalogoSeminario());
 			catSeminarioPage.setCatSeminarios(catSeminarioService.findAllCatSeminario());
 			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tabTitulacion:tblCatSeminarios");
+			requestContext.update("formCatSeminario:tblCatSeminarios");
 		} catch (TitulacionException e) {
 			
 		}
@@ -109,14 +105,14 @@ public class CatSeminarioCtrl implements Serializable {
 	public String seleccionarCatSeminario(CatSeminario catSeminario) {
 		catSeminarioPage.setCatSeminario(catSeminario);
 		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+		requestContext.update("idEditCatSeminario:formEditCatSeminario:pnlEditCatSeminario");
 		return null;
 	}
 
 	public String limpiarCatSeminario() {
 		catSeminarioPage.setCatSeminario(new CatSeminario());		
 		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("formCenter:tabTitulacion:catSeminarioDetail");
+		requestContext.update("idNewCatSeminario:formNewCatSeminario:pnlNewCatSeminario");
 		return null;
 	}	
 	
@@ -125,8 +121,8 @@ public class CatSeminarioCtrl implements Serializable {
 			catSeminarioPage.setCatSeminarios(catSeminarioService.findByFilter(catSeminarioPage.getFiltro()));
 			catSeminarioPage.setFiltro(new CatSeminario());
 			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tabTitulacion:tblCatSeminarios");
-			requestContext.update("formRight:pnlFiltro");
+			requestContext.update("formCatSeminario:tblCatSeminarios");
+			requestContext.update("formMenuCatSeminario:pnlFiltro");
 		} catch (TitulacionException e) {
 			
 		}

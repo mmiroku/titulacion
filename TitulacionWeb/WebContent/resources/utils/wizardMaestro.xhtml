@@ -9,6 +9,7 @@
 	<!-- INTERFACE -->
 	<cc:interface shortDescription="Asigna una puntuación de 1 a 5 a una propiedad">
 	    <cc:attribute name="id" required="true" type="java.lang.String"/>
+	    <cc:attribute name="form" required="true" type="java.lang.String"/>
 		<cc:attribute name="widgetVar" required="true" type="java.lang.String"/>
 		<cc:attribute name="wizard" required="true" type="java.lang.String"/>
 		<cc:attribute name="panel" required="true" type="java.lang.String"/>
@@ -20,39 +21,42 @@
 	<!-- IMPLEMENTATION -->
 	<cc:implementation>
 	<p:dialog id="#{cc.attrs.id}" header="#{cc.attrs.header}" widgetVar="#{cc.attrs.widgetVar}" resizable="false" draggable="false" minimizable="true" width="450">
-            <p:ajax event="close" listener="#{cMaestro.limpiarMaestro()}" />
+        <p:ajax event="close" listener="#{cMaestro.limpiarMaestro()}" />
+        <h:form id="#{cc.attrs.form}">
             <p:outputPanel id="#{cc.attrs.panel}">
-            <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cMaestro.onFlowProcess}" >
+            <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cMaestro.onFlowProcess}" nextLabel="#{msg.B0000002}" backLabel="#{msg.B0000003}">
                 <p:tab id="datosPersonales" title="Datos Personales">
                     <h:panelGrid columns="2">                        
-                        <h:outputText value="Apellido Paterno *"/>
-                        <p:inputText value="#{pMaestro.maestro.aPaterno}" required="true"/>
-                        <h:outputText value="Apellido Materno *"/>
-                        <p:inputText value="#{pMaestro.maestro.aMaterno}" required="true"/>
-                        <h:outputText value="Nombre(s) *"/>
-                        <p:inputText value="#{pMaestro.maestro.nombre}" required="true"/>                                                              
+                        <p:outputLabel for="txtPaterno" value="#{msg.L0000002}"/>
+                        <p:inputText id="txtPaterno" value="#{pMaestro.maestro.aPaterno}" maxlength="50" required="true"/>
+                        <p:outputLabel for="txtMaterno" value="#{msg.L0000003}"/>
+                        <p:inputText id="txtMaterno" value="#{pMaestro.maestro.aMaterno}" maxlength="50" required="true"/>
+                        <p:outputLabel for="txtNombre" value="#{msg.L0000004}"/>
+                        <p:inputText id="txtNombre" value="#{pMaestro.maestro.nombre}" maxlength="50" required="true"/>                                                              
                     </h:panelGrid>
                 </p:tab>
                 <p:tab id="informacionEscolar" title="Información Escolar">
                     <h:panelGrid columns="2">
-                    	<h:outputText value="Titulo"/>
-                        <p:inputText value="#{pMaestro.maestro.titulo}" required="true"/>                                                
-                        <h:outputText value="Anio Ingreso *"/>
-                        <p:calendar value="#{pMaestro.maestro.anioIngreso}" showOn="button" size="7" pattern="dd/MM/yyyy" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true"/>
-                        <h:outputText value="Academia"/>                        
-                        <p:selectOneMenu value="#{pMaestro.maestro.academia}" converter="AcademiaConverter">
+                    	<p:outputLabel for="txtTitulo" value="#{msg.L0000021}"/>
+                        <p:inputText id="txtTitulo" value="#{pMaestro.maestro.titulo}" maxlength="25" required="true"/>                                                
+                        <p:outputLabel for="dtIngreso" value="#{msg.L0000022}"/>
+                        <p:calendar id="dtIngreso" value="#{pMaestro.maestro.anioIngreso}" showOn="button" size="7" pattern="dd/MM/yyyy" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true"/>
+                        <p:outputLabel for="cmbAcademia" value="#{msg.L0000023}"/>                        
+                        <p:selectOneMenu id="cmbAcademia" value="#{pMaestro.maestro.academia}" converter="AcademiaConverter" required="true">
+                            <f:selectItem itemLabel=""/>
                             <f:selectItems value="#{pCatalogo.academias}" var="academia" itemLabel="#{academia.nombre}" itemValue="#{academia}"/>
                         </p:selectOneMenu>
-                        <h:outputText value="Abreviatura"/>
-                        <p:inputText value="#{pMaestro.maestro.abreviatura}" required="true"/>
+                        <p:outputLabel for="txtAbreviatura" value="#{msg.L0000024}"/>
+                        <p:inputText id="txtAbreviatura" value="#{pMaestro.maestro.abreviatura}" maxlength="10" required="true"/>
                     </h:panelGrid>
-                    <p:commandButton style="float: right;" value="Guardar" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="handleComplete(xhr, status, args);"/>                       
+                    <p:commandButton style="float: right;" value="#{msg.B0000010}" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="#{cc.attrs.wizard}HandleComplete(xhr, status, args);"/>                       
                 </p:tab>                
             </p:wizard>
             </p:outputPanel>
+        </h:form>
         </p:dialog>
         <script type="text/javascript">
-            function handleComplete(xhr, status, args) {
+            function #{cc.attrs.wizard}HandleComplete(xhr, status, args) {
                 if(args.isValid) {
                 	#{cc.attrs.widgetVar}.hide();
                 }

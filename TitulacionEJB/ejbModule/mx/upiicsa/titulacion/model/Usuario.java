@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @NamedQueries({
 	@NamedQuery(name = "Usuario.findAll", query = "select u from Usuario u"),
+	@NamedQuery(name = "Usuario.findByName", query = "select u from Usuario u where u.nombre = :nombre"),
 	@NamedQuery(name = "Usuario.findByFilter", query = "select u from Usuario u where ((:nombre is null or :nombre = '' ) or u.nombre = :nombre) and ((:idPerfil is null or :idPerfil = '') or u.perfil.idPerfil = :idPerfil)")})
 @Table(name="TblUsuario")
 public class Usuario implements Serializable {

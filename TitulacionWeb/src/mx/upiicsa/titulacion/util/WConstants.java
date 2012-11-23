@@ -11,4 +11,8 @@ public class WConstants {
 //
 	public final static String FORM_NAME = "form:";
 //	public final static String GLOBAL_MESSAGE = "globalMessage";
+	
+	public final static String PERFIL_ADMIN = "Administrador";
+	public final static String PERFIL_TITULACION = "Titulación";
+	public final static String PERFIL_SEMINARIOS = "Seminarios";
 }

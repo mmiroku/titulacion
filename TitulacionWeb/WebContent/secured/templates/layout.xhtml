@@ -9,7 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <h:outputStylesheet library="css" name="default.css"/>
     <h:outputStylesheet library="css" name="cssLayout.css"/>
-    <title>Facelets Template</title>
+    <title>T I T U L A C I O N</title>
 </h:head>
 
 <h:body>
@@ -59,59 +59,14 @@
             </ui:insert>            
         </div>
         <div>
+            <h:form>
+	            <p:tabMenu id="tabTitulacion" model="#{menu.model}" activeIndex="#{menu.indice}"/>
+            </h:form>
         	<p:layout id="layout">
 	            <p:layoutUnit id="content" position="center">
-	                <h:form id="formCenter">
-                        <p:tabView id="tabTitulacion">
-					        <p:tab id="alumnos" title="Alumnos">
-					            <ui:insert name="tabAlumnos">
-					                Content Tab Alumnos
-					            </ui:insert>
-					        </p:tab>
-					        <p:tab id="pasantes" title="Pasantes">
-					            <ui:insert name="tabPasantes">
-					                Content Tab Alumnos
-					            </ui:insert>
-					        </p:tab>
-					        <p:tab id="sinodales" title="Sinodales">
-					            <ui:insert name="tabSinodales">
-					                Content Tab Sinodales
-					           </ui:insert>
-					        </p:tab>
-					        <p:tab id="materias" title="Materias">
-					            <ui:insert name="tabMaterias">
-					                Content Tab Sinodales
-					           </ui:insert>
-					        </p:tab>
-					        <p:tab id="seminarios" title="Seminarios">
-					            <ui:insert name="tabSeminarios">
-					                Content Tab Seminarios
-					           </ui:insert>
-					        </p:tab>
-					        <p:tab id="usuarios" title="Usuarios">
-					            <ui:insert name="tabUsuarios">
-					                Content Tab Usuarios
-					           </ui:insert>
-					        </p:tab>
-					        <p:tab id="catseminarios" title="CatSeminarios">
-					            <ui:insert name="tabCatSeminarios">
-					                Content Tab Usuarios
-					           </ui:insert>
-					        </p:tab>	
-					        <p:tab id="catLineas" title="CatLineas">
-					            <ui:insert name="tabCatLineas">
-					                Content Tab Lineas
-					           </ui:insert>
-					        </p:tab>
-					        <p:tab id="cedulas" title="Cedulas">
-					            <ui:insert name="tabCedulas">
-					                Content Tab Lineas
-					           </ui:insert>
-					        </p:tab>				        					      
-					    </p:tabView>
-					</h:form>
+					<ui:insert name="content">Content</ui:insert>
 	            </p:layoutUnit>
-	            <p:layoutUnit id="right" header="Menu" position="east" collapsible="true" size="220">
+	            <p:layoutUnit id="right" header="#{msg.T0000001}" position="east" collapsible="true" size="220">
 	                <ui:insert name="right">Right</ui:insert>
 	            </p:layoutUnit>
             </p:layout>

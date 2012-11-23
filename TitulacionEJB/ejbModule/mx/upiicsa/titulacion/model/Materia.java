@@ -4,16 +4,21 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import mx.upiicsa.titulacion.common.enums.Semestre;
+
 
 @Entity
 @NamedQueries({@NamedQuery(name = "Materia.findAll", query = "select m from Materia m"),
-@NamedQuery(name = "Materia.findByFilter", query = "select m from Materia m where ((:materia is null or :materia = '' ) or m.nombre = :materia) and ((:semestre is null or :semestre = '') or m.semestre = :semestre) and ((:idLinea is null or :idLinea = '') or m.linea.linea = :idLinea) and ((:idAcademia is null or :idAcademia = '') or m.academia.IdAcademia = :idAcademia)")})
+	// TODO Query con enum is null no funciona correctamente
+@NamedQuery(name = "Materia.findByFilter", query = "select m from Materia m where ((:materia is null or :materia = '' ) or m.nombre = :materia) and m.semestre = :semestre and ((:idLinea is null or :idLinea = '') or m.linea.linea = :idLinea) and ((:idAcademia is null or :idAcademia = '') or m.academia.IdAcademia = :idAcademia)")})
 @Table(name="TblMateria")
 
 public class Materia implements Serializable {
@@ -30,8 +35,9 @@ public class Materia implements Serializable {
 	@Column(name="Nombre")
 	private String nombre;
 	
+	@Enumerated(EnumType.ORDINAL)
 	@Column(name="Semestre")
-	private int semestre;
+	private Semestre semestre;
 	
 	@Column(name="Descripcion")
 	private String descripcion;
@@ -82,11 +88,11 @@ public class Materia implements Serializable {
 		return nombre;
 	}
 	
-	public void setSemestre(int semestre) {
+	public void setSemestre(Semestre semestre) {
 		this.semestre = semestre;
 	}
 	
-	public int getSemestre() {
+	public Semestre getSemestre() {
 		return semestre;
 	}
 	

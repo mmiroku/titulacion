@@ -9,6 +9,7 @@
 	<!-- INTERFACE -->
 	<cc:interface shortDescription="Asigna una puntuación de 1 a 5 a una propiedad">
 	    <cc:attribute name="id" required="true" type="java.lang.String"/>
+	    <cc:attribute name="form" required="true" type="java.lang.String"/>
 		<cc:attribute name="widgetVar" required="true" type="java.lang.String"/>
 		<cc:attribute name="wizard" required="true" type="java.lang.String"/>
 		<cc:attribute name="panel" required="true" type="java.lang.String"/>
@@ -20,102 +21,96 @@
 	<!-- IMPLEMENTATION -->
 	<cc:implementation>
 	<p:dialog id="#{cc.attrs.id}" header="#{cc.attrs.header}" widgetVar="#{cc.attrs.widgetVar}" resizable="false" draggable="false" minimizable="true" width="450">
-            <p:ajax event="close" listener="#{cAlumno.limpiarAlumno()}" />
+        <p:ajax event="close" listener="#{cAlumno.limpiarAlumno()}" />
+	    <h:form id="#{cc.attrs.form}">
             <p:outputPanel id="#{cc.attrs.panel}">
-            <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cAlumno.onFlowProcess}" >
+            <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cAlumno.onFlowProcess}" nextLabel="#{msg.B0000002}" backLabel="#{msg.B0000003}">
                 <p:tab id="datosPersonales" title="Datos Personales">
                     <h:panelGrid columns="2">
-                        <h:outputText value="Apellido Paterno *"/>
-                        <p:inputText value="#{pAlumno.alumno.aPaterno}" required="true"/>
-                        <h:outputText value="Apellido Materno *"/>
-                        <p:inputText value="#{pAlumno.alumno.aMaterno}" required="true"/>
-                        <h:outputText value="Nombre(s) *"/>
-                        <p:inputText value="#{pAlumno.alumno.nombre}" required="true"/>
-                        <h:outputText value="Sexo"/>
-                        <p:selectOneMenu value="#{pAlumno.alumno.sexo}" converter="SexoConverter">
+                        <p:outputLabel for="txtPaterno" value="#{msg.L0000002}"/>
+                        <p:inputText id="txtPaterno" value="#{pAlumno.alumno.aPaterno}" maxlength="50" required="true"/>
+                        <p:outputLabel for="txtMaterno" value="#{msg.L0000003}"/>
+                        <p:inputText id="txtMaterno" value="#{pAlumno.alumno.aMaterno}" maxlength="50" required="true"/>
+                        <p:outputLabel for="txtNombre" value="#{msg.L0000004}"/>
+                        <p:inputText id="txtNombre" value="#{pAlumno.alumno.nombre}" maxlength="50" required="true"/>
+                        <p:outputLabel for="cmbSexo" value="#{msg.L0000005}"/>
+                        <p:selectOneMenu id="cmbSexo" value="#{pAlumno.alumno.sexo}" converter="SexoConverter" required="true">
+                            <f:selectItem itemLabel=""/>
                             <f:selectItems value="#{pCatalogo.sexos}" var="sexo" itemLabel="#{sexo.descripcion}" itemValue="#{sexo}"/>
                         </p:selectOneMenu>
-                        <h:outputText value="Fecha Nacimiento *"/>
-                        <p:calendar value="#{pAlumno.alumno.fechaNacimiento}" showOn="button" size="7" pattern="dd/MM/yyyy" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true"/> 
-                        <h:outputText value="Edad"/>
-                        <p:inputText />
-                        <h:outputText value="R.F.C. *"/>
-                        <p:inputText value="#{pAlumno.alumno.rfc}" required="true"/>
-                        <h:outputText value="CURP *"/>
-                        <p:inputText value="#{pAlumno.alumno.curp}" required="true"/>
+                        <p:outputLabel for="dtFechaNac" value="#{msg.L0000006}"/>
+                        <p:calendar id="dtFechaNac" value="#{pAlumno.alumno.fechaNacimiento}"  showOn="button" size="7" pattern="dd/MM/yyyy" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true">
+                            <p:ajax event="dateSelect" listener="#{cAlumno.calcularEdad}" update="txtEdad" />
+                        </p:calendar> 
+                        <p:outputLabel for="txtEdad" value="#{msg.L0000007}"/>
+                        <p:inputText id="txtEdad" value="#{pAlumno.alumno.edad}" disabled="true"/>
+                        <p:outputLabel for="txtRfc" value="#{msg.L0000008}"/>
+                        <p:inputText id="txtRfc" value="#{pAlumno.alumno.rfc}" maxlength="13" required="true"/>
+                        <p:outputLabel for="txtCurp" value="#{msg.L0000009}"/>
+                        <p:inputText id="txtCurp" value="#{pAlumno.alumno.curp}" maxlength="20" required="true"/>
                     </h:panelGrid>
                 </p:tab>
                 <p:tab id="informacionEscolar" title="Información Escolar">
                     <h:panelGrid columns="2">
-                        <h:outputText value="No. de Boleta *"/>
-                        <p:inputText value="#{pAlumno.alumno.boleta}" required="true" disabled="#{cc.attrs.isEdit}"/>
-                        <h:outputText value="Licenciatura"/>
-                        <p:selectOneMenu value="#{pAlumno.alumno.carrera}" converter="CarreraConverter">
+                        <p:outputLabel for="txtBoleta" value="#{msg.L0000010}"/>
+                        <p:inputText id="txtBoleta" value="#{pAlumno.alumno.boleta}" maxlength="15" required="true" disabled="#{cc.attrs.isEdit}"/>
+                        <p:outputLabel for="cmbCarrera" value="#{msg.L0000011}"/>
+                        <p:selectOneMenu id="cmbCarrera" value="#{pAlumno.alumno.carrera}" converter="CarreraConverter">
                             <f:selectItems value="#{pCatalogo.carreras}" var="carrera" itemLabel="#{carrera.nombre}" itemValue="#{carrera}"/>
                         </p:selectOneMenu>
-                        <h:outputText value="Promedio"/>
-                        <p:inputText />
-                        <h:outputText value="Año de Inicio de la Lic. *"/>
-                        <p:inputText value="#{pAlumno.alumno.inicioCarrera}" required="true"/>
-                        <h:outputText value="Año de Termino de la Lic."/>
-                        <p:inputText value="#{pAlumno.alumno.finCarrera}"/>
-                        <h:outputText value="Generación"/>
-                        <p:inputText />
-                        <h:outputText value="Tipo de Egresado"/>
-                        <p:selectOneMenu>
-                            <f:selectItem itemLabel="Interno"/>
-                            <f:selectItem itemLabel="Externo"/>
-                        </p:selectOneMenu>
-                        <h:outputText value="Número de Acta"/>
-                        <p:inputText />
-                        <h:outputText value="Número de Libro"/>
-                        <p:inputText />
+                        <p:outputLabel for="txtInicio" value="#{msg.L0000012}"/>
+                        <p:inputText id="txtInicio" value="#{pAlumno.alumno.inicioCarrera}" maxlength="4" converter="NumeroEnteroConverter" required="true"/>
+                        <p:outputLabel for="txtTermino" value="#{msg.L0000013}"/>
+                        <p:inputText id="txtTermino" value="#{pAlumno.alumno.finCarrera}" maxlength="4" converter="NumeroEnteroConverter"/>
                     </h:panelGrid>
                 </p:tab>
                 <p:tab id="direccionContacto" title="Dirección y Contacto">
-                <p:fieldset legend="Dirección">
-                    <h:panelGrid columns="2">
-                        <h:outputText value="Calle *"/>
-                        <p:inputText value="#{pAlumno.alumno.direccion.calle}" required="true"/>
-                        <h:outputText value="No. Exterior - Interior *"/>
-                        <p:inputText value="#{pAlumno.alumno.direccion.numeroExterior}" required="true"/>
-                        <h:outputText value="Código Postal *"/>
-                        <p:inputText value="#{pAlumno.alumno.direccion.codigoPostal}" required="true"/>
-                        <h:outputText value="Colonia *"/>
-                            <p:inputText value="#{pAlumno.alumno.direccion.colonia}" required="true"/>
-                        <h:outputText value="Delegación/Municipio *"/>
-                        <p:inputText value="#{pAlumno.alumno.direccion.delegacion}" required="true"/>
-                        </h:panelGrid>
-                        <h:panelGrid columns="4">
-                        <h:outputText value="Ciudad"/>
-                        <p:inputText size="12"/>
-                        <h:outputText value="Estado *"/>
-                        <p:inputText value="#{pAlumno.alumno.direccion.estado}" size="12" required="true"/>
-                    </h:panelGrid>
+	                <p:fieldset legend="Dirección">
+	                    <h:panelGrid columns="2">
+	                        <p:outputLabel for="txtCalle" value="#{msg.L0000014}"/>
+	                        <p:inputText id="txtCalle" value="#{pAlumno.alumno.direccion.calle}" maxlength="50" required="true"/>
+	                    </h:panelGrid>
+	                    <h:panelGrid columns="4">
+	                        <p:outputLabel for="txtNoExterior" value="#{msg.L0000015}"/>
+	                        <p:inputText id="txtNoExterior" value="#{pAlumno.alumno.direccion.numeroExterior}" maxlength="10" size="6" required="true"/>
+	                        <p:outputLabel for="txtNoInterior" value="#{msg.L0000016}"/>
+	                        <p:inputText id="txtNoInterior" value="#{pAlumno.alumno.direccion.numeroInterior}" maxlength="10" size="6"/>
+	                    </h:panelGrid>
+	                    <h:panelGrid columns="2">
+	                        <p:outputLabel for="txtCodigoPostal" value="#{msg.L0000017}"/>
+	                        <p:inputText id="txtCodigoPostal" value="#{pAlumno.alumno.direccion.codigoPostal}" maxlength="5" required="true"/>
+	                        <p:outputLabel for="txtColonia" value="#{msg.L0000018}"/>
+	                        <p:inputText id="txtColonia" value="#{pAlumno.alumno.direccion.colonia}" maxlength="50" required="true"/>
+	                        <p:outputLabel for="txtDelegacion" value="#{msg.L0000019}"/>
+	                        <p:inputText id="txtDelegacion" value="#{pAlumno.alumno.direccion.delegacion}" maxlength="50" required="true"/>
+	                        <p:outputLabel for="txtEstado" value="#{msg.L0000020}"/>
+	                        <p:inputText id="txtEstado" value="#{pAlumno.alumno.direccion.estado}" maxlength="50" size="12" required="true"/>
+	                    </h:panelGrid>
                     </p:fieldset>
                     <p:fieldset legend="Contacto">
-                        <h:panelGrid columns="4">
-                        <h:outputText value="Número de Acta"/>
-                        <p:inputText size="12"/>
-                        <h:outputText value="Tel. Particular"/>
-                        <p:inputText value="#{pAlumno.alumno.numeroTelefono}" size="12"/>
-                        </h:panelGrid>
                         <h:panelGrid columns="2">
-                        <h:outputText value="Tel. Celular"/>
-                        <p:inputText value="#{pAlumno.alumno.numeroCelular}"/>
+                            <p:outputLabel for="txtEmail" value="#{msg.L0000032}"/>
+                            <p:inputText id="txtEmail" value="#{pAlumno.alumno.email}" maxlength="50"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="4">
+	                        <p:outputLabel for="txtTelParticular" value="#{msg.L0000030}"/>
+	                        <p:inputText id="txtTelParticular" value="#{pAlumno.alumno.numeroTelefono}" maxlength="20" size="12"/>
+	                        <p:outputLabel for="txtTelCelular" value="#{msg.L0000031}"/>
+	                        <p:inputText id="txtTelCelular" value="#{pAlumno.alumno.numeroCelular}" maxlength="20" size="12"/>
                         </h:panelGrid>
                     </p:fieldset>
-                    <p:commandButton style="float: right;" value="Guardar" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="handleComplete(xhr, status, args);"/>
+                    <p:commandButton style="float: right;" value="#{msg.B0000010}" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="#{cc.attrs.wizard}HandleComplete(xhr, status, args);"/>
                 </p:tab>
             </p:wizard>
             </p:outputPanel>
-        </p:dialog>
-        <script type="text/javascript">
-            function handleComplete(xhr, status, args) {
-                if(args.isValid) {
-                	#{cc.attrs.widgetVar}.hide();
-                }
-            }
-        </script>
+        </h:form>
+	</p:dialog>
+	<script type="text/javascript">
+	    function #{cc.attrs.wizard}HandleComplete(xhr, status, args) {
+	        if(args.isValid) {
+	        	#{cc.attrs.widgetVar}.hide();
+	        }
+	    }
+	</script>
 	</cc:implementation>
 </html>

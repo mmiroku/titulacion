@@ -9,16 +9,16 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:utils="http://java.sun.com/jsf/composite/utils">
 
-	<ui:define name="tabCatSeminarios">
-	
-	#{cCatSeminario.init}
+<ui:define name="content">
+    <h:form id="formCatSeminario">
+
 	<p:growl id="msgsCatSeminarios"/>
 	        <p:outputPanel id="tblCatSeminarios">	    	           
-	           <p:dataTable var="catSeminario" value="#{pCatSeminario.catSeminarios}" emptyMessage="No existen seminarios">	               
-	               <p:column headerText="Id">
+	           <p:dataTable var="catSeminario" value="#{pCatSeminario.catSeminarios}" emptyMessage="#{msg.M0000013}">	               
+	               <p:column headerText="#{msg.L0000041}">
                        <h:outputText value="#{catSeminario.idCatalogoSeminario}"/>
                    </p:column>
-                   <p:column headerText="Seminario">
+                   <p:column headerText="#{msg.L0000033}">
                        <h:outputText value="#{catSeminario.nombre}"/>
                    </p:column>                   
                    <p:column style="vertical-align:middle; width:7%;">  
@@ -26,34 +26,37 @@
                            <h:outputText />
                        </f:facet>
                        <p:commandButton id="btnDelCatSeminario" icon="ui-icon-trash" onclick="dlgDel.show();" process="@this" action="#{pCatSeminario.setCatSeminario(catSeminario)}" />
-                       <p:tooltip for="btnDelCatSeminario" value="Eliminar" showEffect="fade" hideEffect="fade" />
+                       <p:tooltip for="btnDelCatSeminario" value="#{msg.B0000018}" showEffect="fade" hideEffect="fade" />
                    </p:column>                                      
 	           </p:dataTable>	    
 	      </p:outputPanel>
+    </h:form>
 	     	     	      	      	    
-		  <p:confirmDialog message="¿Está seguro que desea eliminar el seminario #{pCatSeminario.catSeminario.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDel" appendToBody="true">
-           		<p:commandButton value="Sí" action="#{cCatSeminario.eliminarCatSeminario}" oncomplete="dlgDel.hide();" />
-          		<p:commandButton value="No" onclick="dlgDel.hide();"/>
-          </p:confirmDialog>
-          <p:dialog header="Seminario" widgetVar="catSeminario">
-          <p:outputPanel id="catSeminarioDetail" style="text-align:center;" layout="block">  
-          	<h:panelGrid columns="2" cellpadding="5">
-          		<h:outputText value="Seminario :"/>
-          		<p:inputText value="#{pCatSeminario.catSeminario.nombre}" required="true"/>
-          	</h:panelGrid>
-          	<p:commandButton value="Guardar" action="#{cCatSeminario.guardarCatSeminario()}" oncomplete="catSeminario.hide();"/>
-          	</p:outputPanel>
-          </p:dialog>
-	</ui:define>
-	<ui:define name="right">
-	<h:form id="formRight">	
+	<p:confirmDialog message="#{msg.M0000014} #{pCatSeminario.catSeminario.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDelCatSeminario" appendToBody="true">
+	    <p:commandButton value="#{msg.B0000019}" action="#{cCatSeminario.eliminarCatSeminario}" oncomplete="dlgDelCatSeminario.hide();" />
+	    <p:commandButton value="#{msg.B0000020}" onclick="dlgDelCatSeminario.hide();"/>
+	</p:confirmDialog>
+
+	<p:dialog header="Seminario" widgetVar="dlgNewCatSeminario">
+	    <p:outputPanel id="pnlNewCatSeminario" style="text-align:center;" layout="block">  
+	        <h:panelGrid columns="2" cellpadding="5">
+	            <h:outputText value="#{msg.L0000033}"/>
+	            <p:inputText value="#{pCatSeminario.catSeminario.nombre}" required="true"/>
+	        </h:panelGrid>
+	        <p:commandButton value="#{msg.B0000010}" action="#{cCatSeminario.guardarCatSeminario()}" oncomplete="dlgNewCatSeminario.hide();"/>
+	    </p:outputPanel>
+	</p:dialog>
+</ui:define>
+<ui:define name="right">
+	<h:form id="formMenuCatSeminario">
+	   <utils:logout/>
 	   <h:panelGrid style="padding: 10px;">
 	    <p:fieldset legend="Acciones">
 	       <h:panelGrid>
-			    <p:commandButton value="Nuevo Seminaro" oncomplete="catSeminario.show()" action="#{cCatSeminario.limpiarCatSeminario()}" />			    			    
+			    <p:commandButton value="#{msg.B0000024}" oncomplete="dlgNewCatSeminario.show()" action="#{cCatSeminario.limpiarCatSeminario()}" />			    			    
 	       </h:panelGrid>
 	    </p:fieldset>	    
 	    </h:panelGrid>	      	     
-</h:form>
-	</ui:define>
+    </h:form>
+</ui:define>
 </ui:composition>

@@ -16,7 +16,7 @@ public class Direccion implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="IdDireccion")
-	private int idDireccion;
+	private Long idDireccion;
 
 	@Column(name="Calle")
 	private String calle;
@@ -42,11 +42,11 @@ public class Direccion implements Serializable {
 	public Direccion() {
 	}
 
-	public int getIdDireccion() {
+	public Long getIdDireccion() {
 		return this.idDireccion;
 	}
 
-	public void setIdDireccion(int idDireccion) {
+	public void setIdDireccion(Long idDireccion) {
 		this.idDireccion = idDireccion;
 	}
 

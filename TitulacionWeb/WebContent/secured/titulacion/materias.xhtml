@@ -9,88 +9,93 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:utils="http://java.sun.com/jsf/composite/utils">
 
-	<ui:define name="tabMaterias">
+<ui:define name="content">
+	<h:form id="formMateria">
 	    
-        #{cMateria.init}
 	    <p:growl id="msgsMaterias"/>
-	        <p:outputPanel id="tblMaterias">
-	           <p:dataTable var="materia" value="#{pMateria.materias}" emptyMessage="No existen materia registradas.">
-	               <p:column headerText="Clave">
-	                   <h:outputText value="#{materia.idMateria}"/>
-	               </p:column>
-	               <p:column headerText="Materia">
-                       <h:outputText value="#{materia.nombre}"/>
-                   </p:column>
-                   <p:column headerText="Semestre">
-                       <h:outputText value="#{materia.semestre}"/>
-                   </p:column>
-                   <p:column headerText="Descripción">
-                       <h:outputText value="#{materia.descripcion}"/>
-                   </p:column>
-                   <p:column headerText="Linea">
-                       <h:outputText value="#{materia.linea.descripcion}"/>
-                   </p:column>
-                   <p:column headerText="Academia">
-                       <h:outputText value="#{materia.academia.nombre}"/>
-                   </p:column>
-                   <p:column style="vertical-align:middle; width:7%;">  
-                       <f:facet name="header">
-                           <h:outputText />
-                       </f:facet>
-                       <p:commandButton id="btnEditMateria" icon="ui-icon-pencil" onclick="wizEdit.loadStep(wizEdit.cfg.steps[0], true); dlgEdit.show();" process="@this" action="#{cMateria.seleccionarMateria(materia)}" />
-                       <p:tooltip for="btnEditMateria" value="Editar" showEffect="fade" hideEffect="fade" />
-                   </p:column>                   
-                   <p:column style="vertical-align:middle; width:7%;">  
-                       <f:facet name="header">
-                           <h:outputText />
-                       </f:facet>
-                       <p:commandButton id="btnDelMateria" icon="ui-icon-trash" onclick="dlgDel.show();" process="@this" action="#{pMateria.setMateria(materia)}" />
-                       <p:tooltip for="btnDelMateria" value="Eliminar" showEffect="fade" hideEffect="fade" />
-                   </p:column>                                      	          
-	           </p:dataTable>
-	           </p:outputPanel>
-	           
-	           <utils:wizardMateria id="idNew" wizard="wizNew" widgetVar="dlgNew" panel="pnlNew" header="Nueva Materia" isEdit="false" action="#{cMateria.guardarMateria()}"/>
-	           <utils:wizardMateria id="idEdit" wizard="wizEdit" widgetVar="dlgEdit" panel="pnlEdit" header="Editar Materia" isEdit="true" action="#{cMateria.actualizarMateria()}"/>
-	           
-	           <p:confirmDialog message="¿Está seguro que desea eliminar la materia #{pMateria.materia.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDel" appendToBody="true">
-            		<p:commandButton value="Sí" action="#{cMateria.eliminarMateria}" oncomplete="dlgDel.hide();" />
-            		<p:commandButton value="No" onclick="dlgDel.hide();"/>
-          		</p:confirmDialog>
-          			      	          
-	</ui:define>
-	<ui:define name="right">
-	<h:form id="formRight">	
-	   <h:panelGrid style="padding: 10px;">
-	    <p:fieldset legend="Acciones">
-	       <h:panelGrid>
-			    <p:commandButton value="Nueva Materia" action="#{cMateria.limpiarMateria()}" onclick="wizNew.loadStep(wizNew.cfg.steps[0], true); dlgNew.show();"/>			    
-	       </h:panelGrid>
-	    </p:fieldset>
-	    <br/>
-	    <p:fieldset legend="Filtrar">
-	    	<p:outputPanel id="pnlFiltro">
-	       <h:panelGrid>
-	       <h:outputText value="Materia"/>
-	       <p:inputText value="#{pMateria.filtro.nombre}"/>
-	       <h:outputText value="Semestre"/>
-           <p:inputText value="#{pMateria.filtro.semestre}"/>
-           <h:outputText value="Linea"/>
-           <p:selectOneMenu value="#{pMateria.filtro.linea}" converter="LineaConverter">
-                    <f:selectItem itemLabel=""/>
-                    <f:selectItems value="#{pCatalogo.lineas}" var="linea" itemLabel="#{linea.descripcion}" itemValue="#{linea}"/>
-           </p:selectOneMenu>
-           <h:outputText value="Academia"/>
-           		<p:selectOneMenu value="#{pMateria.filtro.academia}" converter="AcademiaConverter">
-           			<f:selectItem itemLabel=""/>
-					<f:selectItems value="#{pCatalogo.academias}" var="academia" itemLabel="#{academia.nombre}" itemValue="#{academia}"/>
-           		</p:selectOneMenu>           
-           <br/>
-		     <p:commandButton value="Buscar" action="#{cMateria.filtrarMaterias()}" style="float: right;"/>
-           </h:panelGrid>
-           </p:outputPanel>
-	    </p:fieldset>
-	    </h:panelGrid>	      	     
-</h:form>
-	</ui:define>
+	    <p:outputPanel id="tblMaterias">
+            <p:dataTable var="materia" value="#{pMateria.materias}" emptyMessage="#{msg.M0000003}">
+	            <p:column headerText="#{msg.L0000025}">
+	                <h:outputText value="#{materia.idMateria}"/>
+	            </p:column>
+	            <p:column headerText="#{msg.L0000026}">
+	                <h:outputText value="#{materia.nombre}"/>
+	            </p:column>
+	            <p:column headerText="#{msg.L0000027}">
+	                <h:outputText value="#{materia.semestre.etiqueta}"/>
+	            </p:column>
+	            <p:column headerText="#{msg.L0000028}">
+	                <h:outputText value="#{materia.descripcion}"/>
+	            </p:column>
+	            <p:column headerText="#{msg.L0000029}">
+	                <h:outputText value="#{materia.linea.descripcion}"/>
+	            </p:column>
+	            <p:column headerText="#{msg.L0000023}">
+	                <h:outputText value="#{materia.academia.nombre}"/>
+	            </p:column>
+	            <p:column style="vertical-align:middle; width:7%;">  
+	                <f:facet name="header">
+	                    <h:outputText />
+	                </f:facet>
+	                <p:commandButton id="btnEditMateria" icon="ui-icon-pencil" onclick="wizEditMateria.loadStep(wizEditMateria.cfg.steps[0], true); dlgEditMateria.show();" process="@this" action="#{cMateria.seleccionarMateria(materia)}" />
+	                <p:tooltip for="btnEditMateria" value="#{msg.B0000017}" showEffect="fade" hideEffect="fade" />
+	            </p:column>                   
+	            <p:column style="vertical-align:middle; width:7%;">  
+	                <f:facet name="header">
+	                    <h:outputText />
+	                </f:facet>
+	                <p:commandButton id="btnDelMateria" icon="ui-icon-trash" onclick="dlgDelMateria.show();" process="@this" action="#{pMateria.setMateria(materia)}" />
+	                <p:tooltip for="btnDelMateria" value="#{msg.B0000018}" showEffect="fade" hideEffect="fade" />
+	            </p:column>                                      	          
+         </p:dataTable>
+         </p:outputPanel>
+    </h:form>
+
+    <utils:wizardMateria id="idNewMateria" form="formNewMateria" wizard="wizNewMateria" widgetVar="dlgNewMateria" panel="pnlNewMateria" header="#{msg.T0000011}" isEdit="false" action="#{cMateria.guardarMateria()}"/>
+
+    <utils:wizardMateria id="idEditMateria" form="formEditMateria" wizard="wizEditMateria" widgetVar="dlgEditMateria" panel="pnlEditMateria" header="#{msg.T0000012}" isEdit="true" action="#{cMateria.actualizarMateria()}"/>
+
+    <p:confirmDialog message="#{msg.M0000006} #{pMateria.materia.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDelMateria" appendToBody="true">
+        <p:commandButton value="#{msg.B0000019}" action="#{cMateria.eliminarMateria}" oncomplete="dlgDelMateria.hide();" />
+        <p:commandButton value="#{msg.B0000020}" onclick="dlgDelMateria.hide();"/>
+    </p:confirmDialog>
+</ui:define>
+<ui:define name="right">
+    <h:form id="formMenuMateria">
+        <utils:logout/>
+        <h:panelGrid style="padding: 10px;">
+            <p:fieldset legend="Acciones">
+                <h:panelGrid>
+                    <p:commandButton value="#{msg.B0000016}" action="#{cMateria.limpiarMateria()}" onclick="wizNewMateria.loadStep(wizNewMateria.cfg.steps[0], true); dlgNewMateria.show();"/>              
+                </h:panelGrid>
+            </p:fieldset>
+            <br/>
+            <p:fieldset legend="#{msg.T0000003}">
+                <p:outputPanel id="pnlFiltro">
+                    <h:panelGrid>
+                        <h:outputText value="#{msg.L0000026}"/>
+                        <p:inputText value="#{pMateria.filtro.nombre}"/>
+                        <h:outputText value="#{msg.L0000027}"/>
+                        <p:selectOneMenu value="#{pMateria.filtro.semestre}">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems value="#{pCatalogo.semestres}" var="semestre" itemLabel="#{msg[semestre.etiqueta]}" itemValue="#{semestre}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="#{msg.L0000029}"/>
+                        <p:selectOneMenu value="#{pMateria.filtro.linea}" converter="LineaConverter">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems value="#{pCatalogo.lineas}" var="linea" itemLabel="#{linea.descripcion}" itemValue="#{linea}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="#{msg.L0000023}"/>
+                        <p:selectOneMenu value="#{pMateria.filtro.academia}" converter="AcademiaConverter">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems value="#{pCatalogo.academias}" var="academia" itemLabel="#{academia.nombre}" itemValue="#{academia}"/>
+                        </p:selectOneMenu>           
+                        <br/>
+                        <p:commandButton value="#{msg.B0000012}" action="#{cMateria.filtrarMaterias()}" />
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:fieldset>
+        </h:panelGrid>               
+    </h:form>
+</ui:define>
 </ui:composition>

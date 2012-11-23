@@ -6,6 +6,7 @@ import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import mx.upiicsa.titulacion.common.enums.Semestre;
 import mx.upiicsa.titulacion.model.Academia;
 import mx.upiicsa.titulacion.model.Carrera;
 import mx.upiicsa.titulacion.model.CatLinea;
@@ -95,7 +96,11 @@ public class CatalogoPage implements Serializable {
 	public List<Perfil> getPerfiles() {
 		return perfiles;
 	}
-	
+
+	public Semestre[] getSemestres() {
+		return Semestre.values();
+	}
+
 	public void setCatLineas(List<CatLinea> catLineas) {
 		this.catLineas = catLineas;
 	}

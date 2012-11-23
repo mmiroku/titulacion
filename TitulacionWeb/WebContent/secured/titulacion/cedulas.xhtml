@@ -9,73 +9,73 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:utils="http://java.sun.com/jsf/composite/utils">
 
-	<ui:define name="tabCedulas">
-	    
-        #{cCedula.init}
+<ui:define name="content">
+    <h:form id="formCedula">
+
 	    <p:growl id="msgsCedulas"/>
 	        <p:outputPanel id="tblCedulas">
-	           <p:dataTable var="cedula" value="#{pCedula.cedulas}" emptyMessage="No existen cedulas registrados.">
-	               <p:column headerText="Profesor">
+	           <p:dataTable var="cedula" value="#{pCedula.cedulas}" emptyMessage="#{msg.M0000015}">
+	               <p:column headerText="#{msg.L0000042}">
 	                   <h:outputText value="#{cedula.maestro.aPaterno} #{cedula.maestro.aMaterno} #{cedula.maestro.nombre}"/>
 	               </p:column>	               
-                   <p:column headerText="Cedula">
+                   <p:column headerText="#{msg.L0000043}">
                        <h:outputText value="#{cedula.numeroCedula}"/>
                    </p:column>
-                   <p:column headerText="Titulo">
+                   <p:column headerText="#{msg.L0000021}">
                        <h:outputText value="#{cedula.titulo}"/>
                    </p:column>
                    <p:column style="vertical-align:middle; width:7%;">  
                        <f:facet name="header">
                            <h:outputText />
                        </f:facet>
-                       <p:commandButton id="btnEditCedula" icon="ui-icon-pencil" onclick="wizEdit.loadStep(wizEdit.cfg.steps[0], true); dlgEdit.show();" process="@this" action="#{cCedula.seleccionarCedula(cedula)}" />
-                       <p:tooltip for="btnEditCedula" value="Editar" showEffect="fade" hideEffect="fade" />
+                       <p:commandButton id="btnEditCedula" icon="ui-icon-pencil" onclick="wizEditCedula.loadStep(wizEditCedula.cfg.steps[0], true); dlgEditCedula.show();" process="@this" action="#{cCedula.seleccionarCedula(cedula)}" />
+                       <p:tooltip for="btnEditCedula" value="#{msg.B0000017}" showEffect="fade" hideEffect="fade" />
                    </p:column>
                    <p:column style="vertical-align:middle; width:7%;">  
                        <f:facet name="header">
                            <h:outputText />
                        </f:facet>
-                       <p:commandButton id="btnDelCedula" icon="ui-icon-trash" onclick="dlgDel.show();" process="@this" action="#{pCedula.setCedula(cedula)}" />
-                       <p:tooltip for="btnDelCedula" value="Eliminar" showEffect="fade" hideEffect="fade" />
+                       <p:commandButton id="btnDelCedula" icon="ui-icon-trash" onclick="dlgDelCedula.show();" process="@this" action="#{pCedula.setCedula(cedula)}" />
+                       <p:tooltip for="btnDelCedula" value="#{msg.B0000018}" showEffect="fade" hideEffect="fade" />
                    </p:column>
 	           </p:dataTable>
 	           </p:outputPanel>
-	       
+    </h:form>
 	    
-	    <utils:wizardCedula id="idNew" wizard="wizNew" widgetVar="dlgNew" panel="pnlNew" header="Nuevo Alumno" isEdit="false" action="#{cCedula.guardarCedula()}"/>
+    <utils:wizardCedula id="idNewCedula" form="formNewCedula" wizard="wizNewCedula" widgetVar="dlgNewCedula" panel="pnlNewCedula" header="#{msg.T0000021}" isEdit="false" action="#{cCedula.guardarCedula()}"/>
         
-        <utils:wizardCedula id="idEdit" wizard="wizEdit" widgetVar="dlgEdit" panel="pnlEdit" header="Editar Alumno" isEdit="true" action="#{cCedula.actualizarCedula()}"/>
+    <utils:wizardCedula id="idEditCedula" form="formEditCedula" wizard="wizEditCedula" widgetVar="dlgEditCedula" panel="pnlEditCedula" header="#{msg.T0000022}" isEdit="true" action="#{cCedula.actualizarCedula()}"/>
         
-        <p:confirmDialog message="¿Está seguro que desea eliminar la cedula #{pCedula.cedula.numeroCedula}?" header="Eliminar" severity="alert" widgetVar="dlgDel" appendToBody="true">
-            <p:commandButton value="Sí" action="#{cCedula.eliminarCedula}" oncomplete="dlgDel.hide();" />
-            <p:commandButton value="No" onclick="dlgDel.hide();"/>
-        </p:confirmDialog>
+    <p:confirmDialog message="#{msg.M0000016} #{pCedula.cedula.numeroCedula}?" header="Eliminar" severity="alert" widgetVar="dlgDelCedula" appendToBody="true">
+        <p:commandButton value="#{msg.B0000019}" action="#{cCedula.eliminarCedula}" oncomplete="dlgDelCedula.hide();" />
+        <p:commandButton value="#{msg.B0000020}" onclick="dlgDelCedula.hide();"/>
+    </p:confirmDialog>
         
-        
-	</ui:define>
-	<ui:define name="right">
-	<h:form id="formRight">
+</ui:define>
+<ui:define name="right">
+    <h:form id="formMenuCedula">
+        <utils:logout/>
 	   <h:panelGrid style="padding: 10px;">
 	    <p:fieldset legend="Acciones">
 	       <h:panelGrid>
-			    <p:commandButton value="Nueva Cedula" action="#{cCedula.limpiarCedula()}" onclick="wizNew.loadStep(wizNew.cfg.steps[0], true); dlgNew.show();" />			    
+			    <p:commandButton value="#{msg.B0000025}" action="#{cCedula.limpiarCedula()}" onclick="wizNewCedula.loadStep(wizNewCedula.cfg.steps[0], true); dlgNewCedula.show();" />			    
 	       </h:panelGrid>
 	    </p:fieldset>	    
 	    <br/>
-	    <p:fieldset legend="Filtrar">
+	    <p:fieldset legend="#{msg.T0000003}">
 	       <p:outputPanel id="pnlFiltro">
 	       <h:panelGrid>	       	       	       	     
-	       <h:outputText value="Número de Cédula :"/>
+	       <h:outputText value="#{msg.L0000043}"/>
            <p:inputText value="#{pCedula.filtro.numeroCedula}"/>
-           <h:outputText value="Titulo :"/>
+           <h:outputText value="#{msg.L0000021}"/>
            <p:inputText value="#{pCedula.filtro.titulo}"/>           
            <br/>
-		   <p:commandButton value="Buscar" action="#{cCedula.filtrarCedula()}" style="float: right;"/>
+		   <p:commandButton value="#{msg.B0000012}" action="#{cCedula.filtrarCedula()}" style="float: right;"/>
            </h:panelGrid>
            </p:outputPanel>
 	    </p:fieldset>
 	    </h:panelGrid>
 
-</h:form>
-	</ui:define>
+    </h:form>
+</ui:define>
 </ui:composition>

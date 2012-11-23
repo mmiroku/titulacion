@@ -9,52 +9,55 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:utils="http://java.sun.com/jsf/composite/utils">
 
-	<ui:define name="tabCatLineas">
+<ui:define name="content">
+    <h:form id="formCatLinea">
 	    
-        #{cCatLinea.init}
 	    <p:growl id="msgsCatLineas"/>
 	        <p:outputPanel id="tblCatLineas">
-	           <p:dataTable var="catLinea" value="#{pCatLinea.catLineas}" emptyMessage="No existen lineas registradas.">
-	               <p:column headerText="Lineas Curriculares">
+	           <p:dataTable var="catLinea" value="#{pCatLinea.catLineas}" emptyMessage="#{msg.M0000011}">
+	               <p:column headerText="#{msg.L0000040}">
 	                   <h:outputText value="#{catLinea.descripcion}"/>
 	               </p:column>
-	               <p:column headerText="Carrera">
+	               <p:column headerText="#{msg.L0000011}">
 	                   <h:outputText value="#{catLinea.carrera.nombre}"/>
 	               </p:column>	               	
 	               <p:column style="vertical-align:middle; width:7%;">  
                        <f:facet name="header">
                            <h:outputText />
                        </f:facet>
-                       <p:commandButton id="btnEditCatLinea" icon="ui-icon-pencil" onclick="wizEdit.loadStep(wizEdit.cfg.steps[0], true); dlgEdit.show();" process="@this" action="#{cCatLinea.seleccionarCatLinea(catLinea)}" />
-                       <p:tooltip for="btnEditCatLinea" value="Editar" showEffect="fade" hideEffect="fade" />
+                       <p:commandButton id="btnEditCatLinea" icon="ui-icon-pencil" onclick="wizEditCatLinea.loadStep(wizEditCatLinea.cfg.steps[0], true); dlgEditCatLinea.show();" process="@this" action="#{cCatLinea.seleccionarCatLinea(catLinea)}" />
+                       <p:tooltip for="btnEditCatLinea" value="#{msg.B0000017}" showEffect="fade" hideEffect="fade" />
                    </p:column>
                    <p:column style="vertical-align:middle; width:7%;">  
                        <f:facet name="header">
                            <h:outputText />
                        </f:facet>
-                       <p:commandButton id="btnDelCatLinea" icon="ui-icon-trash" onclick="dlgDel.show();" process="@this" action="#{pCatLinea.setCatLinea(catLinea)}" />
-                       <p:tooltip for="btnDelCatLinea" value="Eliminar" showEffect="fade" hideEffect="fade" />
+                       <p:commandButton id="btnDelCatLinea" icon="ui-icon-trash" onclick="dlgDelCatLinea.show();" process="@this" action="#{pCatLinea.setCatLinea(catLinea)}" />
+                       <p:tooltip for="btnDelCatLinea" value="#{msg.B0000018}" showEffect="fade" hideEffect="fade" />
                    </p:column>                                                     	        
 	           </p:dataTable>	           	           	           	          
 	           </p:outputPanel>
-	           <utils:wizardCatLinea id="idNew" wizard="wizNew" widgetVar="dlgNew" panel="pnlNew" header="Nuevo Alumno" isEdit="false" action="#{cCatLinea.guardarCatLinea()}"/>
-        
-        	   <utils:wizardCatLinea id="idEdit" wizard="wizEdit" widgetVar="dlgEdit" panel="pnlEdit" header="Editar Alumno" isEdit="true" action="#{cCatLinea.actualizarCatLinea()}"/>
-        
-        		<p:confirmDialog message="¿Está seguro que desea eliminar el alumno #{pCatLinea.catLinea.descripcion}?" header="Eliminar" severity="alert" widgetVar="dlgDel" appendToBody="true">
-            		<p:commandButton value="Sí" action="#{cCatLinea.eliminarCatLinea}" oncomplete="dlgDel.hide();" />
-            		<p:commandButton value="No" onclick="dlgDel.hide();"/>
-        		</p:confirmDialog>	           	           	           	                    			      	       
-	</ui:define>
-	<ui:define name="right">
-	<h:form id="formRight">	
+    </h:form>
+
+    <utils:wizardCatLinea id="idNewCatLinea" form="formNewCatLinea" wizard="wizNewCatLinea" widgetVar="dlgNewCatLinea" panel="pnlNewCatLinea" header="#{msg.T0000019}" isEdit="false" action="#{cCatLinea.guardarCatLinea()}"/>
+
+    <utils:wizardCatLinea id="idEditCatLinea" form="formEditCatLinea" wizard="wizEditCatLinea" widgetVar="dlgEditCatLinea" panel="pnlEditCatLinea" header="#{msg.T0000020}" isEdit="true" action="#{cCatLinea.actualizarCatLinea()}"/>
+
+	<p:confirmDialog message="#{msg.M0000012} #{pCatLinea.catLinea.descripcion}?" header="Eliminar" severity="alert" widgetVar="dlgDelCatLinea" appendToBody="true">
+	    <p:commandButton value="#{msg.B0000019}" action="#{cCatLinea.eliminarCatLinea}" oncomplete="dlgDelCatLinea.hide();" />
+	    <p:commandButton value="#{msg.B0000020}" onclick="dlgDelCatLinea.hide();"/>
+	</p:confirmDialog>	           	           	           	                    			      	       
+</ui:define>
+<ui:define name="right">
+	<h:form id="formMenuCatLinea">
+	   <utils:logout/>
 	   <h:panelGrid style="padding: 10px;">
 	    <p:fieldset legend="Acciones">
 	       <h:panelGrid>
-			    <p:commandButton value="Nueva Linea" action="#{cCatLinea.limpiarCatLinea()}" onclick="wizNew.loadStep(wizNew.cfg.steps[0], true); dlgNew.show();" />			    
+			    <p:commandButton value="#{msg.B0000023}" action="#{cCatLinea.limpiarCatLinea()}" onclick="wizNewCatLinea.loadStep(wizNewCatLinea.cfg.steps[0], true); dlgNewCatLinea.show();" />			    
 	       </h:panelGrid>
 	    </p:fieldset>	    
 	    </h:panelGrid>	      	     
-</h:form>
-	</ui:define>
+    </h:form>
+</ui:define>
 </ui:composition>

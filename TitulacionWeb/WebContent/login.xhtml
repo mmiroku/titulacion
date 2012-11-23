@@ -36,15 +36,17 @@
 			<tr>
 				<td width="100%" align="center" colspan="2">
 					<div style="width: 300px">
-    					<p:panel header="ACCESO">
-    					    <p:messages id="msgsUsuario" errorClass="error"/>
-        					<h:panelGrid columns="2" id="panel">
-        						<h:outputLabel for="usuario" value="Usuario:" />
-        						<p:inputText id="usuario" value="#{pLogin.login}" label="Usuario" required="true"/>
-            					<h:outputLabel for="contrasena" value="Contraseña:" />
-            					<p:password id="contrasena" value="#{pLogin.password}" label="Contraseña" required="true"/>
+    					<p:panel id="pnlAcceso" header="#{msg.T0000000}">
+                            <p:messages id="msgsUsuario" errorClass="error"/>
+        					<h:panelGrid id="panel" columns="2">
+                                <p:focus context="panel"/>
+                                <h:panelGroup/>
+        						<p:outputLabel for="txtUsuario" value="#{msg.L0000000}" />
+        						<p:inputText id="txtUsuario" value="#{pLogin.login}" label="Usuario" required="true"/>
+            					<p:outputLabel for="txtContrasena" value="#{msg.L0000001}" />
+            					<p:password id="txtContrasena" value="#{pLogin.password}" label="Contraseña" required="true"/>
             					<h:panelGroup></h:panelGroup>
-            					<p:commandButton id="entrar" update="panel" value="Iniciar Sesión" action="#{cLogin.loginAction()}" ajax="false"/>
+            					<p:commandButton id="entrar" update="panel" value="#{msg.B0000001}" action="#{cLogin.loginAction()}" ajax="false"/>
         					</h:panelGrid>
     					</p:panel>
 					</div>

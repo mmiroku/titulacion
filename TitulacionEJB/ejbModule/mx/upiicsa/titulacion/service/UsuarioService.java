@@ -14,6 +14,7 @@ import javax.persistence.TypedQuery;
 
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.Usuario;
+import mx.upiicsa.titulacion.util.EncryptionUtil;
 
 @Stateless(mappedName = "ejb/UsuarioService")
 public class UsuarioService implements Serializable {
@@ -24,7 +25,10 @@ private static final long serialVersionUID = -8510737783635751315L;
 	private EntityManager entityManager;
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void save(Usuario usuario) {	
+	public void save(Usuario usuario) {
+		String encryptedPassword = EncryptionUtil.encriptarPassword(usuario
+				.getContrasena());
+		usuario.setContrasena(encryptedPassword);
 		entityManager.persist(usuario);
 	}
 	
@@ -42,7 +46,14 @@ private static final long serialVersionUID = -8510737783635751315L;
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void update(Usuario usuario) {		
+	public void update(Usuario usuario) {
+//		TODO No permitir actualizar contraseña sino cambiarla
+//		Usuario regUser = entityManager.find(Usuario.class, usuario.getIdUsuario());
+//		if (!usuario.getContrasena().equals(regUser.getContrasena())) {
+//			String encryptedPassword = EncryptionUtil.encriptarPassword(usuario
+//					.getContrasena());
+//			usuario.setContrasena(encryptedPassword);
+//		}
 		entityManager.merge(usuario);
 	}
 	

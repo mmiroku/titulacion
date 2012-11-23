@@ -27,7 +27,7 @@ public class Maestro implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="IdMaestro")
-	private int IdMaestro;
+	private Long IdMaestro;
 	
 	@Column(name="ApellidoPaterno")
 	private String aPaterno;
@@ -95,11 +95,11 @@ public class Maestro implements Serializable{
 		return aPaterno;
 	}
 	
-	public void setIdMaestro(int idMaestro) {
+	public void setIdMaestro(Long idMaestro) {
 		IdMaestro = idMaestro;
 	}
 	
-	public int getIdMaestro() {
+	public Long getIdMaestro() {
 		return IdMaestro;
 	}
 	

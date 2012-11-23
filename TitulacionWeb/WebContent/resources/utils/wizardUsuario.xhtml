@@ -9,6 +9,7 @@
 	<!-- INTERFACE -->
 	<cc:interface shortDescription="Asigna una puntuación de 1 a 5 a una propiedad">
 	    <cc:attribute name="id" required="true" type="java.lang.String"/>
+	    <cc:attribute name="form" required="true" type="java.lang.String"/>
 		<cc:attribute name="widgetVar" required="true" type="java.lang.String"/>
 		<cc:attribute name="wizard" required="true" type="java.lang.String"/>
 		<cc:attribute name="panel" required="true" type="java.lang.String"/>
@@ -20,31 +21,33 @@
 	<!-- IMPLEMENTATION -->
 	<cc:implementation>
 	<p:dialog id="#{cc.attrs.id}" header="#{cc.attrs.header}" widgetVar="#{cc.attrs.widgetVar}" resizable="false" draggable="false" minimizable="true" width="450">
-            <p:ajax event="close" listener="#{cUsuario.limpiarUsuario()}" />
+        <p:ajax event="close" listener="#{cUsuario.limpiarUsuario()}" />
+        <h:form id="#{cc.attrs.form}">
             <p:outputPanel id="#{cc.attrs.panel}">
-            <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cUsuario.onFlowProcess}" >
-                <p:tab id="datosGenerales" title="Datos Generales">
-                    <h:panelGrid columns="2">
-                    	<h:outputText value="Usuario :"/>                        
-                        <p:inputText value="#{pUsuario.usuario.nombre}" required="true"/>
-                        <h:outputText value="Contraseña :"/>
-                        <p:password value="#{pUsuario.usuario.contrasena}" label="Contraseña" required="true" feedback="true"/>                                                                                               
-                    </h:panelGrid>                    
-                </p:tab>                                           
-                <p:tab id="datosPerfiles" title="Perfil">
-                	<h:panelGrid columns="2">
-                		<h:outputText value="Usuario :"/>
-                		<p:selectOneMenu value="#{pUsuario.usuario.perfil}" converter="PerfilConverter">
-                            <f:selectItems value="#{pCatalogo.perfiles}" var="perfil" itemLabel="#{perfil.perfil}" itemValue="#{perfil}"/>
-                        </p:selectOneMenu>
-                	</h:panelGrid>
-                	<p:commandButton style="float: right;" value="Guardar" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="handleComplete(xhr, status, args);"/>
-                </p:tab>                                            
-            </p:wizard>
+                <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cUsuario.onFlowProcess}" nextLabel="#{msg.B0000002}" backLabel="#{msg.B0000003}">
+                    <p:tab id="datosGenerales" title="Datos Generales">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="txtUsuario" value="#{msg.L0000000}"/>                        
+                            <p:inputText id="txtUsuario" value="#{pUsuario.usuario.nombre}" required="true"/>
+                            <p:outputLabel for="pwdContrasenia" value="#{msg.L0000001}"/>
+                            <p:password id="pwdContrasenia" value="#{pUsuario.usuario.contrasena}" label="Contraseña" required="true" feedback="true"/>                                                                                               
+                        </h:panelGrid>                    
+                    </p:tab>                                           
+                    <p:tab id="datosPerfiles" title="Perfil">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="cmbPerfil" value="#{msg.L0000039}"/>
+                            <p:selectOneMenu id="cmbPerfil" value="#{pUsuario.usuario.perfil}" converter="PerfilConverter">
+                                <f:selectItems value="#{pCatalogo.perfiles}" var="perfil" itemLabel="#{perfil.perfil}" itemValue="#{perfil}"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                        <p:commandButton style="float: right;" value="#{msg.B0000010}" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="#{cc.attrs.wizard}HandleComplete(xhr, status, args);"/>
+                    </p:tab>                                            
+                </p:wizard>
             </p:outputPanel>
-        </p:dialog>
-        <script type="text/javascript">
-            function handleComplete(xhr, status, args) {
+        </h:form>
+    </p:dialog>
+    <script type="text/javascript">
+            function #{cc.attrs.wizard}HandleComplete(xhr, status, args) {
                 if(args.isValid) {
                 	#{cc.attrs.widgetVar}.hide();
                 }

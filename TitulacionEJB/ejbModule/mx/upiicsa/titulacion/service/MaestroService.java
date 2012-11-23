@@ -47,7 +47,7 @@ private static final long serialVersionUID = -8510737783635751315L;
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void delete(int IdMaestro) throws TitulacionException {
+	public void delete(Long IdMaestro) throws TitulacionException {
 		Maestro maestro = entityManager.find(Maestro.class, IdMaestro);
 		System.out.println("encontre alumno: " + maestro);
 		if (maestro == null) {

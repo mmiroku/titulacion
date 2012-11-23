@@ -16,6 +16,7 @@ import mx.upiicsa.titulacion.pages.CatalogoPage;
 import mx.upiicsa.titulacion.service.UsuarioService;
 import mx.upiicsa.titulacion.service.CatalogoService;
 import mx.upiicsa.titulacion.util.Messages;
+import mx.upiicsa.titulacion.web.menu.MenuSesion;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
@@ -31,6 +32,8 @@ public class UsuarioCtrl implements Serializable {
 	private UsuarioPage usuarioPage;
 	@Inject
 	private CatalogoPage catalogoPage;
+	@Inject
+	private MenuSesion menuSesion;
 	@EJB
 	private UsuarioService usuarioService;
 	@EJB
@@ -41,26 +44,19 @@ public class UsuarioCtrl implements Serializable {
 		return event.getNewStep();
 	}
 
-	public String getInit() {
+	public String init() {
 		try {
 			catalogoPage.setPerfiles(catalogoService.findAllPerfil());
-			usuarioPage.setUsuarios(usuarioService.findAllUsuario());					
+			usuarioPage.setUsuarios(usuarioService.findAllUsuario());
+			menuSesion.setVistaActual("usuarios");
 		} catch (TitulacionException e) {
 			FacesMessage message = Messages.getMessage(
 					e.getMessage(), null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		return null;
+		return "usuarios";
 	}
-	
-	public UsuarioPage getUsuarioPage() {
-		return usuarioPage;
-	}	
-	
-	public void setUsuarioPage(UsuarioPage usuarioPage) {
-		this.usuarioPage = usuarioPage;
-	}	
 		
 	public String guardarUsuario() {
 		RequestContext requestContext = RequestContext.getCurrentInstance();
@@ -69,15 +65,15 @@ public class UsuarioCtrl implements Serializable {
 			usuarioService.save(usuarioPage.getUsuario());
 			try {
 				usuarioPage.setUsuarios(usuarioService.findAllUsuario());
-				requestContext.update("formCenter:tabTitulacion:tblUsuarios");
+				requestContext.update("formUsuario:tblUsuarios");
 				
 			} catch (TitulacionException e) {
 
 			}
 		} else {
 			requestContext.addCallbackParam("isValid", false);
-			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
-			requestContext.update("msgsMaterias");
+			requestContext.update("idNewUsuario:formNewUsuario:pnlNewUsuario");
+			requestContext.update("msgsUsuarios");
 		}
 		return null;
 	}
@@ -89,14 +85,14 @@ public class UsuarioCtrl implements Serializable {
 			usuarioService.update(usuarioPage.getUsuario());
 			try {
 				usuarioPage.setUsuarios(usuarioService.findAllUsuario());
-				requestContext.update("formCenter:tabTitulacion:tblUsuarios");
+				requestContext.update("formUsuario:tblUsuarios");
 			} catch (TitulacionException e) {
 
 			}
 		} else {
 			requestContext.addCallbackParam("isValid", false);
-			requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
-			requestContext.update("msgsMaterias");
+			requestContext.update("idEditUsuario:formEditUsuario:pnlEditUsuario");
+			requestContext.update("msgsUsuarios");
 		}
 		return null;
 	}
@@ -107,7 +103,7 @@ public class UsuarioCtrl implements Serializable {
 			usuarioService.delete(usuarioPage.getUsuario().getIdUsuario());
 			usuarioPage.setUsuarios(usuarioService.findAllUsuario());
 			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tabTitulacion:tblUsuarios");
+			requestContext.update("formUsuario:tblUsuarios");
 		} catch (TitulacionException e) {
 			
 		}
@@ -117,14 +113,14 @@ public class UsuarioCtrl implements Serializable {
 	public String seleccionarUsuario(Usuario usuario) {
 		usuarioPage.setUsuario(usuario);
 		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("formCenter:tabTitulacion:idEdit:pnlEdit");
+		requestContext.update("idEditUsuario:formEditUsuario:pnlEditUsuario");
 		return null;
 	}
 
 	public String limpiarUsuario() {
 		usuarioPage.setUsuario(new Usuario());		
 		RequestContext requestContext = RequestContext.getCurrentInstance();
-		requestContext.update("formCenter:tabTitulacion:idNew:pnlNew");
+		requestContext.update("idNewUsuario:formNewUsuario:pnlNewUsuario");
 		return null;
 	}	
 	
@@ -133,8 +129,8 @@ public class UsuarioCtrl implements Serializable {
 			usuarioPage.setUsuarios(usuarioService.findByFilter(usuarioPage.getFiltro()));
 			usuarioPage.setFiltro(new Usuario());
 			RequestContext requestContext = RequestContext.getCurrentInstance();
-			requestContext.update("formCenter:tabTitulacion:tblUsuarios");
-			requestContext.update("formRight:pnlFiltro");
+			requestContext.update("formUsuario:tblUsuarios");
+			requestContext.update("formMenuUsuario:pnlFiltro");
 		} catch (TitulacionException e) {
 			
 		}
