@@ -6,5 +6,10 @@
 	    <class>mx.upiicsa.titulacion.model.Carrera</class>
 	    <class>mx.upiicsa.titulacion.model.Direccion</class>
 	    <class>mx.upiicsa.titulacion.model.Sexo</class>
+	    <class>mx.upiicsa.titulacion.model.Acta</class>
+	    <class>mx.upiicsa.titulacion.model.ActaExpediente</class>
+	    <class>mx.upiicsa.titulacion.model.Estatus</class>
+	    <class>mx.upiicsa.titulacion.model.Expediente</class>
+	    <class>mx.upiicsa.titulacion.model.FormaTitulacion</class>
 	</persistence-unit>
 </persistence>

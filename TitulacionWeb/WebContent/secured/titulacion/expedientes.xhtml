@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="../templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils">
+
+<ui:define name="content">
+    <h:form id="formExpediente">
+        
+        <p:growl id="msgsExpedientes"/>
+        <p:outputPanel id="tblExpedientes">
+            <p:dataTable var="expediente" value="#{pExpediente.expedientes}" emptyMessage="#{msg.M0000017}">
+                <p:subTable var="actaExpediente" value="#{expediente.actaExpedienteList}">
+                    <f:facet name="header">
+                        <h:outputText value="#{expediente.descripcion} - #{expediente.numeroImpresion}"/>
+                    </f:facet>
+                    <p:column headerText="#{msg.L0000010}">
+                        <h:outputText value="#{actaExpediente.acta.alumno.boleta}"/>
+                    </p:column>
+                    <p:column headerText="#{msg.L0000045}">
+                        <h:outputText value="#{actaExpediente.acta.alumno.nombre} #{actaExpediente.acta.alumno.aPaterno} #{actaExpediente.acta.alumno.aMaterno}"/>
+                    </p:column>
+                    <p:column headerText="#{msg.L0000046}">
+                        <h:outputText value="#{actaExpediente.acta.numeroActa}"/>
+                    </p:column>
+                    <p:column headerText="#{msg.L0000047}">
+                        <h:outputText value="#{actaExpediente.acta.numeroLibro}"/>
+                    </p:column>
+                </p:subTable>
+                <p:column style="vertical-align:middle; width:7%;">  
+                    <f:facet name="header">
+                        <h:outputText />
+                    </f:facet>
+                    <p:commandButton id="btnEditActa" icon="ui-icon-pencil" onclick="wizEditAlumno.loadStep(wizEditAlumno.cfg.steps[0], true); dlgEditAlumno.show();" process="@this" action="#{cAlumno.seleccionarAlumno(alumno)}" />
+                    <p:tooltip for="btnEditExpediente" value="#{msg.B0000017}" showEffect="fade" hideEffect="fade" />
+                </p:column>
+                <p:column style="vertical-align:middle; width:7%;">  
+                    <f:facet name="header">
+                        <h:outputText />
+                    </f:facet>
+                    <p:commandButton id="btnDelActa" icon="ui-icon-trash" onclick="dlgDelAlumno.show();" process="@this" action="#{pAlumno.setAlumno(alumno)}" />
+                    <p:tooltip for="btnDelAlumno" value="#{msg.B0000018}" showEffect="fade" hideEffect="fade" />
+                </p:column>
+            </p:dataTable>
+        </p:outputPanel>
+    </h:form>
+
+    <utils:wizardExpediente id="idNewExpediente" form="formNewExpediente" wizard="wizNewExpediente" widgetVar="dlgNewExpediente" panel="pnlNewExpediente" header="#{msg.T0000023}" isEdit="false" action="#{cExpediente.guardarExpediente()}"/>
+
+    <utils:wizardExpediente id="idEditExpediente" form="formEditExpediente" wizard="wizEditExpediente" widgetVar="dlgEditExpediente" panel="pnlEditExpediente" header="#{msg.T0000024}" isEdit="true" action="#{cExpediente.guardarExpediente()}"/>
+
+    <p:confirmDialog message="#{msg.M0000018} #{pAlumno.alumno.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDelExpediente" appendToBody="true">
+        <p:commandButton value="#{msg.B0000019}" action="#{cAlumno.eliminarAlumno}" oncomplete="dlgDelExpediente.hide();" />
+        <p:commandButton value="#{msg.B0000020}" onclick="dlgDelExpediente.hide();"/>
+    </p:confirmDialog>
+</ui:define>
+<ui:define name="right">
+    <h:form id="formMenuExpediente">
+        <utils:logout/>
+        <h:panelGrid style="padding: 10px;">
+            <p:fieldset legend="Acciones">
+                <h:panelGrid>
+                    <p:commandButton value="#{msg.B0000026}" action="#{cExpediente.limpiarExpediente()}" onclick="wizNewExpediente.loadStep(wizNewExpediente.cfg.steps[0], true); dlgNewExpediente.show();"/>
+                </h:panelGrid>
+            </p:fieldset>
+            <br/>
+            <p:fieldset legend="#{msg.T0000003}">
+                <p:outputPanel id="pnlFiltro">
+                    <h:panelGrid>
+                        <h:outputText value="#{msg.L0000010}"/>
+                        <p:inputText value="#{pAlumno.filtro.boleta}"/>
+                        <h:outputText value="#{msg.L0000004}"/>
+                        <p:inputText value="#{pAlumno.filtro.nombre}"/>
+                        <h:outputText value="#{msg.L0000011}"/>
+                        <p:selectOneMenu value="#{pAlumno.filtro.carrera}" converter="CarreraConverter">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems value="#{pCatalogo.carreras}" var="carrera" itemLabel="#{carrera.nombre}" itemValue="#{carrera}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="#{msg.L0000009}"/>
+                        <p:inputText value="#{pAlumno.filtro.curp}"/>
+                        <br/>
+                        <p:commandButton value="#{msg.B0000012}" action="#{cAlumno.filtrarAlumnos()}" style="float: right;"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:fieldset>
+        </h:panelGrid>
+    </h:form>
+</ui:define>
+</ui:composition>

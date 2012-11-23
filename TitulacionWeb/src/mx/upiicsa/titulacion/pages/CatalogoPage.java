@@ -12,6 +12,7 @@ import mx.upiicsa.titulacion.model.Carrera;
 import mx.upiicsa.titulacion.model.CatLinea;
 import mx.upiicsa.titulacion.model.CatSeminario;
 import mx.upiicsa.titulacion.model.Cedula;
+import mx.upiicsa.titulacion.model.FormaTitulacion;
 import mx.upiicsa.titulacion.model.Linea;
 import mx.upiicsa.titulacion.model.Maestro;
 import mx.upiicsa.titulacion.model.Perfil;
@@ -40,6 +41,8 @@ public class CatalogoPage implements Serializable {
 	private List<CatLinea> catLineas;
 	
 	private List<Maestro> maestros;
+	
+	private List<FormaTitulacion> formasTitulacion;
 
 	public List<Sexo> getSexos() {
 		return sexos;
@@ -115,6 +118,14 @@ public class CatalogoPage implements Serializable {
 	
 	public List<Maestro> getMaestros() {
 		return maestros;
+	}
+
+	public List<FormaTitulacion> getFormasTitulacion() {
+		return formasTitulacion;
+	}
+
+	public void setFormasTitulacion(List<FormaTitulacion> formasTitulacion) {
+		this.formasTitulacion = formasTitulacion;
 	}
 	
 }

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<!-- INTERFACE -->
+	<cc:interface shortDescription="Asigna una puntuación de 1 a 5 a una propiedad">
+	    <cc:attribute name="id" required="true" type="java.lang.String"/>
+	    <cc:attribute name="form" required="true" type="java.lang.String"/>
+		<cc:attribute name="widgetVar" required="true" type="java.lang.String"/>
+		<cc:attribute name="wizard" required="true" type="java.lang.String"/>
+		<cc:attribute name="panel" required="true" type="java.lang.String"/>
+		<cc:attribute name="header" required="true" type="java.lang.String"/>
+		<cc:attribute name="isEdit" required="true" type="java.lang.Boolean"/>
+		<cc:attribute name="action" required="true" method-signature="void action(java.lang.String)"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+	<p:dialog id="#{cc.attrs.id}" header="#{cc.attrs.header}" widgetVar="#{cc.attrs.widgetVar}" resizable="false" draggable="false" minimizable="true" width="450">
+        <p:ajax event="close" listener="#{cUsuario.limpiarUsuario()}" />
+        <h:form id="#{cc.attrs.form}">
+            <p:outputPanel id="#{cc.attrs.panel}">
+                <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cExpediente.onFlowProcess}" nextLabel="#{msg.B0000002}" backLabel="#{msg.B0000003}">
+                    <p:tab id="expediente" title="Expediente">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="txtDescripcion" value="#{msg.L0000028}"/>
+                            <p:inputText id="txtDescripcion" value="#{pExpediente.expediente.descripcion}" required="true"/>
+                            <p:outputLabel for="cmbFormaTitulacion" value="#{msg.L0000053}"/>
+                            <p:selectOneMenu id="cmbFormaTitulacion" value="#{pExpediente.expediente.formaTitulacion}" >
+                                <f:selectItem itemLabel=""/>
+                                <f:selectItems value="#{pCatalogo.formasTitulacion}" var="formaTitulacion" itemLabel="#{formaTitulacion.nombre}" itemValue="#{formaTitulacion}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel for="dtFechaInicio" value="#{msg.L0000051}"/>
+                            <p:calendar id="dtFechaInicio" value="#{pExpediente.expediente.fechaInicio}"  showOn="button" size="7" pattern="dd/MM/yyyy" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true"/>
+                            <p:outputLabel for="dtFechaFin" value="#{msg.L0000052}"/>
+                            <p:calendar id="dtFechaFin" value="#{pExpediente.expediente.fechaFin}"  showOn="button" size="7" pattern="dd/MM/yyyy" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true"/>
+                            <p:outputLabel for="txtLugar" value="#{msg.L0000049}"/>
+                            <p:inputText id="txtLugar" value="#{pExpediente.expediente.lugar}" required="true"/>
+                            <p:outputLabel for="txtAuditorio" value="#{msg.L0000050}"/>
+                            <p:inputText id="txtAuditorio" value="#{pExpediente.expediente.auditorio}" required="true"/>
+                            <p:outputLabel for="txtTema" value="#{msg.L0000048}"/>
+                            <p:inputText id="txtTema" value="#{pExpediente.expediente.tema}" required="true"/>
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab id="pasantes" title="Pasantes">
+                        <p:fieldset legend="#{msg.T0000025}">
+                            <p:dataTable id="tblPasantes" var="pasante" value="#{pAlumno.alumnos}">
+                                <p:column style="width:20px">
+                                    <h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
+                                    <p:draggable for="dragIcon" revert="true" />
+                                </p:column>
+                                <p:column headerText="#{msg.L0000010}">
+                                    <h:outputText value="#{pasante.boleta}" />
+                                </p:column>
+                                <p:column headerText="#{msg.L0000004}">
+                                    <h:outputText value="#{pasante.nombre}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:fieldset>
+
+                        <p:fieldset id="pasantesSeleccionados" legend="#{msg.T0000026}" style="margin-top:20px">
+                            <p:outputPanel id="dropArea">
+                                <h:outputText value="#{msg.M0000019}" rendered="#{empty pExpediente.pasantesSeleccionados}" style="font-size:24px;" />
+                                <p:dataTable var="pasante" value="#{pExpediente.pasantesSeleccionados}" rendered="#{not empty pExpediente.pasantesSeleccionados}">
+	                                <p:column headerText="#{msg.L0000010}">
+	                                    <h:outputText value="#{pasante.boleta}" />
+	                                </p:column>
+	                                <p:column headerText="#{msg.L0000004}">
+	                                    <h:outputText value="#{pasante.nombre}" />
+	                                </p:column>
+                                </p:dataTable>
+                            </p:outputPanel>
+                        </p:fieldset>
+
+                        <p:droppable for="pasantesSeleccionados" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tblPasantes">
+                            <p:ajax listener="#{cExpediente.onPasanteDrop}" update="dropArea tblPasantes" />
+                        </p:droppable>
+                    </p:tab>
+                    <p:tab id="sinodales" title="Sinodales">
+                        <p:fieldset legend="#{msg.T0000027}">
+                            <p:dataTable id="tblSinodales" var="cedula" value="#{pCatalogo.cedulas}">
+                                <p:column style="width:20px">
+                                    <h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
+                                    <p:draggable for="dragIcon" revert="true" />
+                                </p:column>
+                                <p:column headerText="#{msg.L0000043}">
+                                    <h:outputText value="#{cedula.numeroCedula}" />
+                                </p:column>
+                                <p:column headerText="#{msg.L0000045}">
+                                    <h:outputText value="#{cedula.maestro.nombre}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:fieldset>
+                        
+                        <h:panelGrid>
+                        <h:outputText value="#{msg.L0000054}"/>
+                        <p:outputPanel id="dropAreaDirector">
+                            <h:outputText value="#{msg.M0000019}" rendered="#{pExpediente.expediente.cedulaDirector == null}" style="font-size:18px;" />
+                            <h:outputText value="#{pExpediente.expediente.cedulaDirector.numeroCedula} - #{pExpediente.expediente.cedulaDirector.maestro.nombre}" rendered="#{pExpediente.expediente.cedulaDirector != null}" />
+	                        <p:droppable tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tblSinodales">
+	                            <p:ajax listener="#{cExpediente.onDirectorDrop}" update="dropAreaDirector tblSinodales" />
+	                        </p:droppable>
+                        </p:outputPanel>
+                        <h:outputText value="#{msg.L0000055}"/>
+                        <p:outputPanel id="dropAreaPresidente">
+                            <h:outputText value="#{msg.M0000019}" rendered="#{pExpediente.expediente.cedulaPresidente == null}" style="font-size:18px;" />
+                            <h:outputText value="#{pExpediente.expediente.cedulaPresidente.numeroCedula} - #{pExpediente.expediente.cedulaPresidente.maestro.nombre}" rendered="#{pExpediente.expediente.cedulaPresidente != null}" />
+                            <p:droppable tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tblSinodales">
+                                <p:ajax listener="#{cExpediente.onPresidenteDrop}" update="dropAreaPresidente tblSinodales" />
+                            </p:droppable>
+                        </p:outputPanel>
+                        </h:panelGrid>
+                    </p:tab>
+                </p:wizard>
+            </p:outputPanel>
+        </h:form>
+    </p:dialog>
+    <script type="text/javascript">
+            function #{cc.attrs.wizard}HandleComplete(xhr, status, args) {
+                if(args.isValid) {
+                	#{cc.attrs.widgetVar}.hide();
+                }
+            }
+        </script>
+	</cc:implementation>
+</html>
