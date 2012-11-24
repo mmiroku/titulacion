@@ -1,7 +1,6 @@
 package mx.upiicsa.titulacion.pages;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
@@ -19,7 +18,7 @@ public class AlumnoPage implements Serializable {
 	
 	private Alumno filtro = new Alumno();
 
-	private List<Alumno> alumnos = new ArrayList<Alumno>();
+	private List<Alumno> alumnos;
 
 	public List<Alumno> getAlumnos() {
 		return alumnos;

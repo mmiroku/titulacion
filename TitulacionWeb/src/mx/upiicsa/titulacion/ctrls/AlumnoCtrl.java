@@ -50,8 +50,6 @@ public class AlumnoCtrl implements Serializable {
 
 	public String init() {
 		try {
-			catalogoPage.setCarreras(catalogoService.findAllCarrera());
-			catalogoPage.setSexos(catalogoService.findAllSexo());
 			alumnoPage.setAlumnos(alumnoService.findAllAlumno());
 			menuSesion.setVistaActual("alumnos");
 		} catch (TitulacionException e) {

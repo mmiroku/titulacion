@@ -47,7 +47,6 @@ private static final long serialVersionUID = -8612967679860683584L;
 
 	public String init() {
 		try {
-			catalogoPage.setAcademias(catalogoService.findAllAcademia());
 			maestroPage.setMaestros(maestroService.findAllMaestro());
 			menuSesion.setVistaActual("maestros");
 		} catch (TitulacionException e) {

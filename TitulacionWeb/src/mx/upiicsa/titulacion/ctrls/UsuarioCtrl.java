@@ -46,7 +46,6 @@ public class UsuarioCtrl implements Serializable {
 
 	public String init() {
 		try {
-			catalogoPage.setPerfiles(catalogoService.findAllPerfil());
 			usuarioPage.setUsuarios(usuarioService.findAllUsuario());
 			menuSesion.setVistaActual("usuarios");
 		} catch (TitulacionException e) {

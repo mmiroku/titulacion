@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -22,6 +24,8 @@ import javax.persistence.Temporal;
  * 
  */
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "Expediente.findAll", query = "select e from Expediente e") })
 @Table(name="TblExpediente")
 public class Expediente implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -35,7 +39,7 @@ public class Expediente implements Serializable {
 	private String descripcion;
 
 	@Column(name="NumeroImpresion")
-	private int numeroImpresion;
+	private Long numeroImpresion;
 
 	@JoinColumn(name="IdFormaTitulacion")
 	private FormaTitulacion formaTitulacion;
@@ -100,11 +104,11 @@ public class Expediente implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public int getNumeroImpresion() {
+	public Long getNumeroImpresion() {
 		return this.numeroImpresion;
 	}
 
-	public void setNumeroImpresion(int numeroImpresion) {
+	public void setNumeroImpresion(Long numeroImpresion) {
 		this.numeroImpresion = numeroImpresion;
 	}
 

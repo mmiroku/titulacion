@@ -19,6 +19,7 @@ import mx.upiicsa.titulacion.model.CatLinea;
 import mx.upiicsa.titulacion.model.CatSeminario;
 import mx.upiicsa.titulacion.model.Cedula;
 import mx.upiicsa.titulacion.model.Empresa;
+import mx.upiicsa.titulacion.model.FormaTitulacion;
 import mx.upiicsa.titulacion.model.Maestro;
 import mx.upiicsa.titulacion.model.Proyecto;
 import mx.upiicsa.titulacion.model.Sexo;
@@ -163,6 +164,18 @@ public class CatalogoService {
 		return maestroList;
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<FormaTitulacion> findAllFormaTitulacion() throws TitulacionException {
+		TypedQuery<FormaTitulacion> query = entityManager.createNamedQuery(
+				"FormaTitulacion.findAll", FormaTitulacion.class);
+		List<FormaTitulacion> formaTitulacionList;
+		try {
+			formaTitulacionList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el catalogo de Formas de Titulación.");
+		}
+		return formaTitulacionList;
+	}
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public List<AlumnoLinea> findAllAlumnoLinea() throws TitulacionException {
 		TypedQuery<AlumnoLinea> query = entityManager.createNamedQuery(

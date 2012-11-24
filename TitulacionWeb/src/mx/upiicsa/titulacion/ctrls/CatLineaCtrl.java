@@ -46,7 +46,6 @@ public class CatLineaCtrl implements Serializable {
 
 	public String init() {
 		try {			
-			catalogoPage.setCarreras(catalogoService.findAllCarrera());
 			catLineaPage.setCatLineas(catLineaService.findAllCatLinea());
 			menuSesion.setVistaActual("catLineas");
 		} catch (TitulacionException e) {

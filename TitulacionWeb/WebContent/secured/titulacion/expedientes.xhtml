@@ -15,6 +15,9 @@
         <p:growl id="msgsExpedientes"/>
         <p:outputPanel id="tblExpedientes">
             <p:dataTable var="expediente" value="#{pExpediente.expedientes}" emptyMessage="#{msg.M0000017}">
+                <f:facet name="header">  
+                    Expedientes  
+                </f:facet>
                 <p:subTable var="actaExpediente" value="#{expediente.actaExpedienteList}">
                     <f:facet name="header">
                         <h:outputText value="#{expediente.descripcion} - #{expediente.numeroImpresion}"/>
@@ -51,8 +54,6 @@
     </h:form>
 
     <utils:wizardExpediente id="idNewExpediente" form="formNewExpediente" wizard="wizNewExpediente" widgetVar="dlgNewExpediente" panel="pnlNewExpediente" header="#{msg.T0000023}" isEdit="false" action="#{cExpediente.guardarExpediente()}"/>
-
-    <utils:wizardExpediente id="idEditExpediente" form="formEditExpediente" wizard="wizEditExpediente" widgetVar="dlgEditExpediente" panel="pnlEditExpediente" header="#{msg.T0000024}" isEdit="true" action="#{cExpediente.guardarExpediente()}"/>
 
     <p:confirmDialog message="#{msg.M0000018} #{pAlumno.alumno.nombre}?" header="Eliminar" severity="alert" widgetVar="dlgDelExpediente" appendToBody="true">
         <p:commandButton value="#{msg.B0000019}" action="#{cAlumno.eliminarAlumno}" oncomplete="dlgDelExpediente.hide();" />

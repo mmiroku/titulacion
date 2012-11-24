@@ -30,6 +30,10 @@ public class Estatus implements Serializable {
 	public Estatus() {
 	}
 
+	public Estatus(int idEstatus) {
+		this.idEstatus = idEstatus;
+	}
+
 	public int getIdEstatus() {
 		return this.idEstatus;
 	}

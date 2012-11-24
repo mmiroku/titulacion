@@ -59,6 +59,7 @@ public class LoginCtrl implements Serializable {
 			session.setAttribute(WConstants.USUARIO_WEBOBJECT,
 					usuario);
 			initAlumnos();
+			initCatalogos();
 		} catch(TitulacionException e) {
 			JSFUtils.messageGlobal(FacesMessage.SEVERITY_ERROR, e.getMessage());
 			return null;
@@ -68,8 +69,6 @@ public class LoginCtrl implements Serializable {
 	
 	private void initAlumnos() {
 		try {
-			catalogoPage.setCarreras(catalogoService.findAllCarrera());
-			catalogoPage.setSexos(catalogoService.findAllSexo());
 			alumnoPage.setAlumnos(alumnoService.findAllAlumno());
 			menuSesion.setVistaActual("alumnos");
 		} catch (TitulacionException e) {
@@ -79,4 +78,20 @@ public class LoginCtrl implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
+	
+	private void initCatalogos() {
+		try {
+			catalogoPage.setAcademias(catalogoService.findAllAcademia());
+			catalogoPage.setCarreras(catalogoService.findAllCarrera());
+			catalogoPage.setFormasTitulacion(catalogoService.findAllFormaTitulacion());
+			catalogoPage.setPerfiles(catalogoService.findAllPerfil());
+			catalogoPage.setSexos(catalogoService.findAllSexo());
+		} catch (TitulacionException e) {
+			FacesMessage message = Messages.getMessage(
+					e.getMessage(), null);
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+	}
+
 }

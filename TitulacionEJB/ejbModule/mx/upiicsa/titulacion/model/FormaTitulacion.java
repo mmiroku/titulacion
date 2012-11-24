@@ -7,14 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-
-/**
- * The persistent class for the TblFormaTitulacion database table.
- * 
- */
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "FormaTitulacion.findAll", query = "select f from FormaTitulacion f") })
 @Table(name="TblFormaTitulacion")
 public class FormaTitulacion implements Serializable {
 	private static final long serialVersionUID = 1L;

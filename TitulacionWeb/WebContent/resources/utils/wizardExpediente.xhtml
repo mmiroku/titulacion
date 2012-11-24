@@ -20,17 +20,17 @@
 	
 	<!-- IMPLEMENTATION -->
 	<cc:implementation>
-	<p:dialog id="#{cc.attrs.id}" header="#{cc.attrs.header}" widgetVar="#{cc.attrs.widgetVar}" resizable="false" draggable="false" minimizable="true" width="450">
+	<p:dialog id="#{cc.attrs.id}" header="#{cc.attrs.header}" widgetVar="#{cc.attrs.widgetVar}" resizable="false" minimizable="true" appendToBody="true" width="780" height="550">
         <p:ajax event="close" listener="#{cUsuario.limpiarUsuario()}" />
         <h:form id="#{cc.attrs.form}">
             <p:outputPanel id="#{cc.attrs.panel}">
                 <p:wizard widgetVar="#{cc.attrs.wizard}" flowListener="#{cExpediente.onFlowProcess}" nextLabel="#{msg.B0000002}" backLabel="#{msg.B0000003}">
                     <p:tab id="expediente" title="Expediente">
-                        <h:panelGrid columns="2">
+                        <h:panelGrid columns="2" cellspacing="20" width="600">
                             <p:outputLabel for="txtDescripcion" value="#{msg.L0000028}"/>
                             <p:inputText id="txtDescripcion" value="#{pExpediente.expediente.descripcion}" required="true"/>
                             <p:outputLabel for="cmbFormaTitulacion" value="#{msg.L0000053}"/>
-                            <p:selectOneMenu id="cmbFormaTitulacion" value="#{pExpediente.expediente.formaTitulacion}" >
+                            <p:selectOneMenu id="cmbFormaTitulacion" value="#{pExpediente.expediente.formaTitulacion}" required="true" converter="FormaTitulacionConverter">
                                 <f:selectItem itemLabel=""/>
                                 <f:selectItems value="#{pCatalogo.formasTitulacion}" var="formaTitulacion" itemLabel="#{formaTitulacion.nombre}" itemValue="#{formaTitulacion}"/>
                             </p:selectOneMenu>
@@ -48,16 +48,25 @@
                     </p:tab>
                     <p:tab id="pasantes" title="Pasantes">
                         <p:fieldset legend="#{msg.T0000025}">
-                            <p:dataTable id="tblPasantes" var="pasante" value="#{pAlumno.alumnos}">
+                            <p:dataTable id="tblPasantes" var="pasante" value="#{pAlumno.alumnos}" filteredValue="#{pFilter.filteredAlumnos}">
                                 <p:column style="width:20px">
                                     <h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
                                     <p:draggable for="dragIcon" revert="true" />
                                 </p:column>
-                                <p:column headerText="#{msg.L0000010}">
+                                <p:column headerText="#{msg.L0000010}" filterBy="#{pasante.boleta}">
                                     <h:outputText value="#{pasante.boleta}" />
                                 </p:column>
-                                <p:column headerText="#{msg.L0000004}">
+                                <p:column headerText="#{msg.L0000002}" filterBy="#{pasante.aPaterno}">
+                                    <h:outputText value="#{pasante.aPaterno}" />
+                                </p:column>
+                                <p:column headerText="#{msg.L0000003}" filterBy="#{pasante.aMaterno}">
+                                    <h:outputText value="#{pasante.aMaterno}" />
+                                </p:column>
+                                <p:column headerText="#{msg.L0000004}" filterBy="#{pasante.nombre}">
                                     <h:outputText value="#{pasante.nombre}" />
+                                </p:column>
+                                <p:column headerText="#{msg.L0000011}" filterBy="#{pasante.carrera.nombre}">
+                                    <h:outputText value="#{pasante.carrera.nombre}" />
                                 </p:column>
                             </p:dataTable>
                         </p:fieldset>
@@ -69,8 +78,17 @@
 	                                <p:column headerText="#{msg.L0000010}">
 	                                    <h:outputText value="#{pasante.boleta}" />
 	                                </p:column>
+	                                <p:column headerText="#{msg.L0000002}">
+	                                    <h:outputText value="#{pasante.aPaterno}" />
+	                                </p:column>
+	                                <p:column headerText="#{msg.L0000003}">
+	                                    <h:outputText value="#{pasante.aMaterno}" />
+	                                </p:column>
 	                                <p:column headerText="#{msg.L0000004}">
 	                                    <h:outputText value="#{pasante.nombre}" />
+	                                </p:column>
+	                                <p:column headerText="#{msg.L0000011}">
+	                                    <h:outputText value="#{pasante.carrera.nombre}" />
 	                                </p:column>
                                 </p:dataTable>
                             </p:outputPanel>
@@ -82,38 +100,80 @@
                     </p:tab>
                     <p:tab id="sinodales" title="Sinodales">
                         <p:fieldset legend="#{msg.T0000027}">
-                            <p:dataTable id="tblSinodales" var="cedula" value="#{pCatalogo.cedulas}">
+                            <p:dataTable id="tblSinodales" var="cedula" value="#{pCatalogo.cedulas}" paginator="true" rows="5" filteredValue="#{pFilter.filteredCedulas}">
                                 <p:column style="width:20px">
                                     <h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
                                     <p:draggable for="dragIcon" revert="true" />
                                 </p:column>
-                                <p:column headerText="#{msg.L0000043}">
+                                <p:column headerText="#{msg.L0000043}" filterBy="#{cedula.numeroCedula}">
                                     <h:outputText value="#{cedula.numeroCedula}" />
                                 </p:column>
-                                <p:column headerText="#{msg.L0000045}">
+                                <p:column headerText="#{msg.L0000002}" filterBy="#{cedula.maestro.aPaterno}">
+                                    <h:outputText value="#{cedula.maestro.aPaterno}" />
+                                </p:column>
+                                <p:column headerText="#{msg.L0000003}" filterBy="#{cedula.maestro.aMaterno}">
+                                    <h:outputText value="#{cedula.maestro.aMaterno}" />
+                                </p:column>
+                                <p:column headerText="#{msg.L0000004}" filterBy="#{cedula.maestro.nombre}">
                                     <h:outputText value="#{cedula.maestro.nombre}" />
+                                </p:column>
+                                <p:column headerText="#{msg.L0000023}" filterBy="#{cedula.maestro.academia.nombre}">
+                                    <h:outputText value="#{cedula.maestro.academia.nombre}" />
                                 </p:column>
                             </p:dataTable>
                         </p:fieldset>
                         
-                        <h:panelGrid>
-                        <h:outputText value="#{msg.L0000054}"/>
-                        <p:outputPanel id="dropAreaDirector">
-                            <h:outputText value="#{msg.M0000019}" rendered="#{pExpediente.expediente.cedulaDirector == null}" style="font-size:18px;" />
-                            <h:outputText value="#{pExpediente.expediente.cedulaDirector.numeroCedula} - #{pExpediente.expediente.cedulaDirector.maestro.nombre}" rendered="#{pExpediente.expediente.cedulaDirector != null}" />
-	                        <p:droppable tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tblSinodales">
-	                            <p:ajax listener="#{cExpediente.onDirectorDrop}" update="dropAreaDirector tblSinodales" />
-	                        </p:droppable>
-                        </p:outputPanel>
-                        <h:outputText value="#{msg.L0000055}"/>
-                        <p:outputPanel id="dropAreaPresidente">
-                            <h:outputText value="#{msg.M0000019}" rendered="#{pExpediente.expediente.cedulaPresidente == null}" style="font-size:18px;" />
-                            <h:outputText value="#{pExpediente.expediente.cedulaPresidente.numeroCedula} - #{pExpediente.expediente.cedulaPresidente.maestro.nombre}" rendered="#{pExpediente.expediente.cedulaPresidente != null}" />
-                            <p:droppable tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tblSinodales">
-                                <p:ajax listener="#{cExpediente.onPresidenteDrop}" update="dropAreaPresidente tblSinodales" />
-                            </p:droppable>
-                        </p:outputPanel>
+                        <h:panelGrid columns="2" cellpadding="5">
+	                        <h:outputText value="#{msg.L0000054}"/>
+	                        <p:outputPanel id="dropAreaDirector">
+	                            <h:outputText value="#{msg.M0000019}" rendered="#{pExpediente.expediente.cedulaDirector == null}" style="font-size:12px;" />
+	                            <h:outputText value="#{pExpediente.expediente.cedulaDirector.numeroCedula} - #{pExpediente.expediente.cedulaDirector.maestro.nombre} #{pExpediente.expediente.cedulaDirector.maestro.aPaterno} #{pExpediente.expediente.cedulaDirector.maestro.aMaterno}" rendered="#{pExpediente.expediente.cedulaDirector != null}" />
+		                        <p:droppable tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tblSinodales">
+		                            <p:ajax listener="#{cExpediente.onDirectorDrop}" update="dropAreaDirector tblSinodales" />
+		                        </p:droppable>
+	                        </p:outputPanel>
+	                        <h:outputText value="#{msg.L0000055}"/>
+	                        <p:outputPanel id="dropAreaPresidente">
+	                            <h:outputText value="#{msg.M0000019}" rendered="#{pExpediente.expediente.cedulaPresidente == null}" style="font-size:12px;" />
+	                            <h:outputText value="#{pExpediente.expediente.cedulaPresidente.numeroCedula} - #{pExpediente.expediente.cedulaPresidente.maestro.nombre} #{pExpediente.expediente.cedulaPresidente.maestro.aPaterno} #{pExpediente.expediente.cedulaPresidente.maestro.aMaterno}" rendered="#{pExpediente.expediente.cedulaPresidente != null}" />
+	                            <p:droppable tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tblSinodales">
+	                                <p:ajax listener="#{cExpediente.onPresidenteDrop}" update="dropAreaPresidente tblSinodales" />
+	                            </p:droppable>
+	                        </p:outputPanel>
+	                        <h:outputText value="#{msg.L0000056}"/>
+	                        <p:outputPanel id="dropAreaSecretario">
+	                            <h:outputText value="#{msg.M0000019}" rendered="#{pExpediente.expediente.cedulaSecretario == null}" style="font-size:12px;" />
+	                            <h:outputText value="#{pExpediente.expediente.cedulaSecretario.numeroCedula} - #{pExpediente.expediente.cedulaSecretario.maestro.nombre} #{pExpediente.expediente.cedulaSecretario.maestro.aPaterno} #{pExpediente.expediente.cedulaSecretario.maestro.aMaterno}" rendered="#{pExpediente.expediente.cedulaSecretario != null}" />
+	                            <p:droppable tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tblSinodales">
+	                                <p:ajax listener="#{cExpediente.onSecretarioDrop}" update="dropAreaSecretario tblSinodales" />
+	                            </p:droppable>
+	                        </p:outputPanel>
+	                        <h:outputText value="#{msg.L0000057}"/>
+	                        <p:outputPanel id="dropAreaVocal1">
+	                            <h:outputText value="#{msg.M0000019}" rendered="#{pExpediente.expediente.cedulaVocal1 == null}" style="font-size:12px;" />
+	                            <h:outputText value="#{pExpediente.expediente.cedulaVocal1.numeroCedula} - #{pExpediente.expediente.cedulaVocal1.maestro.nombre} #{pExpediente.expediente.cedulaVocal1.maestro.aPaterno} #{pExpediente.expediente.cedulaVocal1.maestro.aMaterno}" rendered="#{pExpediente.expediente.cedulaVocal1 != null}" />
+	                            <p:droppable tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tblSinodales">
+	                                <p:ajax listener="#{cExpediente.onVocal1Drop}" update="dropAreaVocal1 tblSinodales" />
+	                            </p:droppable>
+	                        </p:outputPanel>
+	                        <h:outputText value="#{msg.L0000058}"/>
+	                        <p:outputPanel id="dropAreaVocal2">
+	                            <h:outputText value="#{msg.M0000019}" rendered="#{pExpediente.expediente.cedulaVocal2 == null}" style="font-size:12px;" />
+	                            <h:outputText value="#{pExpediente.expediente.cedulaVocal2.numeroCedula} - #{pExpediente.expediente.cedulaVocal2.maestro.nombre} #{pExpediente.expediente.cedulaVocal2.maestro.aPaterno} #{pExpediente.expediente.cedulaVocal2.maestro.aMaterno}" rendered="#{pExpediente.expediente.cedulaVocal2 != null}" />
+	                            <p:droppable tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tblSinodales">
+	                                <p:ajax listener="#{cExpediente.onVocal2Drop}" update="dropAreaVocal2 tblSinodales" />
+	                            </p:droppable>
+	                        </p:outputPanel>
+	                        <h:outputText value="#{msg.L0000059}"/>
+	                        <p:outputPanel id="dropAreaVocal3">
+	                            <h:outputText value="#{msg.M0000019}" rendered="#{pExpediente.expediente.cedulaVocal3 == null}" style="font-size:12px;" />
+	                            <h:outputText value="#{pExpediente.expediente.cedulaVocal3.numeroCedula} - #{pExpediente.expediente.cedulaVocal3.maestro.nombre} #{pExpediente.expediente.cedulaVocal3.maestro.aPaterno} #{pExpediente.expediente.cedulaVocal3.maestro.aMaterno}" rendered="#{pExpediente.expediente.cedulaVocal3 != null}" />
+	                            <p:droppable tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tblSinodales">
+	                                <p:ajax listener="#{cExpediente.onVocal3Drop}" update="dropAreaVocal3 tblSinodales" />
+	                            </p:droppable>
+	                        </p:outputPanel>
                         </h:panelGrid>
+                        <p:commandButton style="float: right;" value="#{msg.B0000010}" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="#{cc.attrs.wizard}HandleComplete(xhr, status, args);"/>
                     </p:tab>
                 </p:wizard>
             </p:outputPanel>

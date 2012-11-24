@@ -1,7 +1,6 @@
 package mx.upiicsa.titulacion.pages;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
@@ -20,7 +19,7 @@ public class ExpedientePage implements Serializable {
 
 	private List<Expediente> expedientes;
 	
-	private List<Alumno> pasantesSeleccionados = new ArrayList<Alumno>();
+	private List<Alumno> pasantesSeleccionados;
 
 	public Expediente getExpediente() {
 		return expediente;
