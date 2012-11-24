@@ -123,7 +123,7 @@ private static final long serialVersionUID = -8612967679860683584L;
 		RequestContext requestContext = RequestContext.getCurrentInstance();
 		if (FacesContext.getCurrentInstance().getMessageList().isEmpty()) {
 			requestContext.addCallbackParam("isValid", true);
-			seminarioService.save(seminarioPage.getSeminario());
+			seminarioService.save(seminarioPage.getSeminario(), seminarioPage.getExpositoresSeleccionados(), seminarioPage.getPasantesSeleccionados());
 			try {
 				seminarioPage.setSeminarios(seminarioService.findAllSeminario());
 				requestContext.update("formSeminario:tblSeminarios");

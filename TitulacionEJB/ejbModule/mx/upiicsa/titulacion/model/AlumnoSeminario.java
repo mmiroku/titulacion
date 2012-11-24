@@ -22,7 +22,7 @@ public class AlumnoSeminario implements Serializable {
 	private int idAlumnoSeminario;
 	
 	@JoinColumn(name="Boleta")
-	private Maestro maestro;
+	private Alumno alumno;
 	
 	@JoinColumn(name="IdSeminario")
 	private Seminario seminario;
@@ -38,12 +38,12 @@ public class AlumnoSeminario implements Serializable {
 		return idAlumnoSeminario;
 	}
 	
-	public void setMaestro(Maestro maestro) {
-		this.maestro = maestro;
+	public void setAlumno(Alumno alumno) {
+		this.alumno = alumno;
 	}
-	
-	public Maestro getMaestro() {
-		return maestro;
+
+	public Alumno getAlumno() {
+		return alumno;
 	}
 	
 	public void setSeminario(Seminario seminario) {

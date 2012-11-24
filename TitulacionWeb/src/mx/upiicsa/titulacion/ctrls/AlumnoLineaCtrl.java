@@ -1,6 +1,7 @@
 package mx.upiicsa.titulacion.ctrls;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -11,14 +12,17 @@ import javax.inject.Named;
 
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.AlumnoLinea;
+import mx.upiicsa.titulacion.model.Materia;
 import mx.upiicsa.titulacion.pages.CatalogoPage;
 import mx.upiicsa.titulacion.pages.AlumnoLineaPage;
+import mx.upiicsa.titulacion.pages.MateriaPage;
 import mx.upiicsa.titulacion.service.AlumnoLineaService;
 import mx.upiicsa.titulacion.service.CatalogoService;
 import mx.upiicsa.titulacion.util.Messages;
 import mx.upiicsa.titulacion.web.menu.MenuSesion;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.DragDropEvent;
 import org.primefaces.event.FlowEvent;
 
 
@@ -35,6 +39,8 @@ private static final long serialVersionUID = -8612967679860683584L;
 	private CatalogoPage catalogoPage;
 	@Inject
 	private MenuSesion menuSesion;
+	@Inject
+	private MateriaPage materiaPage;
 	@EJB
 	private AlumnoLineaService alumnoLineaService;
 	@EJB
@@ -46,11 +52,11 @@ private static final long serialVersionUID = -8612967679860683584L;
 	}	
 
 	public String init() {
-		try {
-			catalogoPage.setAcademias(catalogoService.findAllAcademia());
+		try {			
 			catalogoPage.setProyectos(catalogoService.findAllProyecto());			
 			catalogoPage.setLineas(catalogoService.findAllLinea());
 			catalogoPage.setAlumnos(catalogoService.findAllAlumno());
+			materiaPage.setMaterias(catalogoService.findAllMateria());
 			alumnoLineaPage.setAlumnoLineas(alumnoLineaService.findAllAlumnoLinea());			
 			menuSesion.setVistaActual("alumnoLineas");
 		} catch (TitulacionException e) {
@@ -66,7 +72,7 @@ private static final long serialVersionUID = -8612967679860683584L;
 		RequestContext requestContext = RequestContext.getCurrentInstance();
 		if (FacesContext.getCurrentInstance().getMessageList().isEmpty()) {
 			requestContext.addCallbackParam("isValid", true);
-			alumnoLineaService.save(alumnoLineaPage.getAlumnoLinea());
+			alumnoLineaService.save(alumnoLineaPage.getAlumnoLinea(), alumnoLineaPage.getMateriasSeleccionadas());
 			try {
 				alumnoLineaPage.setAlumnoLineas(alumnoLineaService.findAllAlumnoLinea());
 				requestContext.update("formAlumnoLinea:tblAlumnoLineas");
@@ -122,7 +128,8 @@ private static final long serialVersionUID = -8612967679860683584L;
 	}
 
 	public String limpiarAlumnoLinea() {
-		alumnoLineaPage.setAlumnoLinea(new AlumnoLinea());		
+		alumnoLineaPage.setAlumnoLinea(new AlumnoLinea());	
+		alumnoLineaPage.setMateriasSeleccionadas(new ArrayList<Materia>());
 		RequestContext requestContext = RequestContext.getCurrentInstance();
 		requestContext.update("idNewAlumnoLinea:formNewAlumnoLinea:pnlNewAlumnoLinea");
 		return null;
@@ -139,5 +146,13 @@ private static final long serialVersionUID = -8612967679860683584L;
 			
 		}
 		return null;
+	}
+	
+	public void onMateriasDrop(DragDropEvent ddEvent) {
+		
+		Materia materia = ((Materia) ddEvent.getData());
+		
+		alumnoLineaPage.getMateriasSeleccionadas().add(materia);
+		materiaPage.getMaterias().remove(materia);		
 	}
 }

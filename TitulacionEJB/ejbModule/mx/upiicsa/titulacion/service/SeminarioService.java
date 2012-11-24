@@ -13,7 +13,11 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
+import mx.upiicsa.titulacion.model.Alumno;
+import mx.upiicsa.titulacion.model.AlumnoSeminario;
+import mx.upiicsa.titulacion.model.Cedula;
 import mx.upiicsa.titulacion.model.Seminario;
+import mx.upiicsa.titulacion.model.SeminarioExpositores;
 
 @Stateless(mappedName = "ejb/SeminarioService")
 public class SeminarioService implements Serializable {
@@ -24,8 +28,21 @@ private static final long serialVersionUID = -8510737783635751315L;
 	private EntityManager entityManager;
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void save(Seminario seminario) {	
+	public void save(Seminario seminario, List<Cedula> cedulas, List<Alumno> pasantes) {	
 		entityManager.persist(seminario);
+		for (Cedula current:cedulas) {
+			SeminarioExpositores expositores = new SeminarioExpositores();
+			expositores.setCedula(current);			
+			expositores.setSeminario(seminario);
+			entityManager.persist(expositores);					
+		}
+		
+		for (Alumno current:pasantes){
+			AlumnoSeminario alumnoSeminario = new AlumnoSeminario();
+			alumnoSeminario.setAlumno(current);
+			alumnoSeminario.setSeminario(seminario);
+			entityManager.persist(alumnoSeminario);
+		}
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)

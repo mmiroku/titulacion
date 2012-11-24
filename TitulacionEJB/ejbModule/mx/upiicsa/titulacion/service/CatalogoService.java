@@ -21,6 +21,7 @@ import mx.upiicsa.titulacion.model.Cedula;
 import mx.upiicsa.titulacion.model.Empresa;
 import mx.upiicsa.titulacion.model.FormaTitulacion;
 import mx.upiicsa.titulacion.model.Maestro;
+import mx.upiicsa.titulacion.model.Materia;
 import mx.upiicsa.titulacion.model.Proyecto;
 import mx.upiicsa.titulacion.model.Sexo;
 import mx.upiicsa.titulacion.model.Linea;
@@ -226,5 +227,17 @@ public class CatalogoService {
 			throw new TitulacionException("No existen registros en el catalogo de Alumnos.");
 		}
 		return alumnoList;
+	}
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Materia> findAllMateria() throws TitulacionException {
+		TypedQuery<Materia> query = entityManager.createNamedQuery(
+				"Materia.findAll", Materia.class);
+		List<Materia> materiaList;
+		try {
+			materiaList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el catalogo de Materia.");
+		}
+		return materiaList;
 	}
 }

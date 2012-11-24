@@ -14,6 +14,9 @@ import javax.persistence.TypedQuery;
 
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.AlumnoLinea;
+import mx.upiicsa.titulacion.model.AlumnoMateria;
+import mx.upiicsa.titulacion.model.Materia;
+
 
 @Stateless(mappedName = "ejb/AlumnoLineaService")
 public class AlumnoLineaService implements Serializable {
@@ -24,8 +27,22 @@ private static final long serialVersionUID = -8510737783635751315L;
 	private EntityManager entityManager;
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void save(AlumnoLinea alumnoLinea) {	
+	public void save(AlumnoLinea alumnoLinea,List<Materia> materias) {	
 		entityManager.persist(alumnoLinea);
+		
+		for (Materia current:materias) {
+			
+			AlumnoMateria alumnoMateria = new AlumnoMateria();
+			alumnoMateria.setMateria(current);			
+			alumnoMateria.setAlumnoLinea(alumnoLinea);
+			alumnoMateria.setAsistencia(0);
+			alumnoMateria.setCalificacion(0);
+			alumnoMateria.setMaestro("");			
+			alumnoMateria.setPeriodo("");
+			
+			entityManager.persist(alumnoMateria);
+								
+		}
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)

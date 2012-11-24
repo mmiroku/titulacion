@@ -17,7 +17,7 @@ public class MateriaPage implements Serializable{
 	private Materia materia = new Materia();	
 	private Materia filtro = new Materia();
 	
-	private List<Materia> materias = new ArrayList<Materia>();
+	private List<Materia> materias = new ArrayList<Materia>();		
 	
 	public void setFiltro(Materia filtro) {
 		this.filtro = filtro;
@@ -42,5 +42,5 @@ public class MateriaPage implements Serializable{
 	public List<Materia> getMaterias() {
 		return materias;
 	}
-	
+			
 }

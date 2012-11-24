@@ -8,6 +8,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import mx.upiicsa.titulacion.model.AlumnoLinea;
+import mx.upiicsa.titulacion.model.Materia;
 
 @Named("pAlumnoLinea")
 @SessionScoped
@@ -15,10 +16,10 @@ public class AlumnoLineaPage implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private AlumnoLinea alumnoLinea = new AlumnoLinea();
-	
-	private AlumnoLinea filtro = new AlumnoLinea(); 
-	
+	private AlumnoLinea filtro = new AlumnoLinea(); 	
 	private List<AlumnoLinea> alumnoLineas = new ArrayList<AlumnoLinea>();
+	
+	private List<Materia> materiasSeleccionadas = new ArrayList<Materia>();
 	
 	public void setAlumnoLinea(AlumnoLinea alumnoLinea) {
 		this.alumnoLinea = alumnoLinea;
@@ -44,4 +45,12 @@ public class AlumnoLineaPage implements Serializable{
 		return filtro;
 	}
 		
+	public void setMateriasSeleccionadas(List<Materia> materiasSeleccionadas) {
+		this.materiasSeleccionadas = materiasSeleccionadas;
+	}
+	
+	public List<Materia> getMateriasSeleccionadas() {
+		return materiasSeleccionadas;
+	}
+	
 }

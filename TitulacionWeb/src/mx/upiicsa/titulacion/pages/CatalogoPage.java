@@ -54,7 +54,8 @@ public class CatalogoPage implements Serializable {
 	
 	private List<Empresa> empresas;
 	
-	private List<Alumno> alumnos; 
+	private List<Alumno> alumnos;
+		
 
 	public List<Sexo> getSexos() {
 		return sexos;

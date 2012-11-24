@@ -44,11 +44,38 @@
                         </p:selectOneMenu>                                                              
                     </h:panelGrid>
                 </p:tab>
-                <p:tab id="informacionEscolar" title="Materias">
-                    <h:panelGrid columns="2">
-                    	<h:inputText value="sdf" />
-                    	<h:inputText value="sdf" />
-                    </h:panelGrid>
+                <p:tab id="datosMaterias" title="Materias">                    
+                    	<p:fieldset legend="Materias">
+                            <p:dataTable id="tblMaterias" var="materia" value="#{pMateria.materias}">
+                                <p:column style="width:20px">
+                                    <h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
+                                    <p:draggable for="dragIcon" revert="true" />
+                                </p:column>
+                                <p:column headerText="Cedula">
+                                    <h:outputText value="#{materia.nombre}" />
+                                </p:column>
+                                <p:column headerText="Maestro">
+                                    <h:outputText value="#{materia.descripcion}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:fieldset> 
+                        <p:fieldset id="materiasSeleccionadas" legend="Materias" style="margin-top:20px">
+                            <p:outputPanel id="dropArea">
+                                <h:outputText value="#{msg.M0000019}" rendered="#{empty pAlumnoLinea.materiasSeleccionadas}" style="font-size:24px;" />
+                                <p:dataTable var="materias" value="#{pAlumnoLinea.materiasSeleccionadas}" rendered="#{not empty pAlumnoLinea.materiasSeleccionadas}">
+	                                <p:column headerText="Cedula">
+	                                    <h:outputText value="#{materias.nombre}" />
+	                                </p:column>
+	                                <p:column headerText="Nombre">
+	                                    <h:outputText value="#{materias.descripcion}" />
+	                                </p:column>
+                                </p:dataTable>
+                            </p:outputPanel>                            
+                        </p:fieldset>
+						<p:droppable for="materiasSeleccionadas" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tblMaterias">
+                            <p:ajax listener="#{cAlumnoLinea.onMateriasDrop}" update="dropArea tblMaterias" />
+                        </p:droppable>                                                      
+                        <br/>	                    
                     <p:commandButton style="float: right;" value="#{msg.B0000010}" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="#{cc.attrs.wizard}HandleComplete(xhr, status, args);"/>                       
                 </p:tab>                
             </p:wizard>
