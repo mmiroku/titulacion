@@ -12,11 +12,15 @@ import javax.persistence.TypedQuery;
 
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.Academia;
+import mx.upiicsa.titulacion.model.Alumno;
+import mx.upiicsa.titulacion.model.AlumnoLinea;
 import mx.upiicsa.titulacion.model.Carrera;
 import mx.upiicsa.titulacion.model.CatLinea;
 import mx.upiicsa.titulacion.model.CatSeminario;
 import mx.upiicsa.titulacion.model.Cedula;
+import mx.upiicsa.titulacion.model.Empresa;
 import mx.upiicsa.titulacion.model.Maestro;
+import mx.upiicsa.titulacion.model.Proyecto;
 import mx.upiicsa.titulacion.model.Sexo;
 import mx.upiicsa.titulacion.model.Linea;
 import mx.upiicsa.titulacion.model.Usuario;
@@ -157,5 +161,57 @@ public class CatalogoService {
 			throw new TitulacionException("No existen registros en el catalogo de Maestros.");
 		}
 		return maestroList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<AlumnoLinea> findAllAlumnoLinea() throws TitulacionException {
+		TypedQuery<AlumnoLinea> query = entityManager.createNamedQuery(
+				"AlumnoLinea.findAll", AlumnoLinea.class);
+		List<AlumnoLinea> alumnoLineaList;
+		try {
+			alumnoLineaList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el catalogo de Lineas Asignadas a Alumnos.");
+		}
+		return alumnoLineaList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Proyecto> findAllProyecto() throws TitulacionException {
+		TypedQuery<Proyecto> query = entityManager.createNamedQuery(
+				"Proyecto.findAll", Proyecto.class);
+		List<Proyecto> proyectoList;
+		try {
+			proyectoList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el catalogo de Proyectos.");
+		}
+		return proyectoList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Empresa> findAllEmpresa() throws TitulacionException {
+		TypedQuery<Empresa> query = entityManager.createNamedQuery(
+				"Empresa.findAll", Empresa.class);
+		List<Empresa> empresaList;
+		try {
+			empresaList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el catalogo de Empresas.");
+		}
+		return empresaList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Alumno> findAllAlumno() throws TitulacionException {
+		TypedQuery<Alumno> query = entityManager.createNamedQuery(
+				"Alumno.findAll", Alumno.class);
+		List<Alumno> alumnoList;
+		try {
+			alumnoList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el catalogo de Alumnos.");
+		}
+		return alumnoList;
 	}
 }

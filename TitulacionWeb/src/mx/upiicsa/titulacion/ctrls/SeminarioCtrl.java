@@ -1,6 +1,7 @@
 package mx.upiicsa.titulacion.ctrls;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -10,8 +11,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
+import mx.upiicsa.titulacion.model.Alumno;
+import mx.upiicsa.titulacion.model.Cedula;
 import mx.upiicsa.titulacion.model.Seminario;
+import mx.upiicsa.titulacion.pages.AlumnoPage;
 import mx.upiicsa.titulacion.pages.SeminarioPage;
+import mx.upiicsa.titulacion.pages.CedulaPage;
 import mx.upiicsa.titulacion.pages.CatalogoPage;
 import mx.upiicsa.titulacion.service.SeminarioService;
 import mx.upiicsa.titulacion.service.CatalogoService;
@@ -19,6 +24,7 @@ import mx.upiicsa.titulacion.util.Messages;
 import mx.upiicsa.titulacion.web.menu.MenuSesion;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.DragDropEvent;
 import org.primefaces.event.FlowEvent;
 
 
@@ -39,6 +45,10 @@ private static final long serialVersionUID = -8612967679860683584L;
 	private SeminarioService seminarioService;
 	@EJB
 	private CatalogoService catalogoService;
+	@Inject
+	private AlumnoPage alumnoPage;
+	@Inject
+	private CedulaPage cedulaPage;
 		
 	public String onFlowProcess(FlowEvent event) {
 		
@@ -50,6 +60,7 @@ private static final long serialVersionUID = -8612967679860683584L;
 			catalogoPage.setCatSeminarios(catalogoService.findAllCatSeminario());
 			catalogoPage.setCedulas(catalogoService.findAllCedula());
 			seminarioPage.setSeminarios(seminarioService.findAllSeminario());
+			cedulaPage.setCedulas(catalogoService.findAllCedula());
 			menuSesion.setVistaActual("seminarios");
 		} catch (TitulacionException e) {
 			FacesMessage message = Messages.getMessage(
@@ -74,7 +85,9 @@ private static final long serialVersionUID = -8612967679860683584L;
 	}
 	
 	public String limpiarSeminario() {
-		seminarioPage.setSeminario(new Seminario());		
+		seminarioPage.setSeminario(new Seminario());
+		seminarioPage.setPasantesSeleccionados(new ArrayList<Alumno>());
+		seminarioPage.setExpositoresSeleccionados(new ArrayList<Cedula>());
 		RequestContext requestContext = RequestContext.getCurrentInstance();
 		requestContext.update("idNewSeminario:formNewSeminario:pnlNewSeminario");
 		return null;
@@ -137,5 +150,20 @@ private static final long serialVersionUID = -8612967679860683584L;
 			
 		}
 		return null;
-	}	
+	}
+	
+	public void onPasanteDrop(DragDropEvent ddEvent) {
+		Alumno pasante = ((Alumno) ddEvent.getData());
+
+		seminarioPage.getPasantesSeleccionados().add(pasante);
+		alumnoPage.getAlumnos().remove(pasante);
+	}
+	
+	public void onExpositorDrop(DragDropEvent ddEvent) {
+		Cedula expositor = ((Cedula) ddEvent.getData());
+		
+		seminarioPage.getExpositoresSeleccionados().add(expositor);
+		cedulaPage.getCedulas().remove(expositor);		
+	}
+		
 }

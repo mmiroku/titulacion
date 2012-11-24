@@ -48,6 +48,10 @@
             <to-view-id>/secured/titulacion/expedientes.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
+            <from-outcome>alumnoLineas</from-outcome>
+            <to-view-id>/secured/titulacion/alumnoLinea.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>login</from-outcome>
             <to-view-id>login.xhtml</to-view-id>
         </navigation-case>

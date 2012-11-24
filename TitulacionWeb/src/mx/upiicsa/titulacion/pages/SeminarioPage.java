@@ -7,6 +7,9 @@ import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import mx.upiicsa.titulacion.model.Alumno;
+import mx.upiicsa.titulacion.model.Cedula;
+
 import mx.upiicsa.titulacion.model.Seminario; 
 
 @Named("pSeminario")
@@ -17,8 +20,14 @@ public class SeminarioPage implements Serializable{
 	private Seminario seminario = new Seminario();	
 	private Seminario filtro = new Seminario();
 	
-	private List<Seminario> seminarios = new ArrayList<Seminario>();
+	private List<Seminario> seminarios = new ArrayList<Seminario>();	
 	
+	private List<Alumno> pasantesSeleccionados = new ArrayList<Alumno>();
+	
+	private List<Cedula> expositoresSeleccionados = new ArrayList<Cedula>();
+	
+	
+		
 	public void setFiltro(Seminario filtro) {
 		this.filtro = filtro;
 	}
@@ -43,4 +52,21 @@ public class SeminarioPage implements Serializable{
 		return seminarios;
 	}
 	
+	public void setPasantesSeleccionados(List<Alumno> pasantesSeleccionados) {
+		this.pasantesSeleccionados = pasantesSeleccionados;
+	}
+	
+	public List<Alumno> getPasantesSeleccionados() {
+		return pasantesSeleccionados;
+	}
+	
+	public void setExpositoresSeleccionados(
+			List<Cedula> expositoresSeleccionados) {
+		this.expositoresSeleccionados = expositoresSeleccionados;
+	}
+	
+	public List<Cedula> getExpositoresSeleccionados() {
+		return expositoresSeleccionados;
+	}
+		
 }

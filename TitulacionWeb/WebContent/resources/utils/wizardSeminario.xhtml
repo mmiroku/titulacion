@@ -45,13 +45,77 @@
                 <p:tab id="expositores" title="Expositores">
                     <h:panelGrid columns="2">                        
                         <p:outputLabel for="cmbCedula" value="#{msg.L0000038}"/>                        
-                        <p:selectOneMenu id="cmbCedula" value="#{pSeminario.seminario.cedula}" converter="CedulaConverter">
+                        <p:selectOneMenu id="cmbCedula" value="#{pSeminario.seminario.cedula}" converter="CedulaConverter" required="true">
                         	<f:selectItem itemLabel=""/>
                             <f:selectItems value="#{pCatalogo.cedulas}" var="cedula" itemLabel="#{cedula.numeroCedula} - #{cedula.maestro.nombre}" itemValue="#{cedula}"/>
                         </p:selectOneMenu>                        
-                    </h:panelGrid>
-                    <p:commandButton style="float: right;" value="#{msg.B0000010}" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="#{cc.attrs.wizard}HandleComplete(xhr, status, args);"/>
-                </p:tab>                                                    
+                    </h:panelGrid>        
+					<p:fieldset legend="Maestros">
+                            <p:dataTable id="tblSinodales" var="cedula" value="#{pCedula.cedulas}">
+                                <p:column style="width:20px">
+                                    <h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
+                                    <p:draggable for="dragIcon" revert="true" />
+                                </p:column>
+                                <p:column headerText="Cedula">
+                                    <h:outputText value="#{cedula.numeroCedula}" />
+                                </p:column>
+                                <p:column headerText="Maestro">
+                                    <h:outputText value="#{cedula.maestro.aPaterno} #{cedula.maestro.aMaterno} #{cedula.maestro.nombre}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:fieldset>
+                        <p:fieldset id="expositoresSeleccionados" legend="Expositores" style="margin-top:20px">
+                            <p:outputPanel id="dropAreaExpositores">
+                                <h:outputText value="#{msg.M0000019}" rendered="#{empty pSeminario.expositoresSeleccionados}" style="font-size:24px;" />
+                                <p:dataTable var="expositor" value="#{pSeminario.expositoresSeleccionados}" rendered="#{not empty pSeminario.expositoresSeleccionados}">
+	                                <p:column headerText="Cedula">
+	                                    <h:outputText value="#{expositor.numeroCedula}" />
+	                                </p:column>
+	                                <p:column headerText="Nombre">
+	                                    <h:outputText value="#{expositor.maestro.aPaterno} #{expositor.maestro.aMaterno} #{expositor.maestro.nombre}" />
+	                                </p:column>
+                                </p:dataTable>
+                            </p:outputPanel>                            
+                        </p:fieldset>       
+                        <p:droppable for="expositoresSeleccionados" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tblSinodales">
+                            <p:ajax listener="#{cSeminario.onExpositorDrop}" update="dropAreaExpositores tblSinodales" />
+                        </p:droppable>                                                                                
+                </p:tab>          
+                <p:tab id="pasantes" title="Pasantes">
+                        <p:fieldset legend="#{msg.T0000025}">
+                            <p:dataTable id="tblPasantes" var="pasante" value="#{pAlumno.alumnos}">
+                                <p:column style="width:20px">
+                                    <h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
+                                    <p:draggable for="dragIcon" revert="true" />
+                                </p:column>
+                                <p:column headerText="#{msg.L0000010}">
+                                    <h:outputText value="#{pasante.boleta}" />
+                                </p:column>
+                                <p:column headerText="#{msg.L0000004}">
+                                    <h:outputText value="#{pasante.nombre}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:fieldset>
+
+                        <p:fieldset id="pasantesSeleccionados" legend="#{msg.T0000026}" style="margin-top:20px">
+                            <p:outputPanel id="dropArea">
+                                <h:outputText value="#{msg.M0000019}" rendered="#{empty pExpediente.pasantesSeleccionados}" style="font-size:24px;" />
+                                <p:dataTable var="pasante" value="#{pSeminario.pasantesSeleccionados}" rendered="#{not empty pSeminario.pasantesSeleccionados}">
+	                                <p:column headerText="#{msg.L0000010}">
+	                                    <h:outputText value="#{pasante.boleta}" />
+	                                </p:column>
+	                                <p:column headerText="#{msg.L0000004}">
+	                                    <h:outputText value="#{pasante.nombre}" />
+	                                </p:column>
+                                </p:dataTable>
+                            </p:outputPanel>
+                        </p:fieldset>
+
+                        <p:droppable for="pasantesSeleccionados" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tblPasantes">
+                            <p:ajax listener="#{cSeminario.onPasanteDrop}" update="dropArea tblPasantes" />
+                        </p:droppable>
+                        <p:commandButton style="float: right;" value="#{msg.B0000010}" process="#{cc.attrs.panel}" action="#{cc.attrs.action}" oncomplete="#{cc.attrs.wizard}HandleComplete(xhr, status, args);"/>
+                    </p:tab>                                                              
             </p:wizard>
             </p:outputPanel>
             </h:form>

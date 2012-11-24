@@ -14,28 +14,28 @@
 		
 		<p:growl id="msgsMaestros"/>
         <p:outputPanel id="tblMaestros">	    	           
-           <p:dataTable var="maestro" value="#{pMaestro.maestros}" emptyMessage="#{msg.M0000002}" paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10" scrollable="true">
-               <p:column headerText="#{msg.L0000002}">
+           <p:dataTable var="maestro" value="#{pMaestro.maestros}" emptyMessage="#{msg.M0000002}" paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10" scrollable="true" resizableColumns="true">
+               <p:column headerText="#{msg.L0000002}" >
                    <h:outputText value="#{maestro.aPaterno}"/>
                </p:column>
-               <p:column headerText="#{msg.L0000003}">
+               <p:column headerText="#{msg.L0000003}" >
                    <h:outputText value="#{maestro.aMaterno}"/>
                </p:column>
-               <p:column headerText="#{msg.L0000004}">
+               <p:column headerText="#{msg.L0000004}" >
                    <h:outputText value="#{maestro.nombre}"/>
                </p:column>
-               <p:column headerText="#{msg.L0000021}">
+               <p:column headerText="#{msg.L0000021}" >
                    <h:outputText value="#{maestro.titulo}"/>
                </p:column>
-               <p:column headerText="#{msg.L0000022}">
+               <p:column headerText="#{msg.L0000022}" >
                    <h:outputText value="#{maestro.anioIngreso}">
                    		<f:convertDateTime pattern="#{msg.FormatoFecha}" />
                    </h:outputText>
                </p:column>
-               <p:column headerText="#{msg.L0000023}">
+               <p:column headerText="#{msg.L0000023}" >
                    <h:outputText value="#{maestro.academia.nombre}"/>
                </p:column>
-               <p:column headerText="#{msg.L0000024}">
+               <p:column headerText="#{msg.L0000024}" >
                    <h:outputText value="#{maestro.abreviatura}" />
                </p:column>
                <p:column style="vertical-align:middle; width:7%;">

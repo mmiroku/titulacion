@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="../templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:utils="http://java.sun.com/jsf/composite/utils">
+
+<ui:define name="content">
+	<h:form id="formAlumnoLinea">
+		
+		<p:growl id="msgsAlumnoLineas"/>
+        <p:outputPanel id="tblAlumnoLineas">	    	           
+           <p:dataTable var="alumnoLinea" value="#{pAlumnoLinea.alumnoLineas}" emptyMessage="NO EXISTEN REGISTROS QUE MOSTRAR" paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10" resizableColumns="true">
+               <p:column headerText="LINEA" >
+                   <h:outputText value="#{alumnoLinea.linea.descripcion}"/>
+               </p:column>
+               <p:column headerText="ALUMNO" >
+                   <h:outputText value="#{alumnoLinea.alumno.aPaterno} #{alumnoLinea.alumno.aMaterno} #{alumnoLinea.alumno.nombre}"/>
+               </p:column>
+               <p:column headerText="PROYECTO" >
+                   <h:outputText value="#{alumnoLinea.proyecto.nombre}"/>
+               </p:column>               
+               <p:column style="vertical-align:middle; width:7%;">
+                   <f:facet name="header">
+                       <h:outputText />
+                   </f:facet>
+                   <p:commandButton id="btnEditAlumnoLinea" icon="ui-icon-pencil" onclick="wizEditAlumnoLinea.loadStep(wizEditAlumnoLinea.cfg.steps[0], true); dlgEditAlumnoLinea.show();" process="@this" action="#{cAlumnoLinea.seleccionarAlumnoLinea(alumnoLinea)}" />
+                   <p:tooltip for="btnEditAlumnoLinea" value="#{msg.B0000017}" showEffect="fade" hideEffect="fade" />
+               </p:column>
+               <p:column style="vertical-align:middle; width:7%;">
+                   <f:facet name="header">
+                       <h:outputText />
+                   </f:facet>
+                   <p:commandButton id="btnDelAlumnoLinea" icon="ui-icon-trash" onclick="dlgDelAlumnoLinea.show();" process="@this" action="#{pAlumnoLinea.setAlumnoLinea(alumnoLinea)}" />
+                   <p:tooltip for="btnDelAlumnoLinea" value="#{msg.B0000018}" showEffect="fade" hideEffect="fade" />
+               </p:column>
+            </p:dataTable>	    
+        </p:outputPanel>
+	</h:form>
+
+    <utils:wizardAlumnoLinea id="idNewAlumnoLinea" form="formNewAlumnoLinea" wizard="wizNewAlumnoLinea" widgetVar="dlgNewAlumnoLinea" panel="pnlNewAlumnoLinea" header="#{msg.T0000009}" isEdit="false" action="#{cAlumnoLinea.guardarAlumnoLinea()}"/>
+
+    <utils:wizardAlumnoLinea id="idEditAlumnoLinea" form="formEditAlumnoLinea" wizard="wizEditAlumnoLinea" widgetVar="dlgEditAlumnoLinea" panel="pnlEditAlumnoLinea" header="#{msg.T0000010}" isEdit="true" action="#{cAlumnoLinea.actualizarAlumnoLinea()}"/>
+
+    <p:confirmDialog message="¿Esta seguro de eliminar la línea #{pAlumnoLinea.alumnoLinea.linea.descripcion}?" header="Eliminar" severity="alert" widgetVar="dlgDelAlumnoLinea" appendToBody="true">
+        <p:commandButton value="#{msg.B0000019}" action="#{cAlumnoLinea.eliminarAlumnoLinea}" oncomplete="dlgDelAlumnoLinea.hide();" />
+        <p:commandButton value="#{msg.B0000020}" onclick="dlgDelAlumnoLinea.hide();"/>
+    </p:confirmDialog>
+
+</ui:define>
+<ui:define name="right">
+    <h:form id="formMenuAlumnoLinea">
+        <utils:logout/>
+        <h:panelGrid style="padding: 10px;">
+            <p:fieldset legend="Acciones">
+                <h:panelGrid>
+                    <p:commandButton value="Agregar Línea" action="#{cAlumnoLinea.limpiarAlumnoLinea()}" onclick="wizNewAlumnoLinea.loadStep(wizNewAlumnoLinea.cfg.steps[0], true); dlgNewAlumnoLinea.show();"/>              
+                </h:panelGrid>
+            </p:fieldset>
+            <br/>
+            <p:fieldset legend="Filtros">
+                <p:outputPanel id="pnlFiltro">
+                    <h:panelGrid>                       
+                    	<h:outputText value="Linea :" />                        
+                        <p:selectOneMenu id="cmbLinea" value="#{pAlumnoLinea.filtro.linea}" converter="LineaConverter" required="true">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems value="#{pCatalogo.lineas}" var="linea" itemLabel="#{linea.descripcion}" itemValue="#{linea}"/>
+                        </p:selectOneMenu>              
+                        <h:outputText value="Alumno :" />
+                        <p:selectOneMenu id="cmbAlumno" value="#{pAlumnoLinea.filtro.alumno}" converter="AlumnoConverter" required="true">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems value="#{pCatalogo.alumnos}" var="alumno" itemLabel="#{alumno.aPaterno} #{alumno.aMaterno} #{alumno.nombre}" itemValue="#{alumno}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Proyecto :" />
+                        <p:selectOneMenu id="cmbProyecto" value="#{pAlumnoLinea.filtro.proyecto}" converter="ProyectoConverter" required="true">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems value="#{pCatalogo.proyectos}" var="proyecto" itemLabel="#{proyecto.nombre}" itemValue="#{proyecto}"/>
+                        </p:selectOneMenu>                     
+                        <br/>
+ 						<p:commandButton value="#{msg.B0000012}" action="#{cAlumnoLinea.filtrarAlumnoLineas()}" style="float: left;"/>                       
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:fieldset>
+        </h:panelGrid>               
+    </h:form>
+</ui:define>
+</ui:composition>

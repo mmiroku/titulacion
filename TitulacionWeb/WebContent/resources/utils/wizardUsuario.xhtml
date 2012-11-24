@@ -37,6 +37,7 @@
                         <h:panelGrid columns="2">
                             <p:outputLabel for="cmbPerfil" value="#{msg.L0000039}"/>
                             <p:selectOneMenu id="cmbPerfil" value="#{pUsuario.usuario.perfil}" converter="PerfilConverter">
+                            	<f:selectItem itemLabel=""/>
                                 <f:selectItems value="#{pCatalogo.perfiles}" var="perfil" itemLabel="#{perfil.perfil}" itemValue="#{perfil}"/>
                             </p:selectOneMenu>
                         </h:panelGrid>

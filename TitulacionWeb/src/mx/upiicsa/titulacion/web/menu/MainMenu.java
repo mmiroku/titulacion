@@ -61,6 +61,12 @@ public class MainMenu extends MenuElemento {
 		propiedades.put(WConstants.PERFIL_ADMIN, WConstants.PERFIL_ADMIN);
 		propiedades.put(WConstants.PERFIL_TITULACION, WConstants.PERFIL_TITULACION);
 		agregarSubMenu(new MenuElemento("expedientes","#{cExpediente.init()}",propiedades));
+		
+		propiedades = new HashMap<String, String>();
+		propiedades.put(WConstants.PERFIL_ADMIN, WConstants.PERFIL_ADMIN);
+		propiedades.put(WConstants.PERFIL_TITULACION, WConstants.PERFIL_TITULACION);
+		agregarSubMenu(new MenuElemento("alumnoLineas","#{cAlumnoLinea.init()}",propiedades));
+		
 	}
 	
 	public List<MenuElemento> getMenu() {

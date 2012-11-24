@@ -6,6 +6,7 @@ import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import mx.upiicsa.titulacion.model.Alumno;
 import mx.upiicsa.titulacion.common.enums.Semestre;
 import mx.upiicsa.titulacion.model.Academia;
 import mx.upiicsa.titulacion.model.Carrera;
@@ -17,6 +18,9 @@ import mx.upiicsa.titulacion.model.Linea;
 import mx.upiicsa.titulacion.model.Maestro;
 import mx.upiicsa.titulacion.model.Perfil;
 import mx.upiicsa.titulacion.model.Sexo;
+import mx.upiicsa.titulacion.model.AlumnoLinea;
+import mx.upiicsa.titulacion.model.Proyecto;
+import mx.upiicsa.titulacion.model.Empresa;
 
 @Named("pCatalogo")
 @SessionScoped
@@ -43,6 +47,14 @@ public class CatalogoPage implements Serializable {
 	private List<Maestro> maestros;
 	
 	private List<FormaTitulacion> formasTitulacion;
+	
+	private List<AlumnoLinea> alumnoLineas;
+	
+	private List<Proyecto> proyectos;
+	
+	private List<Empresa> empresas;
+	
+	private List<Alumno> alumnos; 
 
 	public List<Sexo> getSexos() {
 		return sexos;
@@ -128,4 +140,35 @@ public class CatalogoPage implements Serializable {
 		this.formasTitulacion = formasTitulacion;
 	}
 	
+	public void setAlumnoLineas(List<AlumnoLinea> alumnoLineas) {
+		this.alumnoLineas = alumnoLineas;
+	}
+	
+	public List<AlumnoLinea> getAlumnoLineas() {
+		return alumnoLineas;
+	}
+	
+	public void setEmpresas(List<Empresa> empresas) {
+		this.empresas = empresas;
+	}
+	
+	public List<Empresa> getEmpresas() {
+		return empresas;
+	}
+	
+	public void setProyectos(List<Proyecto> proyectos) {
+		this.proyectos = proyectos;
+	}
+	
+	public List<Proyecto> getProyectos() {
+		return proyectos;
+	}
+		
+	public void setAlumnos(List<Alumno> alumnos) {
+		this.alumnos = alumnos;
+	}
+	
+	public List<Alumno> getAlumnos() {
+		return alumnos;
+	}
 }
