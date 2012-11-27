@@ -8,6 +8,7 @@ import javax.inject.Named;
 
 import mx.upiicsa.titulacion.model.Alumno;
 import mx.upiicsa.titulacion.model.Cedula;
+import mx.upiicsa.titulacion.model.Materia;
 
 @Named("pFilter")
 @SessionScoped
@@ -18,6 +19,8 @@ public class FilterPage implements Serializable {
 	private List<Alumno> filteredAlumnos;
 	
 	private List<Cedula> filteredCedulas;
+	
+	private List<Materia> filteredMaterias;
 
 	public List<Alumno> getFilteredAlumnos() {
 		return filteredAlumnos;
@@ -33,6 +36,14 @@ public class FilterPage implements Serializable {
 
 	public void setFilteredCedulas(List<Cedula> filteredCedulas) {
 		this.filteredCedulas = filteredCedulas;
+	}
+	
+	public List<Materia> getFilteredMaterias() {
+		return filteredMaterias;
+	}
+	
+	public void setFilteredMaterias(List<Materia> filteredMaterias) {
+		this.filteredMaterias = filteredMaterias;
 	}
 	
 }

@@ -27,6 +27,7 @@ import mx.upiicsa.titulacion.model.Sexo;
 import mx.upiicsa.titulacion.model.Linea;
 import mx.upiicsa.titulacion.model.Usuario;
 import mx.upiicsa.titulacion.model.Perfil;
+import mx.upiicsa.titulacion.model.AlumnoMateria;
 
 
 @Stateless(mappedName = "ejb/CatalogoService")
@@ -240,4 +241,16 @@ public class CatalogoService {
 		}
 		return materiaList;
 	}
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<AlumnoMateria> findAllAlumnoMateria() throws TitulacionException {
+		TypedQuery<AlumnoMateria> query = entityManager.createNamedQuery(
+				"AlumnoMateria.findAll", AlumnoMateria.class);
+		List<AlumnoMateria> alumnoMateriaList;
+		try {
+			alumnoMateriaList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new TitulacionException("No existen registros en el catalogo de Materia.");
+		}
+		return alumnoMateriaList;
+	}	
 }

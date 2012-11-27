@@ -12,9 +12,7 @@ import javax.inject.Named;
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.CatLinea;
 import mx.upiicsa.titulacion.pages.CatLineaPage;
-import mx.upiicsa.titulacion.pages.CatalogoPage;
 import mx.upiicsa.titulacion.service.CatLineaService;
-import mx.upiicsa.titulacion.service.CatalogoService;
 import mx.upiicsa.titulacion.util.Messages;
 import mx.upiicsa.titulacion.web.menu.MenuSesion;
 
@@ -29,15 +27,11 @@ public class CatLineaCtrl implements Serializable {
 	private static final long serialVersionUID = -8612967679860683584L;
 	
 	@Inject
-	private CatLineaPage catLineaPage;
-	@Inject
-	private CatalogoPage catalogoPage;
+	private CatLineaPage catLineaPage;	
 	@Inject
 	private MenuSesion menuSesion;
 	@EJB
-	private CatLineaService catLineaService;
-	@EJB
-	private CatalogoService catalogoService;
+	private CatLineaService catLineaService;	
 		
 	public String onFlowProcess(FlowEvent event) {
 		

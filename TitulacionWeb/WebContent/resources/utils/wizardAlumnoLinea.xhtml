@@ -46,18 +46,18 @@
                 </p:tab>
                 <p:tab id="datosMaterias" title="Materias">                    
                     	<p:fieldset legend="Materias">
-                            <p:dataTable id="tblMaterias" var="materia" value="#{pMateria.materias}">
+                            <p:dataTable id="tblMaterias" var="materia" value="#{pMateria.materias}" filteredValue="#{pFilter.filteredMaterias}">
                                 <p:column style="width:20px">
                                     <h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
                                     <p:draggable for="dragIcon" revert="true" />
                                 </p:column>
                                 <p:column headerText="Cedula">
-                                    <h:outputText value="#{materia.nombre}" />
+                                    <h:outputText value="#{materia.nombre}" filterBy="#{materia.nombre}"/>
                                 </p:column>
                                 <p:column headerText="Maestro">
-                                    <h:outputText value="#{materia.descripcion}" />
+                                    <h:outputText value="#{materia.descripcion}" filterBy="#{materia.descripcion}"/>
                                 </p:column>
-                            </p:dataTable>
+                            </p:dataTable>                            
                         </p:fieldset> 
                         <p:fieldset id="materiasSeleccionadas" legend="Materias" style="margin-top:20px">
                             <p:outputPanel id="dropArea">

@@ -11,10 +11,8 @@ import javax.inject.Named;
 
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.Maestro;
-import mx.upiicsa.titulacion.pages.CatalogoPage;
 import mx.upiicsa.titulacion.pages.MaestroPage;
 import mx.upiicsa.titulacion.service.MaestroService;
-import mx.upiicsa.titulacion.service.CatalogoService;
 import mx.upiicsa.titulacion.util.Messages;
 import mx.upiicsa.titulacion.web.menu.MenuSesion;
 
@@ -32,13 +30,9 @@ private static final long serialVersionUID = -8612967679860683584L;
 	@Inject
 	private MaestroPage maestroPage;
 	@Inject
-	private CatalogoPage catalogoPage;
-	@Inject
 	private MenuSesion menuSesion;
 	@EJB
-	private MaestroService maestroService;
-	@EJB
-	private CatalogoService catalogoService;
+	private MaestroService maestroService;	
 		
 	public String onFlowProcess(FlowEvent event) {
 		

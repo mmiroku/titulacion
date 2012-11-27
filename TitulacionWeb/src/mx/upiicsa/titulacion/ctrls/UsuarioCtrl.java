@@ -12,9 +12,7 @@ import javax.inject.Named;
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.Usuario;
 import mx.upiicsa.titulacion.pages.UsuarioPage;
-import mx.upiicsa.titulacion.pages.CatalogoPage;
 import mx.upiicsa.titulacion.service.UsuarioService;
-import mx.upiicsa.titulacion.service.CatalogoService;
 import mx.upiicsa.titulacion.util.Messages;
 import mx.upiicsa.titulacion.web.menu.MenuSesion;
 
@@ -29,15 +27,11 @@ public class UsuarioCtrl implements Serializable {
 	private static final long serialVersionUID = -8612967679860683584L;
 	
 	@Inject
-	private UsuarioPage usuarioPage;
-	@Inject
-	private CatalogoPage catalogoPage;
+	private UsuarioPage usuarioPage;	
 	@Inject
 	private MenuSesion menuSesion;
 	@EJB
-	private UsuarioService usuarioService;
-	@EJB
-	private CatalogoService catalogoService;
+	private UsuarioService usuarioService;	
 		
 	public String onFlowProcess(FlowEvent event) {
 		

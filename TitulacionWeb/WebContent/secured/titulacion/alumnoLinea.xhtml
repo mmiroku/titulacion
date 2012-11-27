@@ -66,17 +66,17 @@
                 <p:outputPanel id="pnlFiltro">
                     <h:panelGrid>                       
                     	<h:outputText value="Linea :" />                        
-                        <p:selectOneMenu id="cmbLinea" value="#{pAlumnoLinea.filtro.linea}" converter="LineaConverter" required="true">
+                        <p:selectOneMenu id="cmbLinea" value="#{pAlumnoLinea.filtro.linea}" converter="LineaConverter" >
                             <f:selectItem itemLabel=""/>
                             <f:selectItems value="#{pCatalogo.lineas}" var="linea" itemLabel="#{linea.descripcion}" itemValue="#{linea}"/>
                         </p:selectOneMenu>              
                         <h:outputText value="Alumno :" />
-                        <p:selectOneMenu id="cmbAlumno" value="#{pAlumnoLinea.filtro.alumno}" converter="AlumnoConverter" required="true">
+                        <p:selectOneMenu id="cmbAlumno" value="#{pAlumnoLinea.filtro.alumno}" converter="AlumnoConverter" >
                             <f:selectItem itemLabel=""/>
                             <f:selectItems value="#{pCatalogo.alumnos}" var="alumno" itemLabel="#{alumno.aPaterno} #{alumno.aMaterno} #{alumno.nombre}" itemValue="#{alumno}"/>
                         </p:selectOneMenu>
                         <h:outputText value="Proyecto :" />
-                        <p:selectOneMenu id="cmbProyecto" value="#{pAlumnoLinea.filtro.proyecto}" converter="ProyectoConverter" required="true">
+                        <p:selectOneMenu id="cmbProyecto" value="#{pAlumnoLinea.filtro.proyecto}" converter="ProyectoConverter" >
                             <f:selectItem itemLabel=""/>
                             <f:selectItems value="#{pCatalogo.proyectos}" var="proyecto" itemLabel="#{proyecto.nombre}" itemValue="#{proyecto}"/>
                         </p:selectOneMenu>                     

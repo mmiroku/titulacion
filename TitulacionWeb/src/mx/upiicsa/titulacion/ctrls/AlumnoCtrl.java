@@ -16,9 +16,7 @@ import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.Alumno;
 import mx.upiicsa.titulacion.model.Direccion;
 import mx.upiicsa.titulacion.pages.AlumnoPage;
-import mx.upiicsa.titulacion.pages.CatalogoPage;
 import mx.upiicsa.titulacion.service.AlumnoService;
-import mx.upiicsa.titulacion.service.CatalogoService;
 import mx.upiicsa.titulacion.util.Messages;
 import mx.upiicsa.titulacion.web.menu.MenuSesion;
 
@@ -33,15 +31,11 @@ public class AlumnoCtrl implements Serializable {
 	private static final long serialVersionUID = -8612967679860683584L;
 	
 	@Inject
-	private AlumnoPage alumnoPage;
-	@Inject
-	private CatalogoPage catalogoPage;
+	private AlumnoPage alumnoPage;	
 	@Inject
 	private MenuSesion menuSesion;
 	@EJB
-	private AlumnoService alumnoService;
-	@EJB
-	private CatalogoService catalogoService;
+	private AlumnoService alumnoService;	
 	
 	public String onFlowProcess(FlowEvent event) {
 		

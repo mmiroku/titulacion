@@ -58,14 +58,14 @@ private static final long serialVersionUID = -8612967679860683584L;
 			catalogoPage.setAlumnos(catalogoService.findAllAlumno());
 			materiaPage.setMaterias(catalogoService.findAllMateria());
 			alumnoLineaPage.setAlumnoLineas(alumnoLineaService.findAllAlumnoLinea());			
-			menuSesion.setVistaActual("alumnoLineas");
+			menuSesion.setVistaActual("Linea");
 		} catch (TitulacionException e) {
 			FacesMessage message = Messages.getMessage(
 					e.getMessage(), null);
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		return "alumnoLineas";
+		return "Linea";
 	}
 		
 	public String guardarAlumnoLinea() {
