@@ -35,9 +35,9 @@
                                 <f:selectItems value="#{pCatalogo.formasTitulacion}" var="formaTitulacion" itemLabel="#{formaTitulacion.nombre}" itemValue="#{formaTitulacion}"/>
                             </p:selectOneMenu>
                             <p:outputLabel for="dtFechaInicio" value="#{msg.L0000051}"/>
-                            <p:calendar id="dtFechaInicio" value="#{pExpediente.expediente.fechaInicio}"  showOn="button" size="7" pattern="dd/MM/yyyy" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true"/>
+                            <p:calendar id="dtFechaInicio" value="#{pExpediente.expediente.fechaInicio}"  showOn="button" size="7" pattern="MM/dd/yyyy HH:mm" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true"/>
                             <p:outputLabel for="dtFechaFin" value="#{msg.L0000052}"/>
-                            <p:calendar id="dtFechaFin" value="#{pExpediente.expediente.fechaFin}"  showOn="button" size="7" pattern="dd/MM/yyyy" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true"/>
+                            <p:calendar id="dtFechaFin" value="#{pExpediente.expediente.fechaFin}"  showOn="button" size="7" pattern="HH:mm" timeOnly="true" locale="es" navigator="true" yearRange="c-100:c+100" maxdate="today();" required="true"/>
                             <p:outputLabel for="txtLugar" value="#{msg.L0000049}"/>
                             <p:inputText id="txtLugar" value="#{pExpediente.expediente.lugar}" required="true"/>
                             <p:outputLabel for="txtAuditorio" value="#{msg.L0000050}"/>

@@ -15,40 +15,55 @@
         <p:growl id="msgsExpedientes"/>
         <p:outputPanel id="tblExpedientes">
             <p:dataTable var="expediente" value="#{pExpediente.expedientes}" emptyMessage="#{msg.M0000017}">
-                <f:facet name="header">  
-                    Expedientes  
-                </f:facet>
-                <p:subTable var="actaExpediente" value="#{expediente.actaExpedienteList}">
-                    <f:facet name="header">
-                        <h:outputText value="#{expediente.descripcion} - #{expediente.numeroImpresion}"/>
-                    </f:facet>
-                    <p:column headerText="#{msg.L0000010}">
-                        <h:outputText value="#{actaExpediente.acta.alumno.boleta}"/>
-                    </p:column>
-                    <p:column headerText="#{msg.L0000045}">
-                        <h:outputText value="#{actaExpediente.acta.alumno.nombre} #{actaExpediente.acta.alumno.aPaterno} #{actaExpediente.acta.alumno.aMaterno}"/>
-                    </p:column>
-                    <p:column headerText="#{msg.L0000046}">
-                        <h:outputText value="#{actaExpediente.acta.numeroActa}"/>
-                    </p:column>
-                    <p:column headerText="#{msg.L0000047}">
-                        <h:outputText value="#{actaExpediente.acta.numeroLibro}"/>
-                    </p:column>
-                </p:subTable>
-                <p:column style="vertical-align:middle; width:7%;">  
-                    <f:facet name="header">
-                        <h:outputText />
-                    </f:facet>
-                    <p:commandButton id="btnEditActa" icon="ui-icon-pencil" onclick="wizEditAlumno.loadStep(wizEditAlumno.cfg.steps[0], true); dlgEditAlumno.show();" process="@this" action="#{cAlumno.seleccionarAlumno(alumno)}" />
-                    <p:tooltip for="btnEditExpediente" value="#{msg.B0000017}" showEffect="fade" hideEffect="fade" />
+                <p:column style="width:4%">
+                    <p:rowToggler />
                 </p:column>
-                <p:column style="vertical-align:middle; width:7%;">  
+                
+                <p:column>
                     <f:facet name="header">
-                        <h:outputText />
+                        #{msg.L0000048}
                     </f:facet>
-                    <p:commandButton id="btnDelActa" icon="ui-icon-trash" onclick="dlgDelAlumno.show();" process="@this" action="#{pAlumno.setAlumno(alumno)}" />
-                    <p:tooltip for="btnDelAlumno" value="#{msg.B0000018}" showEffect="fade" hideEffect="fade" />
+                    <h:outputText value="#{expediente.tema}"/>
                 </p:column>
+                
+                <p:column>
+	                <f:facet name="header">  
+	                    #{msg.L0000060}  
+	                </f:facet>
+	                <h:outputText value="#{expediente.numeroImpresion}"/>
+                </p:column>
+                
+                <p:column>
+                    <f:facet name="header">  
+                        #{msg.L0000053}
+                    </f:facet>
+                    <h:outputText value="#{expediente.formaTitulacion.nombre}"/>
+                </p:column>
+                
+                <p:rowExpansion>
+	                <p:dataTable var="actaExpediente" value="#{expediente.actaExpedienteList}">
+	                    <p:column headerText="#{msg.L0000010}">
+	                        <h:outputText value="#{actaExpediente.acta.alumno.boleta}"/>
+	                    </p:column>
+	                    <p:column headerText="#{msg.L0000045}">
+	                        <h:outputText value="#{actaExpediente.acta.alumno.nombre} #{actaExpediente.acta.alumno.aPaterno} #{actaExpediente.acta.alumno.aMaterno}"/>
+	                    </p:column>
+	                    <p:column headerText="#{msg.L0000046}">
+	                        <h:outputText value="#{actaExpediente.acta.numeroActa}"/>
+	                    </p:column>
+	                    <p:column headerText="#{msg.L0000047}">
+	                        <h:outputText value="#{actaExpediente.acta.numeroLibro}"/>
+	                    </p:column>
+		                <p:column style="vertical-align:middle; width:7%;">  
+		                    <f:facet name="header">
+		                        <h:outputText />
+		                    </f:facet>
+		                    <p:commandButton id="btnGenActa" icon="ui-icon-document" process="@this" action="#{cExpediente.generarActa(expediente, actaExpediente)}" ajax="false"/>
+		                    <p:tooltip for="btnGenActa" value="#{msg.B0000014}" showEffect="fade" hideEffect="fade" />
+		                </p:column>
+	                </p:dataTable>
+                </p:rowExpansion>
+                
             </p:dataTable>
         </p:outputPanel>
     </h:form>
@@ -77,15 +92,15 @@
                         <p:inputText value="#{pAlumno.filtro.boleta}"/>
                         <h:outputText value="#{msg.L0000004}"/>
                         <p:inputText value="#{pAlumno.filtro.nombre}"/>
-                        <h:outputText value="#{msg.L0000011}"/>
-                        <p:selectOneMenu value="#{pAlumno.filtro.carrera}" converter="CarreraConverter">
+                        <h:outputText value="#{msg.L0000048}"/>
+                        <p:inputText value="#{pAlumno.filtro.nombre}"/>
+                        <h:outputText value="#{msg.L0000053}"/>
+                        <p:selectOneMenu>
                             <f:selectItem itemLabel=""/>
-                            <f:selectItems value="#{pCatalogo.carreras}" var="carrera" itemLabel="#{carrera.nombre}" itemValue="#{carrera}"/>
+                            <f:selectItems value="#{pCatalogo.formasTitulacion}" var="formaTitulacion" itemLabel="#{formaTitulacion.nombre}" itemValue="#{formaTitulacion}"/>
                         </p:selectOneMenu>
-                        <h:outputText value="#{msg.L0000009}"/>
-                        <p:inputText value="#{pAlumno.filtro.curp}"/>
                         <br/>
-                        <p:commandButton value="#{msg.B0000012}" action="#{cAlumno.filtrarAlumnos()}" style="float: right;"/>
+                        <p:commandButton value="#{msg.B0000012}" style="float: right;"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </p:fieldset>

@@ -117,5 +117,78 @@ public class Maestro implements Serializable{
 	
 	public String getTitulo() {
 		return Titulo;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((Abreviatura == null) ? 0 : Abreviatura.hashCode());
+		result = prime * result
+				+ ((AnioIngreso == null) ? 0 : AnioIngreso.hashCode());
+		result = prime * result
+				+ ((IdMaestro == null) ? 0 : IdMaestro.hashCode());
+		result = prime * result + ((Titulo == null) ? 0 : Titulo.hashCode());
+		result = prime * result
+				+ ((aMaterno == null) ? 0 : aMaterno.hashCode());
+		result = prime * result
+				+ ((aPaterno == null) ? 0 : aPaterno.hashCode());
+		result = prime * result
+				+ ((academia == null) ? 0 : academia.hashCode());
+		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Maestro other = (Maestro) obj;
+		if (Abreviatura == null) {
+			if (other.Abreviatura != null)
+				return false;
+		} else if (!Abreviatura.equals(other.Abreviatura))
+			return false;
+		if (AnioIngreso == null) {
+			if (other.AnioIngreso != null)
+				return false;
+		} else if (!AnioIngreso.equals(other.AnioIngreso))
+			return false;
+		if (IdMaestro == null) {
+			if (other.IdMaestro != null)
+				return false;
+		} else if (!IdMaestro.equals(other.IdMaestro))
+			return false;
+		if (Titulo == null) {
+			if (other.Titulo != null)
+				return false;
+		} else if (!Titulo.equals(other.Titulo))
+			return false;
+		if (aMaterno == null) {
+			if (other.aMaterno != null)
+				return false;
+		} else if (!aMaterno.equals(other.aMaterno))
+			return false;
+		if (aPaterno == null) {
+			if (other.aPaterno != null)
+				return false;
+		} else if (!aPaterno.equals(other.aPaterno))
+			return false;
+		if (academia == null) {
+			if (other.academia != null)
+				return false;
+		} else if (!academia.equals(other.academia))
+			return false;
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
+			return false;
+		return true;
 	}	
 }

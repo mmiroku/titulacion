@@ -1,5 +1,7 @@
 package mx.upiicsa.titulacion.common.constantes;
 
+import java.util.Locale;
+
 public class Constants {
 
 	// ASeguridad
@@ -9,4 +11,6 @@ public class Constants {
 
 	public final static String TITULACION_ENCRYPTION_PASSWORD = "T1tul4c10nW3b";
 
+	/** Locale para M&eacute;xico. */
+	public static final Locale LOCALE_ES_MX = new Locale("es", "MX");
 }

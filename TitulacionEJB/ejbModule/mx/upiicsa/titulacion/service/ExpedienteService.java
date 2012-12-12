@@ -1,7 +1,9 @@
 package mx.upiicsa.titulacion.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -12,12 +14,14 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import mx.upiicsa.titulacion.common.constantes.ConstantesReportes;
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
 import mx.upiicsa.titulacion.model.Acta;
 import mx.upiicsa.titulacion.model.ActaExpediente;
 import mx.upiicsa.titulacion.model.Alumno;
 import mx.upiicsa.titulacion.model.Estatus;
 import mx.upiicsa.titulacion.model.Expediente;
+import mx.upiicsa.titulacion.util.ReporteJasper;
 
 @Stateless(mappedName = "ejb/ExpedienteService")
 public class ExpedienteService {
@@ -131,5 +135,18 @@ public class ExpedienteService {
 			
 		}
 		return expedienteList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public byte[] obtenerPDFActa(Expediente expediente, ActaExpediente actaExpediente) throws TitulacionException {
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("expediente", expediente);
+		params.put("acta", actaExpediente.getActa());
+		params.put("pasante", actaExpediente.getActa().getAlumno());
+		List<String> dataSource = new ArrayList<String>();
+		ReporteJasper reporte = new ReporteJasper(ConstantesReportes.REPORTE_ACTA_PDF, params, dataSource);
+
+		return reporte.generarReportePdf();
 	}
 }

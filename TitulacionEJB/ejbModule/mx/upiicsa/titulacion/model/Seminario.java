@@ -103,5 +103,66 @@ public class Seminario implements Serializable{
 	public String getVigencia() {
 		return vigencia;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((catSeminario == null) ? 0 : catSeminario.hashCode());
+		result = prime * result + ((cedula == null) ? 0 : cedula.hashCode());
+		result = prime * result
+				+ ((diasHorario == null) ? 0 : diasHorario.hashCode());
+		result = prime * result + idSeminario;
+		result = prime * result + ((periodo == null) ? 0 : periodo.hashCode());
+		result = prime * result + ((sede == null) ? 0 : sede.hashCode());
+		result = prime * result
+				+ ((vigencia == null) ? 0 : vigencia.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Seminario other = (Seminario) obj;
+		if (catSeminario == null) {
+			if (other.catSeminario != null)
+				return false;
+		} else if (!catSeminario.equals(other.catSeminario))
+			return false;
+		if (cedula == null) {
+			if (other.cedula != null)
+				return false;
+		} else if (!cedula.equals(other.cedula))
+			return false;
+		if (diasHorario == null) {
+			if (other.diasHorario != null)
+				return false;
+		} else if (!diasHorario.equals(other.diasHorario))
+			return false;
+		if (idSeminario != other.idSeminario)
+			return false;
+		if (periodo == null) {
+			if (other.periodo != null)
+				return false;
+		} else if (!periodo.equals(other.periodo))
+			return false;
+		if (sede == null) {
+			if (other.sede != null)
+				return false;
+		} else if (!sede.equals(other.sede))
+			return false;
+		if (vigencia == null) {
+			if (other.vigencia != null)
+				return false;
+		} else if (!vigencia.equals(other.vigencia))
+			return false;
+		return true;
+	}
 		
 }

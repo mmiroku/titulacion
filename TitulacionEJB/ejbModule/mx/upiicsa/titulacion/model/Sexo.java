@@ -42,4 +42,23 @@ public class Sexo implements Serializable {
 		this.descripcion = descripcion;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sexo other = (Sexo) obj;
+		if (descripcion == null) {
+			if (other.descripcion != null)
+				return false;
+		} else if (!descripcion.equals(other.descripcion))
+			return false;
+		if (idSexo != other.idSexo)
+			return false;
+		return true;
+	}
+
 }

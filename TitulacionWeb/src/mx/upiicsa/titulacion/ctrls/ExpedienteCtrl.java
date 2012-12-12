@@ -1,5 +1,8 @@
 package mx.upiicsa.titulacion.ctrls;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +13,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletResponse;
 
 import mx.upiicsa.titulacion.exceptions.TitulacionException;
+import mx.upiicsa.titulacion.model.ActaExpediente;
 import mx.upiicsa.titulacion.model.Alumno;
 import mx.upiicsa.titulacion.model.Cedula;
 import mx.upiicsa.titulacion.model.Expediente;
@@ -23,6 +28,7 @@ import mx.upiicsa.titulacion.service.AlumnoService;
 import mx.upiicsa.titulacion.service.CatalogoService;
 import mx.upiicsa.titulacion.service.ExpedienteService;
 import mx.upiicsa.titulacion.util.Messages;
+import mx.upiicsa.titulacion.util.RespuestaReporte;
 import mx.upiicsa.titulacion.web.menu.MenuSesion;
 
 import org.primefaces.context.RequestContext;
@@ -176,5 +182,107 @@ public class ExpedienteCtrl implements Serializable {
 		expedientePage.getExpediente().setCedulaVocal3(cedulaVocal3);
 		catalogoPage.getCedulas().remove(cedulaVocal3);
 		filterPage.setFilteredCedulas(catalogoPage.getCedulas());
+	}
+	
+	public String generarActa(Expediente expediente, ActaExpediente actaExpediente) {
+		try {
+			byte[] archivo = expedienteService.obtenerPDFActa(expediente, actaExpediente);
+			ejecutarServlet(archivo, "acta.pdf");
+		} catch (TitulacionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private void ejecutarServlet(byte[] archivo, String nombreArchivo)
+			throws TitulacionException {
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext()
+                .getResponse();
+ 
+		RespuestaReporte archivoResponse = new RespuestaReporte();
+		try {
+			archivoResponse.setArchivo(archivo);
+
+			archivoResponse.setNombreArchivo(nombreArchivo);
+			archivoResponse.setTipoReporte(1);
+
+			response.setContentType(getContentType(archivoResponse
+					.getTipoReporte()));
+			setContentDisposition(response, archivoResponse);
+			response.setContentLength(archivoResponse.getArchivo().length);
+			response.setHeader("Expires", "0");
+			response.setHeader("Cache-Control",
+					"must-revalidate, post-check=0, pre-check=0");
+			response.setHeader("Pragma", "public");
+
+			int read;
+
+			BufferedInputStream byteInput = new BufferedInputStream(
+					new ByteArrayInputStream(archivoResponse.getArchivo()));
+
+			while ((read = byteInput.read()) > -1) {
+				response.getOutputStream().write(read);
+			}
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
+
+        } catch (IOException exception) {
+			throw new TitulacionException("Error al descargar PDF: "
+					+ exception.getMessage(), exception);
+        }
+        ctx.responseComplete();
+	}
+
+	/**
+	 * M&eacute;todo que obtiene el content type de acuerdo al tipo de reporte
+	 * generado.
+	 * 
+	 * @param tipoReporte
+	 *            Tipo de reporte generado
+	 * @return Content type
+	 */
+	private String getContentType(Integer tipoReporte) {
+		String contentType = null;
+		switch (tipoReporte) {
+		case 1:
+			contentType = "application/pdf";
+			break;
+		case 2:
+			contentType = "application/ms-excel";
+			break;
+		case 3:
+			contentType = "application/rtf";
+			break;
+		default:
+			contentType = "application/download";
+			break;
+		}
+
+		return contentType;
+	}
+
+	/**
+	 * Sets the content disposition.
+	 * 
+	 * @param response
+	 *            la response.
+	 * @param archivoResponse
+	 *            la archivo response.
+	 */
+	private void setContentDisposition(HttpServletResponse response,
+			RespuestaReporte archivoResponse) {
+		switch (archivoResponse.getTipoReporte()) {
+		// case MedClsConstantesGeneracionReporte.ID_TIPO_REPORTE_PDF:
+		case 1:
+			response.setHeader("Content-Disposition", "attachment; filename="
+					+ archivoResponse.getNombreArchivo());
+			break;
+		default:
+			response.setHeader("Content-Disposition", "attachment; filename="
+					+ archivoResponse.getNombreArchivo());
+			break;
+		}
 	}
 }

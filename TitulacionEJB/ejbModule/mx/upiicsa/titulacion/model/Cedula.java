@@ -51,4 +51,42 @@ public class Cedula implements Serializable {
 	public Maestro getMaestro() {
 		return maestro;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((maestro == null) ? 0 : maestro.hashCode());
+		result = prime * result
+				+ ((numeroCedula == null) ? 0 : numeroCedula.hashCode());
+		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cedula other = (Cedula) obj;
+		if (maestro == null) {
+			if (other.maestro != null)
+				return false;
+		} else if (!maestro.equals(other.maestro))
+			return false;
+		if (numeroCedula == null) {
+			if (other.numeroCedula != null)
+				return false;
+		} else if (!numeroCedula.equals(other.numeroCedula))
+			return false;
+		if (titulo == null) {
+			if (other.titulo != null)
+				return false;
+		} else if (!titulo.equals(other.titulo))
+			return false;
+		return true;
+	}
 }

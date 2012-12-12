@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Acta" language="groovy" pageWidth="612" pageHeight="1008" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cce12959-9b27-4424-8049-28d0348cbf0d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="144"/>
+	<parameter name="expediente" class="mx.upiicsa.titulacion.model.Expediente" isForPrompting="false"/>
+	<parameter name="pasante" class="mx.upiicsa.titulacion.model.Alumno"/>
+	<parameter name="acta" class="mx.upiicsa.titulacion.model.Acta"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="96" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="4777039c-5202-4df4-bc15-a16fee399f41" x="163" y="0" width="256" height="20" forecolor="#000000"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[INSTITUTO POLITÉCNICO NACIONAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3ff445ab-c7c8-420b-954d-4285fef64cb4" x="167" y="40" width="252" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[CIENCIAS SOCIALES Y ADMINISTRATIVAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3ff445ab-c7c8-420b-954d-4285fef64cb4" x="102" y="20" width="366" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[UNIDAD PROFESIONAL INTERDISCIPLINARIA DE INGENIERÍA Y]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6c9a0b13-259b-40f2-9cce-e3cc0cc2c346" x="191" y="76" width="204" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACTA DE EXAMEN PROFESIONAL]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="5c4cb7e9-6d97-4154-8c97-9298c6ff66c4" x="0" y="0" width="68" height="96"/>
+				<imageExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}.get("LOGO")]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="460" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="f7a7bd35-38c9-4238-acdd-33b9f5fb1d54" x="0" y="23" width="228" height="16"/>
+				<textElement/>
+				<text><![CDATA[En la Ciudad de México, Distrito Federal, a las ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="30bf4876-df52-488c-a798-9fd395dd02cd" x="253" y="23" width="45" height="16"/>
+				<textElement/>
+				<text><![CDATA[horas del]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f0777f45-d585-4168-bf67-c61e716d0ab9" x="315" y="23" width="14" height="16"/>
+				<textElement/>
+				<text><![CDATA[de]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="303da6b8-2e9d-4fb3-9468-53b11c70faf9" x="386" y="23" width="186" height="16"/>
+				<textElement/>
+				<text><![CDATA[de dos mil doce, de acuerdo al Art. 32]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0eb637b7-66b2-4f65-881b-a0aab799696a" x="0" y="55" width="161" height="16"/>
+				<textElement/>
+				<text><![CDATA[Ciudadanos designados como:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9312158a-7569-4864-afa4-9f296f11bf3c" x="0" y="39" width="572" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Capítulo VI del Reglamento de Titulación, se reunieron en el " + $P{expediente}.getLugar() + " " + $P{expediente}.getAuditorio() + " de esta Unidad Profesional los"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9312158a-7569-4864-afa4-9f296f11bf3c" x="31" y="83" width="270" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["PRESIDENTE: " + $P{expediente}.getCedulaPresidente().getMaestro().getNombre() + " " + $P{expediente}.getCedulaPresidente().getMaestro().getaPaterno() + " " + $P{expediente}.getCedulaPresidente().getMaestro().getaMaterno()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9312158a-7569-4864-afa4-9f296f11bf3c" x="0" y="187" width="572" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{pasante}.getCarrera().getNombre()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9312158a-7569-4864-afa4-9f296f11bf3c" x="302" y="115" width="270" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["VOCAL 2°: " + $P{expediente}.getCedulaVocal2().getMaestro().getNombre() + " " + $P{expediente}.getCedulaVocal2().getMaestro().getaPaterno() + " " + $P{expediente}.getCedulaVocal2().getMaestro().getaMaterno()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9312158a-7569-4864-afa4-9f296f11bf3c" x="31" y="99" width="270" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["SECRETARIO: " + $P{expediente}.getCedulaSecretario().getMaestro().getNombre() + " " + $P{expediente}.getCedulaSecretario().getMaestro().getaPaterno() + " " + $P{expediente}.getCedulaSecretario().getMaestro().getaMaterno()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9312158a-7569-4864-afa4-9f296f11bf3c" x="302" y="131" width="270" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["VOCAL 3°: " + $P{expediente}.getCedulaVocal3().getMaestro().getNombre() + " " + $P{expediente}.getCedulaVocal3().getMaestro().getaPaterno() + " " + $P{expediente}.getCedulaVocal3().getMaestro().getaMaterno()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9312158a-7569-4864-afa4-9f296f11bf3c" x="31" y="115" width="270" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["VOCAL 1°: " + $P{expediente}.getCedulaVocal1().getMaestro().getNombre() + " " + $P{expediente}.getCedulaVocal1().getMaestro().getaPaterno() + " " + $P{expediente}.getCedulaVocal1().getMaestro().getaMaterno()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="42d4061d-f070-47b3-b83d-a694dade0433" x="0" y="247" width="496" height="16"/>
+				<textElement/>
+				<text><![CDATA[el Acto de Examen Profesional sobre el contenido del trabajo que presenta, cuyo tema se denomina:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2661871a-e064-4cb9-9aa7-27333403aa3f" x="0" y="160" width="440" height="16"/>
+				<textElement/>
+				<text><![CDATA[del Jurado de Titulación ante el cual sustentó Examen Profesional de la Licenciatura en:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="6968b5bd-91c9-4d4d-8b32-12273a4bc455" x="0" y="215" width="317" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["el C. Pasante: " + $P{pasante}.getNombre() + " " + $P{pasante}.getaPaterno() + " " + $P{pasante}.getaMaterno()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7c2164c3-f049-4fe4-9f11-3ba11e9add80" x="0" y="231" width="572" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["con No. de Boleta " + $P{pasante}.getBoleta() + " y con base en el Art. 5 del Capítulo II del Reglamento de Titulación, se procedió a llevar a cabo "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7c2164c3-f049-4fe4-9f11-3ba11e9add80" x="0" y="274" width="572" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{expediente}.getTema()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0c8c818a-5f15-4f2a-80ad-6bce11da06fe" x="0" y="301" width="572" height="16"/>
+				<textElement/>
+				<text><![CDATA[El Jurado después de haber deliberado y tomado en cuenta los antecedentes escolares del examinado, se acordó que fuera]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="4a79d2cb-092e-42cf-a4db-6583ab742aed" x="189" y="329" width="195" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{expediente}.getEstatus().getDescripcion()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5c1e8ceb-1c9f-48ff-87cd-e4e4b2ebb66d" x="0" y="359" width="572" height="16"/>
+				<textElement/>
+				<text><![CDATA[El Presidente del Jurado le hizo saber al Sustentante el resultado obtenido y el Código de Ética Profesional, le tomó la Protesta]]></text>
+			</staticText>
+			<textField pattern="HH:mm">
+				<reportElement uuid="2a7c722f-5b36-4b08-98da-60db2ad7dae7" x="205" y="375" width="26" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{expediente}.getFechaFin()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="7276b8bd-e3c0-4785-ace3-68c0ea793613" x="0" y="375" width="214" height="16"/>
+				<textElement/>
+				<text><![CDATA[de Ley, dándose por terminado el Acto a las ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f1ea39d7-1c61-4559-97c9-fb2ab2700a29" x="238" y="375" width="42" height="16"/>
+				<textElement/>
+				<text><![CDATA[horas.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f001bc53-cba3-4bf8-ae44-8cdf026d0e54" x="0" y="398" width="572" height="16"/>
+				<textElement/>
+				<text><![CDATA[En cumplimiento al Art. 32 Capítulo VI, del Reglamento de Titulación, se asentó al presente en el Libro de Actas de Examen]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="72336a19-8cd3-4258-8eba-f80e3e6e243d" x="0" y="414" width="572" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Profesional No. " + $P{acta}.getNumeroLibro() + ", a las " + $P{acta}.getNumeroActa() + " fojas, autorizado por la Dirección de Administración Escolar del Instituto"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5b0453d2-32e1-4180-a1a0-ddb3749f6e22" x="0" y="430" width="572" height="30"/>
+				<textElement/>
+				<text><![CDATA[Politécnico Nacional y una vez escrita, leída y aprobada, la firmaron las personas que en ella intervinieron, incluyendo al C. Director, para los efectos legales procedentes.]]></text>
+			</staticText>
+			<textField pattern="HH:mm">
+				<reportElement uuid="9342ccf5-aa01-4e99-ab95-966e7ff797bb" x="221" y="23" width="26" height="16"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{expediente}.getFechaInicio()]]></textFieldExpression>
+			</textField>
+			<textField pattern="d">
+				<reportElement uuid="b2dda0b3-7447-4404-93fc-ee25634c860d" x="298" y="23" width="17" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{expediente}.getFechaInicio()]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMM">
+				<reportElement uuid="a67b1ff3-539d-49dc-b47e-6205420485c0" x="329" y="23" width="57" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{expediente}.getFechaInicio()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b11431f2-41c7-4965-80cb-ee6b175c2675" x="0" y="71" width="24" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Acta]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="6d4382c4-be8d-4670-af9a-25aa184640a4" x="0" y="91" width="31" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{acta}.getNumeroActa()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<pageFooter>
+		<band height="360" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="7d0e6441-7c55-45fe-850c-ce5da290cec1" x="225" y="67" width="115" height="16"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIRECTOR INTERINO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7d0e6441-7c55-45fe-850c-ce5da290cec1" x="244" y="95" width="73" height="16"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SECRETARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7d0e6441-7c55-45fe-850c-ce5da290cec1" x="455" y="95" width="73" height="16"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VOCAL 1°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7d0e6441-7c55-45fe-850c-ce5da290cec1" x="50" y="95" width="73" height="16"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRESIDENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7d0e6441-7c55-45fe-850c-ce5da290cec1" x="222" y="344" width="137" height="16"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[FIRMA DEL SUSTENTANTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7d0e6441-7c55-45fe-850c-ce5da290cec1" x="50" y="232" width="73" height="16"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VOCAL 2°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7d0e6441-7c55-45fe-850c-ce5da290cec1" x="455" y="232" width="73" height="16"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VOCAL 3°]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="14307011-2995-433f-8631-1afb1b52ae45" x="184" y="35" width="202" height="16"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{expediente}.getCedulaDirector().getMaestro().getNombre() + " " + $P{expediente}.getCedulaDirector().getMaestro().getaPaterno() + " " + $P{expediente}.getCedulaDirector().getMaestro().getaMaterno()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1333114a-7691-44b6-95db-d89dcc310dbd" x="212" y="51" width="140" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["CED. PROF. " + $P{expediente}.getCedulaDirector().getNumeroCedula()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1333114a-7691-44b6-95db-d89dcc310dbd" x="2" y="336" width="168" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["CED. PROF. " + $P{expediente}.getCedulaVocal2().getNumeroCedula()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="14307011-2995-433f-8631-1afb1b52ae45" x="2" y="320" width="168" height="16"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{expediente}.getCedulaVocal2().getMaestro().getNombre() + " " + $P{expediente}.getCedulaVocal2().getMaestro().getaPaterno() + " " + $P{expediente}.getCedulaVocal2().getMaestro().getaMaterno()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1333114a-7691-44b6-95db-d89dcc310dbd" x="404" y="336" width="168" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["CED. PROF. " + $P{expediente}.getCedulaVocal3().getNumeroCedula()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="14307011-2995-433f-8631-1afb1b52ae45" x="404" y="320" width="168" height="16"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{expediente}.getCedulaVocal3().getMaestro().getNombre() + " " + $P{expediente}.getCedulaVocal3().getMaestro().getaPaterno() + " " + $P{expediente}.getCedulaVocal3().getMaestro().getaMaterno()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1333114a-7691-44b6-95db-d89dcc310dbd" x="404" y="211" width="168" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["CED. PROF. " + $P{expediente}.getCedulaVocal1().getNumeroCedula()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="14307011-2995-433f-8631-1afb1b52ae45" x="404" y="195" width="168" height="16"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{expediente}.getCedulaVocal1().getMaestro().getNombre() + " " + $P{expediente}.getCedulaVocal1().getMaestro().getaPaterno() + " " + $P{expediente}.getCedulaVocal1().getMaestro().getaMaterno()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1333114a-7691-44b6-95db-d89dcc310dbd" x="2" y="211" width="168" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["CED. PROF. " + $P{expediente}.getCedulaPresidente().getNumeroCedula()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="14307011-2995-433f-8631-1afb1b52ae45" x="2" y="195" width="168" height="16"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{expediente}.getCedulaPresidente().getMaestro().getNombre() + " " + $P{expediente}.getCedulaPresidente().getMaestro().getaPaterno() + " " + $P{expediente}.getCedulaPresidente().getMaestro().getaMaterno()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="14307011-2995-433f-8631-1afb1b52ae45" x="204" y="195" width="168" height="16"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{expediente}.getCedulaSecretario().getMaestro().getNombre() + " " + $P{expediente}.getCedulaSecretario().getMaestro().getaPaterno() + " " + $P{expediente}.getCedulaSecretario().getMaestro().getaMaterno()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1333114a-7691-44b6-95db-d89dcc310dbd" x="204" y="211" width="168" height="16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["CED. PROF. " + $P{expediente}.getCedulaSecretario().getNumeroCedula()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

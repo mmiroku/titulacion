@@ -53,5 +53,40 @@ public class Linea implements Serializable {
 	public Carrera getCarrera() {
 		return carrera;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((carrera == null) ? 0 : carrera.hashCode());
+		result = prime * result
+				+ ((descripcion == null) ? 0 : descripcion.hashCode());
+		result = prime * result + linea;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Linea other = (Linea) obj;
+		if (carrera == null) {
+			if (other.carrera != null)
+				return false;
+		} else if (!carrera.equals(other.carrera))
+			return false;
+		if (descripcion == null) {
+			if (other.descripcion != null)
+				return false;
+		} else if (!descripcion.equals(other.descripcion))
+			return false;
+		if (linea != other.linea)
+			return false;
+		return true;
+	}
 	
 }
