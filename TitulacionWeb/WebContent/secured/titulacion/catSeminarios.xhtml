@@ -38,13 +38,15 @@
 	</p:confirmDialog>
 
 	<p:dialog header="Seminario" widgetVar="dlgNewCatSeminario">
+	   <h:form>
 	    <p:outputPanel id="pnlNewCatSeminario" style="text-align:center;" layout="block">  
 	        <h:panelGrid columns="2" cellpadding="5">
 	            <p:outputLabel for="txtNombre" value="#{msg.L0000033}" />
 	            <p:inputText id="txtNombre" value="#{pCatSeminario.catSeminario.nombre}" required="true"/>	            
 	        </h:panelGrid>
-	        <p:commandButton value="#{msg.B0000010}" action="#{cCatSeminario.guardarCatSeminario()}" oncomplete="dlgNewCatSeminario.hide();"/>
+	        <p:commandButton value="#{msg.B0000010}" action="#{cCatSeminario.guardarCatSeminario()}" process="pnlNewCatSeminario" oncomplete="dlgNewCatSeminario.hide();"/>
 	    </p:outputPanel>
+	   </h:form>
 	</p:dialog>
 </ui:define>
 <ui:define name="right">
